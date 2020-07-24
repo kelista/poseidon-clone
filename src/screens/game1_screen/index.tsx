@@ -10,16 +10,23 @@ export const Game1Screen: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
   const lobbyHandler = () => {
-    navigate(ROUTES.RootGame1);
+    navigate(ROUTES.RootLobby);
+  };
+
+  const loginHandler = () => {
+    navigate(ROUTES.RootMain);
   };
 
   return (
     <ScrollView>
       <View>
         <View>
-          <Text>This is Game Game1Screen</Text>
+          <Text>This is Game </Text>
         </View>
         <TouchableOpacity onPress={lobbyHandler}>
+          <Text>lobby</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={loginHandler}>
           <Text>Logout</Text>
         </TouchableOpacity>
       </View>

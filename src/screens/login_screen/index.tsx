@@ -15,11 +15,30 @@ export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
 
   return (
     <ScrollView>
-      <View>
-        <TouchableOpacity onPress={lobbyHandler}>
-          <Text>Login</Text>
+      <View style={style.container}>
+        <TouchableOpacity onPress={lobbyHandler} style={style.loginButton}>
+          <Text style={style.welcome}>Login</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
   );
 };
+
+const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingLeft: 18,
+    paddingRight: 18
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center'
+  },
+  loginButton: {
+    height: 44,
+    justifyContent: 'center',
+    marginTop: 20,
+    borderRadius: 25,
+    backgroundColor: 'yellow'
+  }
+});
