@@ -1,9 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
 } from "react-navigation";
+import  BaseStyle   from "../../styles/base"
+import LoginStyle from "../../styles/LoginStyle"
+import { CustomButton } from "../../components/Button"
 import { ROUTES } from "../../../routes";
 
 export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
@@ -13,32 +16,28 @@ export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
     navigate(ROUTES.RootLobby);
   };
 
+  const testAlert = () => {
+    return alert('hello')
+  }
+  
   return (
     <ScrollView>
-      <View style={style.container}>
-        <TouchableOpacity onPress={lobbyHandler} style={style.loginButton}>
-          <Text style={style.welcome}>Login</Text>
-        </TouchableOpacity>
+      <View style={BaseStyle.container}>
+        <View style={LoginStyle.loginContainer}>
+          <TextInput placeholder="Username" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
+        </View>
+        <View style={LoginStyle.loginContainer}>
+          <TextInput placeholder="Password" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
+        </View>
+        <CustomButton title="Login" click={() => lobbyHandler()}></CustomButton>
       </View>
     </ScrollView>
   );
 };
 
 const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingLeft: 18,
-    paddingRight: 18
-  },
   welcome: {
     fontSize: 20,
     textAlign: 'center'
   },
-  loginButton: {
-    height: 44,
-    justifyContent: 'center',
-    marginTop: 20,
-    borderRadius: 25,
-    backgroundColor: 'yellow'
-  }
 });
