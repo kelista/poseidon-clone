@@ -5,11 +5,13 @@ import {
   NavigationScreenComponent,
 } from "react-navigation";
 import { ROUTES } from "../../../routes";
+import { playBacksound, stopBacksound } from '../../services/sound_manager'
 
 export const LobbyScreen: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
   const loginHandler = () => {
+    stopBacksound()
     navigate(ROUTES.RootMain);
   };
 

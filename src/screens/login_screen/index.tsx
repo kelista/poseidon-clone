@@ -8,13 +8,20 @@ import BaseStyle from "../../styles/base"
 import LoginStyle from "../../styles/LoginStyle"
 import { CustomButton } from "../../components/Button"
 import { ROUTES } from "../../../routes";
+import style from "../../styles/base"
+import { initBacksound, playBacksound } from '../../services/sound_manager'
 
 export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
   const lobbyHandler = () => {
     navigate(ROUTES.RootLobby);
+    playBacksound()
   };
+
+  useEffect(() => {
+    initBacksound()
+  })
 
   const testAlert = () => {
     return alert('hello')
