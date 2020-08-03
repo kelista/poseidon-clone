@@ -8,16 +8,16 @@ import BaseStyle from "../../styles/base"
 import LoginStyle from "../../styles/LoginStyle"
 import { CustomButton } from "../../components/Button"
 import { ROUTES } from "../../../routes";
-import style from "../../styles/base"
+// import style from "../../styles/base";
 import { initBacksound, playBacksound } from '../../services/sound_manager'
-import { initWebsocket } from "../../services/websocket"
+import { } from "../../services/websocket"
 
 export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
   const lobbyHandler = () => {
     navigate(ROUTES.RootLobby);
-    initWebsocket()
+    // initWebsocket()
     playBacksound()
   };
 
@@ -28,7 +28,7 @@ export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
   const testAlert = () => {
     return alert('hello')
   }
-  
+
   return (
     <ScrollView>
       <View style={BaseStyle.container}>

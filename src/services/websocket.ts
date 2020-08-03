@@ -1,4 +1,3 @@
-import { ActionSheetIOS } from "react-native"
 import { v4 } from "uuid";
 
 const url = 'ws://35.220.179.54:3021/events?token=asd'
@@ -12,7 +11,9 @@ const url = 'ws://35.220.179.54:3021/events?token=asd'
 //   ws.send(JSON.stringify({ event: "echo", data: { name: "hello" } }))
 // }
 
-export type ListenerCallback = <T = any>(connection: WebSocket, data:T) => void;
+export type ListenerCallback = <T = any>(data: T) => void;
+
+export type WebSocketConnectCallback = () => void;
 
 export interface WebSocketListener {
   id: string,
@@ -21,7 +22,7 @@ export interface WebSocketListener {
 }
 
 export class WebSocketClient {
-  private wsc : WebSocket;
+  private wsc: WebSocket;
   private connected: boolean;
   private listeners: Map<string, WebSocketListener>;
 
@@ -31,26 +32,34 @@ export class WebSocketClient {
     this.connected = false;
   }
 
-  connect(callback: any ) {
+  connect(connected: () => void, close: () => void) {
     this.wsc = new WebSocket(url);
     this.wsc.onopen = e => {
       this.connected = true;
+      connected();
     };
     this.wsc.onclose = () => {
       this.connected = false;
+      close();
     };
-
     this.wsc.onmessage = (e: WebSocketMessageEvent) => {
       try {
         const message = JSON.parse(e.data);
         const event = message.event;
         const data = message.data;
-
-        const listeners = Array.from()
+        this.listeners.forEach(v => {
+          if (v.eventName === event) {
+            v.callback(data);
+          }
+        });
       } catch (err) {
-        
+        // ignore
       }
     }
+  }
+
+  isConnected() {
+    return this.connected;
   }
 
   addListener(eventName: string, callback: ListenerCallback) {
@@ -60,7 +69,7 @@ export class WebSocketClient {
       eventName,
       callback,
     }
-    this.listeners.set(randomId,wsListener );
+    this.listeners.set(randomId, wsListener);
     return randomId;
   }
 
@@ -68,7 +77,31 @@ export class WebSocketClient {
     this.listeners.delete(id);
   }
 
-  sendMessage(eventName: string, data?: any){
-    this.wsc.send(JSON.stringify({event:eventName, data}));
+  sendMessage(eventName: string, data?: any) {
+    this.wsc.send(JSON.stringify({ event: eventName, data }));
   }
 }
+
+const client = new WebSocketClient("ws://35.220.179.54:3021/events?token=asd");
+
+client.connect(
+  () => {
+    console.log("connected boi");
+  },
+  () => {
+    console.log("remove dari client");
+  }
+);
+
+const echoId = client.addListener("echo", async (data) => {
+  console.log("ini echo ", data);
+});
+
+const lobbyListenerId = client.addListener("lobby/rooms", async (data) => {
+  client.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
+  console.log("ini rooms", data);
+});
+
+// contoh remove listener
+client.removeListener(echoId);
+client.removeListener(lobbyListenerId);
