@@ -24,7 +24,7 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   loginImageWrapper: {
-    zIndex: 10,
+    // zIndex: 10,
     height: 260,
     marginTop: -50,
     alignItems: 'center',
@@ -32,6 +32,14 @@ export default StyleSheet.create({
   loginImage: {
     width: 508,
     height: 262,
+  },
+  loginRedCircle: {
+    position: 'absolute',
+    zIndex: 9,
+    width: 262,
+    height: 262,
+    borderRadius: 262,
+    backgroundColor: '#840000'
   },
   loginInput: {
     paddingLeft: 20,
