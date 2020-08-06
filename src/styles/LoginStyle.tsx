@@ -14,6 +14,7 @@ export default StyleSheet.create({
   loginBoxWrapper: {
     flex: 1,
     alignItems: 'center',
+    marginTop: 65
   },
   loginBox: {
     width: 258,
@@ -25,13 +26,12 @@ export default StyleSheet.create({
   loginImageWrapper: {
     zIndex: 10,
     height: 260,
+    marginTop: 48,
     alignItems: 'center',
-    backgroundColor: 'blue'
   },
   loginImage: {
     width: 188,
     height: 260,
-    backgroundColor: 'green'
   },
   loginInput: {
     paddingLeft: 20,

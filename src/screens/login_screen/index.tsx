@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, View, TextInput,Image } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -8,18 +8,27 @@ import BaseStyle from "../../styles/base"
 import LoginStyle from "../../styles/LoginStyle"
 import { CustomButton } from "../../components/Button"
 import { ROUTES } from "../../../routes";
+// import style from "../../styles/base";
+import { initBacksound, playBacksound } from '../../services/sound_manager'
+import { } from "../../services/websocket"
 
 export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
   const lobbyHandler = () => {
     navigate(ROUTES.RootLobby);
+    // initWebsocket()
+    playBacksound()
   };
+
+  useEffect(() => {
+    initBacksound()
+  })
 
   const testAlert = () => {
     return alert('hello')
   }
-  
+
   return (
     <ScrollView>
       <View style={LoginStyle.loginContainer}>
