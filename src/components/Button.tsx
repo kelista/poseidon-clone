@@ -1,13 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import BaseStyle from "../styles/base"
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const CustomButton = ({ title, click }: { title: string, click: Function }) => {
   return (
-    <TouchableOpacity style={styles.loginButton} onPress={() => click()}>
-      <Text style={BaseStyle.welcome}>
-        {title}
-      </Text>
+    <TouchableOpacity onPress={() => click()}>
+      <LinearGradient colors={['#E60000', '#730000']} style={styles.loginButton}>
+        <Text style={styles.loginText}>
+          {title}
+        </Text>
+      </LinearGradient>
     </TouchableOpacity>
   );
 };
@@ -15,10 +17,16 @@ export const CustomButton = ({ title, click }: { title: string, click: Function 
 const styles = StyleSheet.create({
   loginButton: {
     height: 44,
+    width: 258,
+    marginTop: 10,
+    borderRadius: 4,
+    alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
-    borderRadius: 25,
     backgroundColor: 'yellow'
+  },
+  loginText : {
+    fontSize: 17,
+    color: '#FFFFFF'
   }
 });
 

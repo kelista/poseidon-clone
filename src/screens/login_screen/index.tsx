@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TextInput,Image } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
@@ -22,14 +22,21 @@ export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
   
   return (
     <ScrollView>
-      <View style={BaseStyle.container}>
-        <View style={LoginStyle.loginContainer}>
-          <TextInput placeholder="Username" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
+      <View style={LoginStyle.loginContainer}>
+        <View style={LoginStyle.loginImageWrapper}>
+          <View style={LoginStyle.loginImage}>
+            <Image source={require('../../assets/images/others/poseidon-logo.png')} />
+          </View>
         </View>
-        <View style={LoginStyle.loginContainer}>
-          <TextInput placeholder="Password" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
+        <View style={LoginStyle.loginBoxWrapper}>
+          <View style={LoginStyle.loginBox}>
+            <TextInput placeholder="Username" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
+          </View>
+          <View style={LoginStyle.loginBox}>
+            <TextInput placeholder="Password" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
+          </View>
+          <CustomButton title="Sign In" click={() => lobbyHandler()}></CustomButton>
         </View>
-        <CustomButton title="Login" click={() => lobbyHandler()}></CustomButton>
       </View>
     </ScrollView>
   );

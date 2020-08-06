@@ -19,7 +19,7 @@ const MainStack = createStackNavigator(
   },
   {
     // mode: "modal",
-    // headerMode: "none",
+    headerMode: "none",
   }
 );
 
