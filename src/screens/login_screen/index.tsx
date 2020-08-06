@@ -10,15 +10,15 @@ import { CustomButton } from "../../components/Button"
 import { ROUTES } from "../../../routes";
 // import style from "../../styles/base";
 import { initBacksound, playBacksound } from '../../services/sound_manager'
-import { } from "../../services/websocket"
+import { SafeAreaView } from 'react-native-safe-area-context';
+import base from '../../styles/base';
 
 export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
   const lobbyHandler = () => {
     navigate(ROUTES.RootLobby);
-    // initWebsocket()
-    playBacksound()
+    // playBacksound()
   };
 
   useEffect(() => {
@@ -30,24 +30,26 @@ export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
   }
 
   return (
-    <ScrollView>
-      <View style={LoginStyle.loginContainer}>
-        <View style={LoginStyle.loginImageWrapper}>
-          <View style={LoginStyle.loginImage}>
-            <Image source={require('../../assets/images/others/poseidon-logo.png')} />
+    <SafeAreaView style={base.safeAreaView}>
+      <ScrollView>
+        <View style={LoginStyle.loginContainer}>
+          <View style={LoginStyle.loginImageWrapper}>
+            <View style={LoginStyle.loginImage}>
+              <Image source={require('../../assets/images/others/logo.png')} />
+            </View>
+          </View>
+          <View style={LoginStyle.loginBoxWrapper}>
+            <View style={LoginStyle.loginBox}>
+              <TextInput placeholder="Username" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
+            </View>
+            <View style={LoginStyle.loginBox}>
+              <TextInput placeholder="Password" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
+            </View>
+            <CustomButton title="Sign In" click={() => lobbyHandler()}></CustomButton>
           </View>
         </View>
-        <View style={LoginStyle.loginBoxWrapper}>
-          <View style={LoginStyle.loginBox}>
-            <TextInput placeholder="Username" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
-          </View>
-          <View style={LoginStyle.loginBox}>
-            <TextInput placeholder="Password" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
-          </View>
-          <CustomButton title="Sign In" click={() => lobbyHandler()}></CustomButton>
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

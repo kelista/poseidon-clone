@@ -9,5 +9,8 @@ export default StyleSheet.create({
   welcome: {
     fontSize: 20,
     textAlign: "center"
+  },
+  safeAreaView: {
+    backgroundColor: "black"
   }
 });
