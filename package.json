@@ -8,12 +8,13 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/blur": "^3.6.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.7.1",
     "@react-navigation/stack": "^5.7.1",
     "expo": "~38.0.1",
-    "expo-linear-gradient": "^8.2.1",
     "expo-av": "^8.4.0",
+    "expo-linear-gradient": "^8.2.1",
     "expo-splash-screen": "~0.4.0",
     "expo-status-bar": "^1.0.0",
     "expo-updates": "~0.2.8",
@@ -30,7 +31,7 @@
     "react-native-web": "~0.11.7",
     "react-navigation": "^4.4.0",
     "react-navigation-stack": "^2.8.2",
-    "uuid": "^8.3.0"
+    "uuid": "^3.4.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

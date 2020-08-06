@@ -33,6 +33,13 @@ export default StyleSheet.create({
     width: 188,
     height: 260,
   },
+  loginRedCircle: {
+    position: 'relative',
+    zIndex: 9,
+    width: 188,
+    height: 260,
+    backgroundColor: 'green'
+  },
   loginInput: {
     paddingLeft: 20,
     lineHeight: 23,

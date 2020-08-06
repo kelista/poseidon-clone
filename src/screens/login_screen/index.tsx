@@ -36,13 +36,16 @@ export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
           <View style={LoginStyle.loginImage}>
             <Image source={require('../../assets/images/others/poseidon-logo.png')} />
           </View>
+          {/* <View style={LoginStyle.loginRedCircle}>
+            <Image source={require('../../assets/images/others/red-circle.png')} style={{backgroundColor: 'blue'}}/>
+          </View> */}
         </View>
         <View style={LoginStyle.loginBoxWrapper}>
           <View style={LoginStyle.loginBox}>
-            <TextInput placeholder="Username" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
+            <TextInput placeholder="Username" placeholderTextColor="#AEAEAE" style={LoginStyle.loginInput}></TextInput>
           </View>
           <View style={LoginStyle.loginBox}>
-            <TextInput placeholder="Password" placeholderTextColor="#000000" style={LoginStyle.loginInput}></TextInput>
+            <TextInput placeholder="Password" secureTextEntry={true} placeholderTextColor="#AEAEAE" style={LoginStyle.loginInput}></TextInput>
           </View>
           <CustomButton title="Sign In" click={() => lobbyHandler()}></CustomButton>
         </View>
