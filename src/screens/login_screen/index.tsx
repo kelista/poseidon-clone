@@ -10,7 +10,6 @@ import { CustomButton } from "../../components/Button"
 import { ROUTES } from "../../../routes";
 // import style from "../../styles/base";
 import { initBacksound, playBacksound } from '../../services/sound_manager'
-import { BlurView } from "@react-native-community/blur";
 import { } from "../../services/websocket"
 
 export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
@@ -34,9 +33,7 @@ export const LoginScreen: NavigationScreenComponent<any, any> = (props) => {
     <ScrollView>
       <View style={LoginStyle.loginContainer}>
         <View style={LoginStyle.loginImageWrapper}>
-          <BlurView blurType="light" blurAmount={10}>
-            <View style={LoginStyle.loginRedCircle}></View>
-          </BlurView>
+          <View style={LoginStyle.loginRedCircle}></View>
           <View style={LoginStyle.loginImage}>
             <Image source={require('../../assets/images/others/poseidon-logo.png')} />
           </View>
