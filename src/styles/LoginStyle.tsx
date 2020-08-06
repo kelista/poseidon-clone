@@ -24,21 +24,23 @@ export default StyleSheet.create({
     marginTop: 10,
   },
   loginImageWrapper: {
-    zIndex: 10,
+    // zIndex: 10,
     height: 260,
     marginTop: 48,
     alignItems: 'center',
   },
   loginImage: {
+    zIndex: 10,
     width: 188,
     height: 260,
   },
   loginRedCircle: {
-    position: 'relative',
+    position: 'absolute',
     zIndex: 9,
-    width: 188,
-    height: 260,
-    backgroundColor: 'green'
+    width: 262,
+    height: 262,
+    borderRadius: 262,
+    backgroundColor: '#840000'
   },
   loginInput: {
     paddingLeft: 20,
