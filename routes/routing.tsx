@@ -4,6 +4,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { PoseidonLogin } from "../src/screens/Poseidon/Login"
 import { PoseidonLobby } from "../src/screens/Poseidon/Lobby"
 import { PoseidonAccount } from "../src/screens/Poseidon/Account"
+import { PoseidonChangePass } from "../src/screens/Poseidon/ChangePassword"
 
 import { ROUTES } from "./index"
 
@@ -17,6 +18,9 @@ const MainStack = createStackNavigator(
     },
     [ROUTES.PoseidonAccount]: {
       screen: PoseidonAccount
+    },
+    [ROUTES.PoseidonChangePass]: {
+      screen: PoseidonChangePass
     }
   },
   {

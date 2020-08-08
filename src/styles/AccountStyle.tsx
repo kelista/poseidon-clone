@@ -7,7 +7,7 @@ export default StyleSheet.create({
   accountContainer: {
     flex: 1,
     width: windowWidth,
-    minHeight: windowHeight,
+    minHeight: windowHeight - 53,
     backgroundColor: '#000000'
   },
   accountImageContainer: {

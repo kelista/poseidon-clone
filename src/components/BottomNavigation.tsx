@@ -4,12 +4,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const windowWidth = Dimensions.get('window').width;
 
-export const BottomNavigation = () => {
+export const BottomNavigation = ({home, setting} : { home: Function, setting: Function }) => {
   return (
     <View style={styles.navigationContainer}>
       <LinearGradient colors={['#6E0000', '#400000']} style={styles.navigationLinear}>
         <View style={styles.navigationWrapper}>
-          <TouchableOpacity style={styles.navigationButton}>
+          <TouchableOpacity style={styles.navigationButton} onPress={() => home()}>
             <Image source={require('../assets/images/others/home-nav.png')}/>
           </TouchableOpacity>
           <TouchableOpacity style={styles.navigationButton}>
@@ -18,7 +18,7 @@ export const BottomNavigation = () => {
           <TouchableOpacity style={styles.navigationButton}>
             <Image source={require('../assets/images/others/mail-nav.png')} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.navigationButtonLast}>
+          <TouchableOpacity style={styles.navigationButtonLast} onPress={() => setting()}>
             <Image source={require('../assets/images/others/setting-nav.png')} />
           </TouchableOpacity>
         </View>

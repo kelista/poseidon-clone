@@ -6,7 +6,7 @@ import {
 } from "react-navigation";
 import LoginStyle from "../../../styles/LoginStyle"
 import { CustomButton } from "../../../components/Button"
-import { ROUTES } from "../../../../routes";
+import { ROUTES } from "../../../../routes";  
 import { initBacksound, playBacksound } from '../../../services/sound_manager'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import base from '../../../styles/base';
@@ -20,7 +20,7 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   };
 
   useEffect(() => {
-    initBacksound()
+    // initBacksound()
   })
 
   const testAlert = () => {

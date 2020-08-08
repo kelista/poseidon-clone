@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TextInput, Image } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
@@ -7,19 +7,22 @@ import {
 import { ROUTES } from "../../../../routes";
 import { WebSocketClient } from "../../../services/websocket"
 import { playBacksound, stopBacksound } from '../../../services/sound_manager'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { CustomHeader } from "../../../components/Header"
+import { BottomNavigation } from "../../../components/BottomNavigation"
+import LobbyStyle from "../../../styles/LobbyStyle"
+
 
 export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const client = new WebSocketClient("ws://35.220.179.54:3021/events?token=asd");
 
   const logoutHandler = () => {
-    stopBacksound()
+    // stopBacksound()
     navigate(ROUTES.PoseidonLogin);
   };
 
   const accountHandler = () => {
-    stopBacksound()
+    // stopBacksound()
     navigate(ROUTES.PoseidonAccount);
   };
 
@@ -47,23 +50,19 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   })
 
   return (
-    <SafeAreaView>
+    <View style={{flex: 1}}>
+      <CustomHeader title="Poseidon Club" status="lobby"></CustomHeader>
       <ScrollView>
-        <View>
-          <View>
-            <Text>This is Poseidon Lobby</Text>
-          </View>
-          <TouchableOpacity onPress={logoutHandler}>
-            <Text>Logout</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={gameHandler}>
-            <Text>Game</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={accountHandler}>
-            <Text>Account</Text>
-          </TouchableOpacity>
+        <StatusBar hidden />
+        <View style={LobbyStyle.container}>
+          <Image source={require('../../../assets/images/others/home.png')}/>
+          <CustomHeader title="Rockies07" status="userLobby"></CustomHeader>
         </View>
       </ScrollView>
-    </SafeAreaView>
+      <BottomNavigation 
+        home={() => navigate(ROUTES.PoseidonLobby)} 
+        setting={() => navigate(ROUTES.PoseidonAccount)}>
+      </BottomNavigation>
+    </View>
   );
 };

@@ -18,17 +18,17 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
   const logoutHandler = () => {
-    stopBacksound()
+    // stopBacksound()
     navigate(ROUTES.PoseidonLogin);
   };
 
   return (
     // <SafeAreaView>
     <View style={{flex: 1}}>
+      <CustomHeader title="Profile" status="profile"></CustomHeader>
       <ScrollView>
         <StatusBar hidden />
         <View style={AccountStyle.accountContainer}>
-          <CustomHeader title="Profile"></CustomHeader>
           <View style={AccountStyle.accountImageContainer}>
             <View style={AccountStyle.accountImageWrapper}>
               <Image source={require('../../../assets/images/others/Sample.png')} style={AccountStyle.accountImage}/>
@@ -50,7 +50,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
           </View>
           <View style={AccountStyle.accountMenuContainer}>
             <View style={AccountStyle.accountMenuWrapper}>
-              <TouchableOpacity style={AccountStyle.accountMenu}>
+              <TouchableOpacity style={AccountStyle.accountMenu} onPress={() => navigate(ROUTES.PoseidonChangePass)}>
                 <Image source={require('../../../assets/images/others/lock-menu.png')} style={AccountStyle.accountMenuImage_Lock}/>
                 <Text style={AccountStyle.accountMenuText}>Change Password</Text>
                 <Image source={require('../../../assets/images/others/right-arrow.png')} style={AccountStyle.accountMenuArrow}/>
@@ -80,7 +80,10 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
           </View>
         </View>
       </ScrollView>
-      <BottomNavigation></BottomNavigation>
+      <BottomNavigation 
+        home={() => navigate(ROUTES.PoseidonLobby)} 
+        setting={() => navigate(ROUTES.PoseidonAccount)}>
+      </BottomNavigation>
     </View>
     // </SafeAreaView>
   );
