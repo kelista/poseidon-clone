@@ -112,6 +112,7 @@ export default StyleSheet.create({
     height: 6.5,
   },
   accountMenuText: {
+    lineHeight: 14,
     color: '#E6E6E6',
     fontSize: 14,
     paddingLeft: 21,
