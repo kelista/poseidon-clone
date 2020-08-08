@@ -18,6 +18,11 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
     navigate(ROUTES.PoseidonLogin);
   };
 
+  const accountHandler = () => {
+    stopBacksound()
+    navigate(ROUTES.PoseidonAccount);
+  };
+
   const gameHandler = () => {
     // navigate(ROUTES.RootGame1);
     client.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
@@ -53,6 +58,9 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
           </TouchableOpacity>
           <TouchableOpacity onPress={gameHandler}>
             <Text>Game</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={accountHandler}>
+            <Text>Account</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
