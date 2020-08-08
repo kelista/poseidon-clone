@@ -12,6 +12,7 @@ import AccountStyle from "../../../styles/AccountStyle"
 
 import { CustomButton } from "../../../components/Button"
 import { CustomHeader } from "../../../components/Header"
+import { BottomNavigation } from "../../../components/BottomNavigation"
 
 export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
@@ -23,6 +24,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
 
   return (
     // <SafeAreaView>
+    <View style={{flex: 1}}>
       <ScrollView>
         <StatusBar hidden />
         <View style={AccountStyle.accountContainer}>
@@ -78,6 +80,8 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
           </View>
         </View>
       </ScrollView>
+      <BottomNavigation></BottomNavigation>
+    </View>
     // </SafeAreaView>
   );
 };
