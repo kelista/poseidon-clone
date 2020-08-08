@@ -38,7 +38,13 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingLeft: 24,
   },
+<<<<<<< HEAD
   headerBase: {
+=======
+  headerText: {
+    fontFamily: 'helvetica',
+    fontSize: 23,
+>>>>>>> a70257daab0e904e580c0bbac46134eb25cc767f
     color: '#FAE087',
     fontWeight: 'bold',
     textShadowColor: 'rgba(0, 0, 0, 0.57)',
