@@ -9,18 +9,26 @@ export const BottomNavigation = () => {
     <View style={styles.navigationContainer}>
       <LinearGradient colors={['#6E0000', '#400000']} style={styles.navigationLinear}>
         <View style={styles.navigationWrapper}>
-          <TouchableOpacity style={styles.navigationButton}>
-            <Image source={require('../assets/images/others/home-nav.png')}/>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navigationButton}>
-            <Image source={require('../assets/images/others/report-nav.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navigationButton}>
-            <Image source={require('../assets/images/others/mail-nav.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.navigationButtonLast}>
-            <Image source={require('../assets/images/others/setting-nav.png')} />
-          </TouchableOpacity>
+          <View style={styles.navigationButton}>
+            <TouchableOpacity>
+              <Image source={require('../assets/images/others/home-nav.png')}/>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.navigationButton}>
+            <TouchableOpacity>
+              <Image source={require('../assets/images/others/report-nav.png')} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.navigationButton}>
+            <TouchableOpacity>
+              <Image source={require('../assets/images/others/mail-nav.png')} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.navigationButtonLast}>
+            <TouchableOpacity>
+              <Image source={require('../assets/images/others/setting-nav.png')} />
+            </TouchableOpacity>
+          </View>
         </View>
       </LinearGradient>
     </View>

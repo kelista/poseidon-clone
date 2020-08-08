@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 export const CustomHeader = ({ title }: { title: string }) => {
   return (
     <View style={{}}>
-      <LinearGradient colors={['#C73131', '#6E0000', '#400000']} style={styles.loginButton}>
+      <LinearGradient colors={['#C73131', '#6E0000', '#400000']} locations={[0.1, 0.5, 1]} style={styles.loginButton}>
         <Text style={styles.headerText}>
           {title}
         </Text>
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headerText: {
+    fontFamily: 'helvetica',
     fontSize: 23,
     color: '#FAE087',
     textShadowColor: 'rgba(0, 0, 0, 0.57)',
