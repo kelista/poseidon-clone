@@ -1,5 +1,4 @@
 export enum ROUTES {
-  RootMain = "LoginScreen",
-  RootLobby = "LobbyScreen",
-  RootGame1 = "Game1Screen"
+  PoseidonLogin = "PoseidonLogin",
+  PoseidonLobby = "PoseidonLobby",
 }

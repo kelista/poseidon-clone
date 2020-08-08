@@ -1,20 +1,19 @@
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { LoginScreen } from "../src/screens/login_screen/index";
-import { LobbyScreen } from "../src/screens/lobby_screen/index";
-import { Game1Screen } from "../src/screens/game1_screen/index";
+// import { LoginScreen } from "../src/screens/login_screen/index";
+// import { LobbyScreen } from "../src/screens/lobby_screen/index";
+// import { Game1Screen } from "../src/screens/game1_screen/index";
+import { PoseidonLogin } from "../src/screens/Poseidon/Login"
+import { PoseidonLobby } from "../src/screens/Poseidon/Lobby"
 import { ROUTES } from "./index"
 
 const MainStack = createStackNavigator(
   {
-    [ROUTES.RootMain]: {
-      screen: LoginScreen
+    [ROUTES.PoseidonLogin]: {
+      screen: PoseidonLogin
     },
-    [ROUTES.RootLobby]: {
-      screen: LobbyScreen
-    },
-    [ROUTES.RootGame1]: {
-      screen: Game1Screen
+    [ROUTES.PoseidonLobby]: {
+      screen: PoseidonLobby
     }
   },
   {
