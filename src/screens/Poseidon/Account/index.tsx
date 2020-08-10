@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState  } from 'react';
 import { StyleSheet, Text, View, Image, StatusBar  } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -16,11 +16,16 @@ import { BottomNavigation } from "../../../components/BottomNavigation"
 
 export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
+  const [toggle, setToggle] = useState(false);
 
   const logoutHandler = () => {
     // stopBacksound()
     navigate(ROUTES.PoseidonLogin);
   };
+
+  const toggleClick = () => {
+    setToggle(!toggle)
+  }
 
   return (
     // <SafeAreaView>
@@ -55,10 +60,17 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
                 <Text style={AccountStyle.accountMenuText}>Change Password</Text>
                 <Image source={require('../../../assets/images/others/right-arrow.png')} style={AccountStyle.accountMenuArrow}/>
               </TouchableOpacity>
-              <TouchableOpacity style={AccountStyle.accountMenu}>
+              <TouchableOpacity style={AccountStyle.accountMenu} onPress={toggleClick}>
                 <Image source={require('../../../assets/images/others/sound-menu.png')} style={AccountStyle.accountMenuImage} />
                 <Text style={AccountStyle.accountMenuText}>BGM / Sounds</Text>
-                <Image source={require('../../../assets/images/others/right-arrow.png')} style={AccountStyle.accountMenuArrow} />
+                <View style={AccountStyle.accountMenuToogle}>
+                  {
+                    toggle ? 
+                    <View style={AccountStyle.accountMenuToogleOn}></View>
+                    :
+                    <View style={AccountStyle.accountMenuToogleOff}></View>
+                  }
+                </View>
               </TouchableOpacity>
               <TouchableOpacity style={AccountStyle.accountMenu}>
                 <Image source={require('../../../assets/images/others/term-menu.png')} style={AccountStyle.accountMenuImage} />

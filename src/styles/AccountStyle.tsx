@@ -133,5 +133,27 @@ export default StyleSheet.create({
     paddingRight: 21,
     marginTop: 15,
     alignItems: 'center'
+  },
+  accountMenuToogle: {
+    position: 'absolute',
+    right: 0,
+    padding: 2,
+    width: 27,
+    height: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8
+  },
+  accountMenuToogleOn: {
+    width: 12,
+    height: 12,
+    backgroundColor: '#48D148',
+    borderRadius: 12,
+    marginLeft: 11
+  },
+  accountMenuToogleOff: {
+    width: 12,
+    height: 12,
+    backgroundColor: '#A2A2A2',
+    borderRadius: 12
   }
 });
