@@ -11,10 +11,28 @@ export const CustomHeader = ({ title, status }: { title: string, status: string 
             {title}
           </Text>
           {
+            status == "lobby" ?
+            <View style={styles.userSlot}>
+              <Image source={require('../assets/images/others/green-people.png')} style={styles.userSlotImage}/>
+              <Text style={styles.userSlotText}>54 / 60</Text>
+            </View>
+            :
+            <></>
+          }
+          {
             status == "lobby" ? 
-              <Image source={require('../assets/images/others/drop-img.png')} style={styles.dropImg}/>
-              :
-              <></>
+            <Image source={require('../assets/images/others/drop-img.png')} style={styles.dropImg}/>
+            :
+            <></>
+          }
+          {
+            status == "userLobby" ?
+            <View style={styles.userBalance}>
+                <Image source={require('../assets/images/others/balance-image.png')} />
+                <Text style={styles.userBalanceText}>999,999,999</Text>
+            </View>
+            :
+            <></>
           }
         </View>
       </LinearGradient>
@@ -23,15 +41,42 @@ export const CustomHeader = ({ title, status }: { title: string, status: string 
 };
 
 const styles = StyleSheet.create({
+  lobbyWrapper: {
+    backgroundColor: 'yellow'
+  },
+  userSlot: {
+    flex: 1,
+    flexDirection: 'row',
+    position: 'absolute',
+    right: 32,
+  },
+  userSlotImage: {
+    right: 10,
+    top: 3,
+  },
+  userSlotText: {
+    fontSize: 13,
+    color: '#E6E6E6'
+  },
   dropImg: {
     marginLeft: 17,
-    marginTop: 11
+    marginTop: 10
+  },
+  userBalance: {
+    position: 'absolute',
+    right: 32
+  },
+  userBalanceText: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    right: 11,
+    position: 'absolute'
   },
   header: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    position: 'relative'
+    position: 'relative',
   },
   loginButton: {
     height: 53,
