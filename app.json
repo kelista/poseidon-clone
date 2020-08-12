@@ -3,8 +3,14 @@
   "displayName": "poseidon",
   "expo": {
     "name": "poseidon",
-    "slug": "expo-template-bare",
+    "slug": "poseidon",
     "version": "1.0.0",
+    "ios": {
+      "bundleIdentifier": "com.node8.poseidon"
+    },
+    "android": {
+      "package": "com.node8.poseidon"
+    },
     "assetBundlePatterns": [
       "**/*"
     ]

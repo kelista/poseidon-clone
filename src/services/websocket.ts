@@ -2,15 +2,6 @@ import { v4 } from "uuid";
 
 const url = 'ws://35.220.179.54:3021/events?token=asd'
 
-// export const initWebsocket = async () => {
-//   const ws = new WebSocket(url)
-//   return ws
-// }
-
-// export const sendData = async () => {
-//   ws.send(JSON.stringify({ event: "echo", data: { name: "hello" } }))
-// }
-
 export type ListenerCallback = <T = any>(data: T) => void;
 
 export type WebSocketConnectCallback = () => void;
