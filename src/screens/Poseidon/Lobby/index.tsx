@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground, AsyncStorage } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
@@ -20,26 +20,31 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   const bs = useContext(BSContext);
 
   useEffect(function cb() {
-    const client = new WebSocketClient("ws://35.220.179.54:3021/events?token=asd");
+    AsyncStorage.getItem("token").then(token => {
+      const client = new WebSocketClient("ws://35.220.179.54:3021/events?token="+token);
 
-    setWsClient(client);
+      console.log(client)
+      setWsClient(client);
+  
+      wsClient?.connect(
+        () => {
+          console.log("connected boi");
+        },
+        () => {
+          console.log("remove dari client");
+        }
+      );
+  
+      wsClient?.addListener("echo", async (data) => {
+        console.log("ini echo ", data);
+      });
+  
+      wsClient?.addListener("lobby/rooms", async (data) => {
+        console.log("ini rooms", data);
+      });
+    })
 
-    wsClient?.connect(
-      () => {
-        console.log("connected boi");
-      },
-      () => {
-        console.log("remove dari client");
-      }
-    );
 
-    wsClient?.addListener("echo", async (data) => {
-      console.log("ini echo ", data);
-    });
-
-    wsClient?.addListener("lobby/rooms", async (data) => {
-      console.log("ini rooms", data);
-    });
   }, []);
 
   // start sound

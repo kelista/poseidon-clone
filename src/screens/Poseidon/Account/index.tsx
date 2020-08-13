@@ -22,12 +22,6 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const bs = useContext(BSContext);
 
   const logoutHandler = () => {
-    // stopBacksound()
-    // if(bs) {
-    //   bs.stop().then(() => {
-    //   });gabisa vin beda bukan
-    //   stop aja pas unmount
-    // }
     navigate(ROUTES.PoseidonLogin);
   };
 
