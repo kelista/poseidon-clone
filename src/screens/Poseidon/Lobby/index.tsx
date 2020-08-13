@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, Image } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
@@ -51,17 +51,22 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
       }
   }, [bs ? true : false]);
 
-  const logoutHandler = () => {
-    navigate(ROUTES.PoseidonLogin);
+  const skpGameRoom = () => {
+    // stopBacksound()
+    navigate(ROUTES.PoseidonSkpRoom);
   };
 
-  const accountHandler = () => {
-    navigate(ROUTES.PoseidonAccount);
+  const threePicGameROom = () => {
+    // stopBacksound()
+    navigate(ROUTES.PoseidonThreePicRoom);
   };
 
-  const gameHandler = () => {
+  const hold = () => {
+    // navigate(ROUTES.RootGame1);
     wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
+    
   };
+
 
   return (
     <View style={{flex: 1}}>
@@ -71,10 +76,27 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
         <View style={LobbyStyle.container}>
           <Image source={require('../../../assets/images/others/home.png')}/>
           <CustomHeader title="Rockies07" status="userLobby"></CustomHeader>
+          <View style={LobbyStyle.lobbyImageContainer}>
+            <View style={LobbyStyle.lobbyImageWrapper}>
+              <ImageBackground source={require('../../../assets/images/others/background-revision.png')} style={LobbyStyle.lobbyImageBackground}></ImageBackground>
+              <View style={LobbyStyle.lobbyGameWrapper}>
+                <View style={LobbyStyle.lobbyGameSkpWrapper}>
+                  <TouchableOpacity onPress={skpGameRoom}>
+                    <Image source={require('../../../assets/images/others/skp-image.png')} style={LobbyStyle.lobbyGameSkp}/>
+                  </TouchableOpacity>
+                </View>
+                <View style={LobbyStyle.lobbyGameThreePicWrapper}>
+                  <TouchableOpacity onPress={threePicGameROom}>
+                    <Image source={require('../../../assets/images/others/3pic-image.png')} style={LobbyStyle.lobbyGameThreePic}/>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
         </View>
       </ScrollView>
       <BottomNavigation 
-        home={() => navigate(ROUTES.PoseidonLobby)} 
+      home={() => navigate(ROUTES.PoseidonLobby)} 
         setting={() => navigate(ROUTES.PoseidonAccount)}>
       </BottomNavigation>
     </View>
