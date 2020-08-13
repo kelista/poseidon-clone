@@ -3,8 +3,7 @@ import { Audio } from "expo-av";
 export class Backsound {
   private audio: Audio.Sound;
 
-  private constructor(
-      private readonly src: string, 
+  private constructor( 
       public readonly name: string
     ) {
     this.audio = new Audio.Sound();
@@ -33,9 +32,9 @@ export class Backsound {
   /**
    * create and load sound
    */
-  static async Factory( name: string,src: string) {
-    const newSound = new Backsound(src, name);
-    await newSound.audio.loadAsync(require(src));
+  static async Factory( name: string,src: any) {
+    const newSound = new Backsound(name);
+    await newSound.audio.loadAsync(src);
     await newSound.setLoop();
     return newSound;
   }

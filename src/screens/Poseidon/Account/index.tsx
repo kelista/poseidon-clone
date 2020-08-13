@@ -1,6 +1,7 @@
-import React, { useEffect, useState  } from 'react';
+import React, { useEffect, useState, useContext  } from 'react';
 import { StyleSheet, Text, View, Image, StatusBar  } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import {BSContext} from "../../../../routes/bsContext";
 import {
   NavigationScreenComponent,
 } from "react-navigation";
@@ -16,15 +17,30 @@ import { BottomNavigation } from "../../../components/BottomNavigation"
 
 export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(true);
+
+  const bs = useContext(BSContext);
 
   const logoutHandler = () => {
     // stopBacksound()
+    // if(bs) {
+    //   bs.stop().then(() => {
+    //   });gabisa vin beda bukan
+    //   stop aja pas unmount
+    // }
     navigate(ROUTES.PoseidonLogin);
   };
 
   const toggleClick = () => {
-    setToggle(!toggle)
+    if(toggle) {
+      bs?.pause().then(() => {
+        setToggle(!toggle) // ini apa
+      });
+    } else {
+      bs?.start().then(() => {
+        setToggle(!toggle)
+      });
+    }
   }
 
   return (

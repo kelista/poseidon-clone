@@ -1,39 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, Text, View, StatusBar, TextInput, Image } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
 } from "react-navigation";
 import { ROUTES } from "../../../../routes";
+import { BSContext } from "../../../../routes/bsContext";
 import { WebSocketClient } from "../../../services/websocket"
-import { playBacksound, stopBacksound } from '../../../services/sound_manager'
+import { initBacksound } from '../../../services/sound_manager'
 import { CustomHeader } from "../../../components/Header"
 import { BottomNavigation } from "../../../components/BottomNavigation"
 import LobbyStyle from "../../../styles/LobbyStyle"
-
+import { Backsound } from "../../../services/soundServices"
 
 export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
-  const client = new WebSocketClient("ws://35.220.179.54:3021/events?token=asd");
 
-  const logoutHandler = () => {
-    // stopBacksound()
-    navigate(ROUTES.PoseidonLogin);
-  };
+  const [wsClient, setWsClient] = useState<WebSocketClient>();
+  const bs = useContext(BSContext);
 
-  const accountHandler = () => {
-    // stopBacksound()
-    navigate(ROUTES.PoseidonAccount);
-  };
+  useEffect(function cb() {
+    const client = new WebSocketClient("ws://35.220.179.54:3021/events?token=asd");
 
-  const gameHandler = () => {
-    // navigate(ROUTES.RootGame1);
-    client.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
-    
-  };
+    setWsClient(client);
 
-  useEffect(() => {
-    client.connect(
+    wsClient?.connect(
       () => {
         console.log("connected boi");
       },
@@ -41,13 +32,36 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
         console.log("remove dari client");
       }
     );
-    client.addListener("echo", async (data) => {
+
+    wsClient?.addListener("echo", async (data) => {
       console.log("ini echo ", data);
     });
-    client.addListener("lobby/rooms", async (data) => {
+
+    wsClient?.addListener("lobby/rooms", async (data) => {
       console.log("ini rooms", data);
     });
-  })
+  }, []);
+
+  // start sound
+  useEffect(function bsEffect()  {
+      bs?.start();
+      
+      return function unmount() {
+        bs?.stop();
+      }
+  }, [bs ? true : false]);
+
+  const logoutHandler = () => {
+    navigate(ROUTES.PoseidonLogin);
+  };
+
+  const accountHandler = () => {
+    navigate(ROUTES.PoseidonAccount);
+  };
+
+  const gameHandler = () => {
+    wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
+  };
 
   return (
     <View style={{flex: 1}}>
