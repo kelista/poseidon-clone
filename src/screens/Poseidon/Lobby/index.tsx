@@ -23,7 +23,6 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
     AsyncStorage.getItem("token").then(token => {
       const client = new WebSocketClient("ws://35.220.179.54:3021/events?token="+token);
 
-      console.log(client)
       setWsClient(client);
   
       wsClient?.connect(
