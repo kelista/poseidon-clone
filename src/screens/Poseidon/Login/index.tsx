@@ -38,7 +38,7 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
     <SafeAreaView style={base.safeAreaView}>
       <StatusBar hidden />
       <ScrollView>
-        <View style={{...LoginStyle.loginContainer, marginBottom: 100}}>
+        <View style={LoginStyle.loginContainer}>
           <View style={LoginStyle.loginImageWrapper}>
             <View style={LoginStyle.loginImage}>
               <Image source={require('../../../assets/images/others/logo.png')} />
