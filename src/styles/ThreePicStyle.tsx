@@ -14,9 +14,9 @@ export default StyleSheet.create({
     height: 53
   },
   ThreePicImageContainer: {
-    minHeight: 363, 
-    maxHeight: -53,
-    width: '100%',
+    flex: 1,
+    height: '100%',
+    width: '100%'
   },
   ThreePicImageWrapper: {
     height: '100%', 
