@@ -1,3 +1,6 @@
+import React, {useState, useContext, useEffect} from "react";
+import {BSContext} from "./bsContext";
+import { Backsound } from "../src/services/soundServices";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
@@ -39,4 +42,19 @@ const MainStack = createStackNavigator(
 
 const AppContainer = createAppContainer(MainStack);
 
-export default AppContainer;
+const Wrapped = function() {
+  const [bs, setBs] = useState<Backsound>();
+
+  useEffect(() => {
+    Backsound.Factory("mainsound",require("../src/assets/music/Lobby.mp3"))
+    .then(newBacksound => {
+      setBs(newBacksound);
+    });
+  },[bs?true:false]);
+
+  return <BSContext.Provider value={bs}>
+    <AppContainer />
+  </BSContext.Provider>
+}
+
+export default Wrapped;
