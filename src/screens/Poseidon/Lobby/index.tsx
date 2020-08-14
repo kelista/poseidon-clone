@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
@@ -13,47 +13,40 @@ import { CustomheaderLogo } from "../../../components/HeaderLogo"
 import { BottomNavigation } from "../../../components/BottomNavigation"
 import LobbyStyle from "../../../styles/LobbyStyle"
 import { Backsound } from "../../../services/soundServices"
+import { WSContext } from '../../../../routes/wsContext';
 
 export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
-  const [wsClient, setWsClient] = useState<WebSocketClient>();
+  const wsClient = useContext(WSContext)
   const bs = useContext(BSContext);
 
   useEffect(function cb() {
-    AsyncStorage.getItem("token").then(token => {
-      const client = new WebSocketClient("ws://35.220.179.54:3021/events?token="+token);
+    wsClient?.connect(
+      () => {
+        console.log("connected boi");
+      },
+      () => {
+        console.log("remove dari client");
+      }
+    );
 
-      setWsClient(client);
-  
-      wsClient?.connect(
-        () => {
-          console.log("connected boi");
-        },
-        () => {
-          console.log("remove dari client");
-        }
-      );
-  
-      wsClient?.addListener("echo", async (data) => {
-        console.log("ini echo ", data);
-      });
-  
-      wsClient?.addListener("lobby/rooms", async (data) => {
-        console.log("ini rooms", data);
-      });
-    })
+    wsClient?.addListener("echo", async (data) => {
+      console.log("ini echo ", data);
+    });
 
-
+    wsClient?.addListener("lobby/rooms", async (data) => {
+      console.log("ini rooms", data);
+    });
   }, []);
 
   // start sound
   useEffect(function bsEffect()  {
-      bs?.start();
-      
-      return function unmount() {
-        bs?.stop();
-      }
+    bs?.start();
+    
+    return function unmount() {
+      bs?.stop();
+    }
   }, [bs ? true : false]);
 
   const skpGameRoom = () => {

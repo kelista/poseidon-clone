@@ -44,6 +44,15 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
     }
   }
 
+  useEffect(() => {
+    console.log(bs?.getStatus())
+    if(bs?.getStatus() == "play") {
+      setToggle(true)
+    } else {
+      setToggle(false)
+    }
+  }, [])
+
   return (
     // <SafeAreaView>
     <View style={{flex: 1}}>
