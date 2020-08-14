@@ -14,6 +14,8 @@ import { CustomButton } from "../../../components/Button"
 import { CustomheaderLogo } from "../../../components/HeaderLogo"
 import { BottomNavigation } from "../../../components/BottomNavigation"
 
+import Svg, { Path } from 'react-native-svg';
+
 export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const [toggle, setToggle] = useState(false);
@@ -58,7 +60,13 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
               <TouchableOpacity style={AccountStyle.accountMenu} onPress={() => navigate(ROUTES.PoseidonChangePass)}>
                 <Image source={require('../../../assets/images/others/lock-menu.png')} style={AccountStyle.accountMenuImage_Lock}/>
                 <Text style={AccountStyle.accountMenuText}>Change Password</Text>
-                <Image source={require('../../../assets/images/others/right-arrow.png')} style={AccountStyle.accountMenuArrow}/>
+                <Svg width={6.502} height={10.53} viewBox="0 0 6.502 10.53" style={AccountStyle.accountMenuArrow}>
+                  <Path
+                    data-name="Icon material-expand-more"
+                    d="M0 1.237l4.015 4.028-4.019 4.028 1.241 1.237 5.265-5.265L1.237 0z"
+                    fill="#e6e6e6"
+                  />
+                </Svg>
               </TouchableOpacity>
               <TouchableOpacity style={AccountStyle.accountMenu} onPress={toggleClick}>
                 <Image source={require('../../../assets/images/others/sound-menu.png')} style={AccountStyle.accountMenuImage} />
@@ -75,12 +83,24 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
               <TouchableOpacity style={AccountStyle.accountMenu}>
                 <Image source={require('../../../assets/images/others/term-menu.png')} style={AccountStyle.accountMenuImage} />
                 <Text style={AccountStyle.accountMenuText}>Terms and Conditions</Text>
-                <Image source={require('../../../assets/images/others/right-arrow.png')} style={AccountStyle.accountMenuArrow} />
+                <Svg width={6.502} height={10.53} viewBox="0 0 6.502 10.53" style={AccountStyle.accountMenuArrow}>
+                  <Path
+                    data-name="Icon material-expand-more"
+                    d="M0 1.237l4.015 4.028-4.019 4.028 1.241 1.237 5.265-5.265L1.237 0z"
+                    fill="#e6e6e6"
+                  />
+                </Svg>
               </TouchableOpacity>
               <TouchableOpacity style={AccountStyle.accountMenu}>
                 <Image source={require('../../../assets/images/others/term-menu.png')} style={AccountStyle.accountMenuImage} />
                 <Text style={AccountStyle.accountMenuText}>Privacy Policy</Text>
-                <Image source={require('../../../assets/images/others/right-arrow.png')} style={AccountStyle.accountMenuArrow} />
+                <Svg width={6.502} height={10.53} viewBox="0 0 6.502 10.53" style={AccountStyle.accountMenuArrow}>
+                  <Path
+                    data-name="Icon material-expand-more"
+                    d="M0 1.237l4.015 4.028-4.019 4.028 1.241 1.237 5.265-5.265L1.237 0z"
+                    fill="#e6e6e6"
+                  />
+                </Svg>
               </TouchableOpacity>
               <View style={AccountStyle.accountVersion}>
                 <Text style={AccountStyle.accountVersionText}> Ver. 1.1</Text>
