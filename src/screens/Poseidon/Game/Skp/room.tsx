@@ -10,15 +10,16 @@ import { playBacksound, stopBacksound } from '../../../../services/sound_manager
 import { CustomHeader } from "../../../../components/Header"
 import { BottomNavigation } from "../../../../components/BottomNavigation"
 import skpStyle from "../../../../styles/SkpStyle"
+import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 
 
 export const PoseidonSkpRoom: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const client = new WebSocketClient("ws://35.220.179.54:3021/events?token=asd");
 
-  const logoutHandler = () => {
+  const lobbyHandler = () => {
     // stopBacksound()
-    navigate(ROUTES.PoseidonLogin);
+    navigate(ROUTES.PoseidonLobby);
   };
 
   const accountHandler = () => {
@@ -51,7 +52,8 @@ export const PoseidonSkpRoom: NavigationScreenComponent<any, any> = (props) => {
 
   return (
     <View style={{flex: 1}}>
-      <CustomHeader title="Poseidon Club" status="lobby"></CustomHeader>
+      {/* <CustomHeader title="Poseidon Club" status="lobby"></CustomHeader> */}
+      <CustomheaderLogo name="skp" lobby={() => lobbyHandler()}></CustomheaderLogo>
       <ScrollView>
         <StatusBar hidden />
         <View style={skpStyle.container}>

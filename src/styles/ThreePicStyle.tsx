@@ -14,7 +14,8 @@ export default StyleSheet.create({
     height: 53
   },
   ThreePicImageContainer: {
-    height: 363, 
+    minHeight: 363, 
+    maxHeight: -53,
     width: '100%',
   },
   ThreePicImageWrapper: {
@@ -28,7 +29,9 @@ export default StyleSheet.create({
     width: '100%'
   },
   ThreePicRoomContainer: {
-    alignItems: 'center'
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   ThreePicRoomWrapper: {
       flexDirection: 'row'

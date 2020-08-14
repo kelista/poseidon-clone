@@ -8,6 +8,7 @@ import { ROUTES } from "../../../../routes";
 import { WebSocketClient } from "../../../services/websocket"
 import { playBacksound, stopBacksound } from '../../../services/sound_manager'
 import { CustomHeader } from "../../../components/Header"
+import { CustomheaderLogo } from "../../../components/HeaderLogo"
 import { BottomNavigation } from "../../../components/BottomNavigation"
 import LobbyStyle from "../../../styles/LobbyStyle"
 
@@ -56,7 +57,7 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
 
   return (
     <View style={{flex: 1}}>
-      <CustomHeader title="Poseidon Club" status="lobby"></CustomHeader>
+      <CustomheaderLogo name="lobby" lobby={() => false}></CustomheaderLogo>
       <ScrollView>
         <StatusBar hidden />
         <View style={LobbyStyle.container}>

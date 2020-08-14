@@ -14,13 +14,13 @@ export default StyleSheet.create({
     height: 53
   },
   skpImageContainer: {
-    height: 363, 
+    minHeight: 363, 
+    maxHeight: -53,
     width: '100%',
   },
   skpImageWrapper: {
     height: '100%', 
     width: '100%',
-    backgroundColor: 'yellow'
   },
   skpImageBackground: {
     position: 'absolute', 
@@ -28,7 +28,9 @@ export default StyleSheet.create({
     width: '100%'
   },
   skpRoomContainer: {
-    alignItems: 'center'
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   skpRoomWrapper: {
       flexDirection: 'row'

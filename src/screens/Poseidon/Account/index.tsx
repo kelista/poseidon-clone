@@ -11,16 +11,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import AccountStyle from "../../../styles/AccountStyle"
 
 import { CustomButton } from "../../../components/Button"
-import { CustomHeader } from "../../../components/Header"
+import { CustomheaderLogo } from "../../../components/HeaderLogo"
 import { BottomNavigation } from "../../../components/BottomNavigation"
 
 export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const [toggle, setToggle] = useState(false);
 
-  const logoutHandler = () => {
+  const lobbyHandler = () => {
     // stopBacksound()
-    navigate(ROUTES.PoseidonLogin);
+    navigate(ROUTES.PoseidonLobby);
   };
 
   const toggleClick = () => {
@@ -30,7 +30,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   return (
     // <SafeAreaView>
     <View style={{flex: 1}}>
-      <CustomHeader title="Profile" status="profile"></CustomHeader>
+      <CustomheaderLogo name="account" lobby={() => lobbyHandler()}></CustomheaderLogo>
       <ScrollView>
         <StatusBar hidden />
         <View style={AccountStyle.accountContainer}>
