@@ -72,28 +72,3 @@ export class WebSocketClient {
     this.wsc.send(JSON.stringify({ event: eventName, data }));
   }
 }
-
-// const client = new WebSocketClient("ws://35.220.179.54:3021/events?token=asd");
-
-// client.connect(
-//   () => {
-//     console.log("connected boi");
-//   },
-//   () => {
-//     console.log("remove dari client");
-//   }
-// );
-
-// // Taro di useEffect()
-// const echoId = client.addListener("echo", async (data) => {
-//   console.log("ini echo ", data);
-// });
-
-// const lobbyListenerId = client.addListener("lobby/rooms", async (data) => {
-//   client.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
-//   console.log("ini rooms", data);
-// });
-
-// // contoh remove listener di useEffect clean()
-// client.removeListener(echoId);
-// client.removeListener(lobbyListenerId);

@@ -39,11 +39,3 @@ export class Backsound {
     return newSound;
   }
 }
-
-async function contoh() {
-  // nanti cara pake nya gini vin
-
-  const bs = await Backsound.Factory("mainsound","file.mp3");
-
-  await bs.start();
-}
