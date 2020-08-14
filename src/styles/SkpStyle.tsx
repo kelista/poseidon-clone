@@ -15,7 +15,7 @@ export default StyleSheet.create({
   },
   skpImageContainer: {
     minHeight: 363, 
-    maxHeight: -53,
+    height: windowHeight-370,
     width: '100%',
   },
   skpImageWrapper: {
