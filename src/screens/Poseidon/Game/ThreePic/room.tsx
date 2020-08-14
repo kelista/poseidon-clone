@@ -11,10 +11,6 @@ import { CustomHeader } from "../../../../components/Header"
 import { BottomNavigation } from "../../../../components/BottomNavigation"
 import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
-<<<<<<< HEAD
-
-=======
->>>>>>> 52f1bf2ca8957f36796c642d09de44439da049ba
 import { WSContext } from '../../../../../routes/wsContext';
 
 export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props) => {

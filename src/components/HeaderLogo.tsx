@@ -56,10 +56,12 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     position: 'absolute',
+    top: 18,
     left: 29.1
   },
   temporaryText: {
     // fontFamily: 'helvetica',
+    height: 35,
     fontSize: 23,
     color: '#FAE087',
     fontWeight: 'bold',
