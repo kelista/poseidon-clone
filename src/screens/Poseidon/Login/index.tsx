@@ -14,7 +14,7 @@ import axios from 'axios';
 
 export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
-  const host = 'ws://35.220.179.54:3021'
+  const host = 'http://35.220.179.54:3021'
   const path = host + "/login"
   const [username, setUsername] = useState("test")
   const [password, setPassword] = useState("test")
@@ -38,7 +38,7 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
     <SafeAreaView style={base.safeAreaView}>
       <StatusBar hidden />
       <ScrollView>
-        <View style={LoginStyle.loginContainer}>
+        <View style={{...LoginStyle.loginContainer, marginBottom: 100}}>
           <View style={LoginStyle.loginImageWrapper}>
             <View style={LoginStyle.loginImage}>
               <Image source={require('../../../assets/images/others/logo.png')} />

@@ -1035,22 +1035,6 @@
     xcode "^2.1.0"
     xml2js "^0.4.23"
 
-"@expo/configure-splash-screen@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@expo/configure-splash-screen/-/configure-splash-screen-0.1.11.tgz#635a3f55134eecbc665ddd352057cdfb8dd4c539"
-  integrity sha512-KMLBnPB5olwPe8bqDaarH2tRoja95oSVquicZg0g9K7V0fo7YysNTfaYdbqPtGr1CIHkGH8UMBngA0HaquTn/Q==
-  dependencies:
-    "@react-native-community/cli-platform-android" "4.7.0"
-    "@react-native-community/cli-platform-ios" "4.7.0"
-    color-string "^1.5.3"
-    commander "^5.1.0"
-    core-js "^3.6.5"
-    deep-equal "^2.0.3"
-    fs-extra "^9.0.0"
-    pngjs "^5.0.0"
-    xcode "^3.0.0"
-    xml-js "^1.6.11"
-
 "@expo/configure-splash-screen@~0.1.0":
   version "0.1.12"
   resolved "https://registry.yarnpkg.com/@expo/configure-splash-screen/-/configure-splash-screen-0.1.12.tgz#8d8889fc98e87cececdb48af45bc8d6447ce699d"
@@ -3248,13 +3232,14 @@ expo-asset@~8.1.7:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
-expo-av@^8.4.0:
-  version "8.4.0"
-  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-8.4.0.tgz#84881f89df35361893b55e739a639cd51d3ecf04"
-  integrity sha512-yboOV6hlZTKPjcEb7bxqIPAQIZ5SupaPEWvGv7aVzdoPNhmY4/uEceMQ6Pm8d33r72Zofp5fR1a2Alvg18bVUQ==
+expo-av@~8.2.1:
+  version "8.2.1"
+  resolved "https://registry.yarnpkg.com/expo-av/-/expo-av-8.2.1.tgz#cab16a5f0766b84a7c2e05e04523cb73a0cd4e9b"
+  integrity sha512-p1W6ta5yFLsyUUB4bH/Bm2gz/KEleYWRYkF7PR3aYXjtTjMX9Ud1gwzEfbMJMKZRSlJydSzy/ieQT8CVatd68A==
   dependencies:
     lodash "^4.17.15"
     nullthrows "^1.1.0"
+    prop-types "15.7.2"
 
 expo-blur@^8.1.2:
   version "8.1.2"
@@ -3337,13 +3322,6 @@ expo-splash-screen@^0.3.1:
   integrity sha512-j87n6utSq8irvx9dA3YvFwHsqT9c/Cc/QnmpZHB0g3mPh3QBWReKgR3x41tHnkLMKHAi9Au9D4k/o615kUNeDg==
   dependencies:
     "@expo/configure-splash-screen" "~0.1.0"
-
-expo-splash-screen@~0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.4.0.tgz#b751f11bf702a38b4ead4b4bedd4f82e24a35d70"
-  integrity sha512-6We+pL/uj3pYSxhrqcbvbxsWis5CN85uOHEbxbiE4fSKqaA+laIXq++EIjvWtB7dKxXYTH7nYYYWIOf9jwV8Rg==
-  dependencies:
-    "@expo/configure-splash-screen" "0.1.11"
 
 expo-sqlite@~8.2.1:
   version "8.2.1"
@@ -6321,11 +6299,6 @@ react-native-reanimated@~1.9.0:
   integrity sha512-Aj+spgIHRiVv7ezGADxnSH1EoKrQRD2+XaSiGY0MiB/pvRNNrZPSJ+3NVpvLwWf9lZMOP7dwqqyJIzoZgBDt8w==
   dependencies:
     fbjs "^1.0.0"
-
-react-native-safe-area-context@^3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-3.1.1.tgz#9b04d1154766e6c1132030aca8f4b0336f561ccd"
-  integrity sha512-Iqb41OT5+QxFn0tpTbbHgz8+3VU/F9OH2fTeeoU7oZCzojOXQbC6sp6mN7BlsAoTKhngWoJLMcSosL58uRaLWQ==
 
 react-native-safe-area-context@~3.0.7:
   version "3.0.7"
