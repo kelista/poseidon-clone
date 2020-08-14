@@ -10,12 +10,8 @@ import { playBacksound, stopBacksound } from '../../../../services/sound_manager
 import { CustomHeader } from "../../../../components/Header"
 import { BottomNavigation } from "../../../../components/BottomNavigation"
 import ThreePic from "../../../../styles/ThreePicStyle"
-<<<<<<< HEAD
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
-
-=======
 import { WSContext } from '../../../../../routes/wsContext';
->>>>>>> b5f5cb8786a598e7b3f5b9251594c59f6af0f781
 
 export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
