@@ -13,9 +13,12 @@ import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 import { WSContext } from '../../../../../routes/wsContext';
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 export const ThreePicGame2: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
-  const wsClient = useContext(WSContext)
+  const wsClient = useContext(WSContext);
 
   const lobbyHandler = () => {
     // stopBacksound()
@@ -31,6 +34,7 @@ export const ThreePicGame2: NavigationScreenComponent<any, any> = (props) => {
     // navigate(ROUTES.RootGame1);
     wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
   };
+  
 
   return (
     <View style={{flex: 1}}>
@@ -39,9 +43,43 @@ export const ThreePicGame2: NavigationScreenComponent<any, any> = (props) => {
       <ScrollView>
         <StatusBar hidden />
         <View style={ThreePic.container}>
-          <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: 'blue', width: '100%', height: '100%' }}>
+          <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: 'black', width: '100%', height: '100%' }}>
             <View style={styles.containerBack}>
-              <Image source={require('../../../../assets/images/others/table.png')} style={{}}/>
+              { windowWidth >= 375 ? 
+                <View style={styles.containerPin}>
+                  <View style={styles.rel}>
+                    <Image source={require('../../../../assets/images/others/table_big.png')} style={styles.table}/>
+                    <Image source={require('../../../../assets/images/others/button_pin.png')} style={styles.pinPlayer1}/>
+
+                    <Image source={require('../../../../assets/images/others/button_pin.png')} style={styles.pinPlayer2}/>
+                    <Image source={require('../../../../assets/images/others/button_pin.png')} style={styles.pinPlayer3}/>
+                    <Image source={require('../../../../assets/images/others/button_pin.png')} style={styles.pinPlayer4}/>
+
+                    <Image source={require('../../../../assets/images/others/button_pin.png')} style={styles.pinPlayer5}/>
+
+                    <Image source={require('../../../../assets/images/others/button_pin.png')} style={styles.pinPlayer6}/>
+                    <Image source={require('../../../../assets/images/others/button_pin.png')} style={styles.pinPlayer7}/>
+                    <Image source={require('../../../../assets/images/others/button_pin.png')} style={styles.pinPlayer8}/>
+                  </View>
+                </View>
+                :
+                <View style={styles.containerPinSmall}>
+                  <View style={styles.rel}>
+                    <Image source={require('../../../../assets/images/others/table.png')} style={styles.tableSmall}/>
+                    <Image source={require('../../../../assets/images/others/button_pin_small.png')} style={styles.pinPlayer1Small}/>
+
+                    <Image source={require('../../../../assets/images/others/button_pin_small.png')} style={styles.pinPlayer2Small}/>
+                    <Image source={require('../../../../assets/images/others/button_pin_small.png')} style={styles.pinPlayer3Small}/>
+                    <Image source={require('../../../../assets/images/others/button_pin_small.png')} style={styles.pinPlayer4Small}/>
+
+                    <Image source={require('../../../../assets/images/others/button_pin_small.png')} style={styles.pinPlayer5Small}/>
+
+                    <Image source={require('../../../../assets/images/others/button_pin_small.png')} style={styles.pinPlayer6Small}/>
+                    <Image source={require('../../../../assets/images/others/button_pin_small.png')} style={styles.pinPlayer7Small}/>
+                    <Image source={require('../../../../assets/images/others/button_pin_small.png')} style={styles.pinPlayer8Small}/>
+                  </View>
+                </View>
+              }
             </View>
           </View>
         </View>
@@ -50,16 +88,205 @@ export const ThreePicGame2: NavigationScreenComponent<any, any> = (props) => {
   );
 };
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
 const styles = StyleSheet.create({
   containerBack: {
     height: windowHeight-53,
     width: "100%",
     maxWidth: 375,
-    backgroundColor: "yellow",
-    justifyContent: "center", 
-    alignItems: "center"
+    backgroundColor: "black",
+    position: 'relative'
+  },
+  rel: {
+    position: 'relative',
+    width: '100%',
+    height: '100%'
+  },
+  containerPin: {
+    height: 584,
+    width: 361,
+    backgroundColor: "black",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [
+      { translateX: -180.5 },
+      { translateY: -292 }
+    ]
+  },
+  containerPinSmall: {
+    height: 537,
+    width: 331,
+    backgroundColor: "black",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [
+      { translateX: -165.5 },
+      { translateY: -266.5 }
+    ]
+  },
+  table: {
+    position: 'absolute',
+    zIndex: 2,
+    top: '50%',
+    left: '50%',
+    transform: [
+      { translateX: -180.5 },
+      { translateY: -292 }
+    ]
+  },
+  tableSmall: {
+    position: 'absolute',
+    zIndex: 2,
+    top: '50%',
+    left: '50%',
+    transform: [
+      { translateX: -165.5 },
+      { translateY: -266.5 }
+    ]
+  },
+  pinPlayer1: {
+    position: 'absolute',
+    left: '50%',
+    top: -5,
+    zIndex: 3,
+    transform: [
+      { translateX: -33.5 }
+    ]
+  },
+  pinPlayer2: {
+    position: 'absolute',
+    right: 16,
+    top: '21%',
+    zIndex: 3,
+    transform: [
+      { translateY: -32.5 }
+    ]
+  },
+  pinPlayer3: {
+    position: 'absolute',
+    right: 16,
+    top: '45%',
+    zIndex: 3,
+    transform: [
+      { translateY: -32.5 }
+    ]
+  },
+  pinPlayer4: {
+    position: 'absolute',
+    right: 16,
+    top: '73%',
+    zIndex: 3,
+    transform: [
+      { translateY: -32.5 }
+    ]
+  },
+  pinPlayer5: {
+    position: 'absolute',
+    left: '50%',
+    bottom: -10,
+    zIndex: 3,
+    transform: [
+      { translateX: -33.5 }
+    ]
+  },
+  pinPlayer6: {
+    position: 'absolute',
+    left: 16,
+    top: '21%',
+    zIndex: 3,
+    transform: [
+      { translateY: -32.5 }
+    ]
+  },
+  pinPlayer7: {
+    position: 'absolute',
+    left: 16,
+    top: '45%',
+    zIndex: 3,
+    transform: [
+      { translateY: -32.5 }
+    ]
+  },
+  pinPlayer8: {
+    position: 'absolute',
+    left: 16,
+    top: '73%',
+    zIndex: 3,
+    transform: [
+      { translateY: -32.5 }
+    ]
+  },
+  pinPlayer1Small: {
+    position: 'absolute',
+    left: '50%',
+    top: -3,
+    zIndex: 3,
+    transform: [
+      { translateX: -31.5 }
+    ]
+  },
+  pinPlayer2Small: {
+    position: 'absolute',
+    right: 14,
+    top: '21%',
+    zIndex: 3,
+    transform: [
+      { translateY: -30 }
+    ]
+  },
+  pinPlayer3Small: {
+    position: 'absolute',
+    right: 14,
+    top: '45%',
+    zIndex: 3,
+    transform: [
+      { translateY: -30 }
+    ]
+  },
+  pinPlayer4Small: {
+    position: 'absolute',
+    right: 14,
+    top: '74%',
+    zIndex: 3,
+    transform: [
+      { translateY: -30 }
+    ]
+  },
+  pinPlayer5Small: {
+    position: 'absolute',
+    left: '50%',
+    bottom: -8,
+    zIndex: 3,
+    transform: [
+      { translateX: -31.5 }
+    ]
+  },
+  pinPlayer6Small: {
+    position: 'absolute',
+    left: 14,
+    top: '21%',
+    zIndex: 3,
+    transform: [
+      { translateY: -30 }
+    ]
+  },
+  pinPlayer7Small: {
+    position: 'absolute',
+    left: 14,
+    top: '45%',
+    zIndex: 3,
+    transform: [
+      { translateY: -30 }
+    ]
+  },
+  pinPlayer8Small: {
+    position: 'absolute',
+    left: 14,
+    top: '74%',
+    zIndex: 3,
+    transform: [
+      { translateY: -30 }
+    ]
   }
 })
