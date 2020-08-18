@@ -46,5 +46,26 @@ export default StyleSheet.create({
   },
   ThreePicRoomRightPadding: {
       paddingRight: 50
-  }
+  },
+
+
+  //Game
+  containerGame: {
+    flex: 1,
+    width: windowWidth,
+    minHeight: windowHeight,
+    backgroundColor: '#000000'
+  },
+  ThreePicGameContainer: {
+    width: '100%',
+    height: '100%',
+  },
+  ThreePicGameTableImageWrapper: {
+    position: 'relative',
+    alignItems: 'center'
+  },
+  ThreePicGameTableImage: {
+    position: 'absolute',
+    top: 74
+  },
 });

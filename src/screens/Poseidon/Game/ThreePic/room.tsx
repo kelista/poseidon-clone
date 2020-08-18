@@ -22,15 +22,15 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
     navigate(ROUTES.PoseidonLobby);
   };
 
-  const accountHandler = () => {
+  const gameHandler = () => {
     // stopBacksound()
-    navigate(ROUTES.PoseidonAccount);
+    navigate(ROUTES.PoseidonThreePicGame);
   };
 
-  const gameHandler = () => {
-    // navigate(ROUTES.RootGame1);
-    wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
-  };
+  // const gameHandler = () => {
+  //   // navigate(ROUTES.RootGame1);
+  //   wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
+  // };
 
   return (
     <View style={{flex: 1}}>
@@ -46,7 +46,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
               <ImageBackground source={require('../../../../assets/images/others/skp-roombg.png')} style={ThreePic.ThreePicImageBackground}></ImageBackground>
               <View style={ThreePic.ThreePicRoomContainer}>
                 <View style={ThreePic.ThreePicRoomWrapper}>
-                    <TouchableOpacity style={ThreePic.ThreePicRoomRightPadding}>
+                    <TouchableOpacity style={ThreePic.ThreePicRoomRightPadding} onPress={() => gameHandler()}>
                         <Image source={require('../../../../assets/images/others/room1-image.png')} style={{}}/>
                         <Text style={ThreePic.ThreePicRoomBetText}>Min/Max: 10/2000</Text>
                     </TouchableOpacity>

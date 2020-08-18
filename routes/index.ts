@@ -5,5 +5,6 @@ export enum ROUTES {
   PoseidonAccount = "PoseidonAccount",
   PoseidonChangePass = "PoseidonChangePass",
   PoseidonSkpRoom = "PoseidonSkpRoom",
-  PoseidonThreePicRoom = "PoseidonThreePicRoom"
+  PoseidonThreePicRoom = "PoseidonThreePicRoom",
+  PoseidonThreePicGame = "PoseidonThreePicGame" 
 }
