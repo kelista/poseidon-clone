@@ -56,16 +56,24 @@ export default StyleSheet.create({
     minHeight: windowHeight,
     backgroundColor: '#000000'
   },
+  ThreePicGameBackground: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+  },
   ThreePicGameContainer: {
     width: '100%',
     height: '100%',
   },
   ThreePicGameTableImageWrapper: {
     position: 'relative',
-    alignItems: 'center'
+    alignItems: 'center',
+    height: '100%',
+    // backgroundColor: 'yellow',
+    justifyContent: 'center'
   },
   ThreePicGameTableImage: {
     position: 'absolute',
-    top: 74
+    // backgroundColor: 'green'
   },
 });

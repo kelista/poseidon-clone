@@ -14,7 +14,7 @@ import axios from 'axios';
 
 export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
-  const host = 'ws://35.220.179.54:3021'
+  const host = 'http://35.220.179.54:3021'
   const path = host + "/login"
   const [username, setUsername] = useState("test")
   const [password, setPassword] = useState("test")

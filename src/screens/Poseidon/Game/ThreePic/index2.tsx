@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground, Dimensions } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
@@ -13,7 +13,7 @@ import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 import { WSContext } from '../../../../../routes/wsContext';
 
-export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props) => {
+export const ThreePicGame2: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const wsClient = useContext(WSContext)
 
@@ -39,14 +39,27 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
       <ScrollView>
         <StatusBar hidden />
         <View style={ThreePic.container}>
-        <ImageBackground source={require('../../../../assets/images/others/backgroundskp-game.png.png')} style={ThreePic.ThreePicGameBackground}/>
-            <View style={ThreePic.ThreePicGameContainer}>
-                <View style={ThreePic.ThreePicGameTableImageWrapper}>
-                    <Image source={require('../../../../assets/images/others/table.png')} style={ThreePic.ThreePicGameTableImage}/>
-                </View>
+          <View style={{ justifyContent: "center", alignItems: "center", backgroundColor: 'blue', width: '100%', height: '100%' }}>
+            <View style={styles.containerBack}>
+              <Image source={require('../../../../assets/images/others/table.png')} style={{}}/>
             </View>
+          </View>
         </View>
       </ScrollView>
     </View>
   );
 };
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+const styles = StyleSheet.create({
+  containerBack: {
+    height: windowHeight-53,
+    width: "100%",
+    maxWidth: 375,
+    backgroundColor: "yellow",
+    justifyContent: "center", 
+    alignItems: "center"
+  }
+})
