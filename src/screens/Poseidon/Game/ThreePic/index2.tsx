@@ -99,7 +99,8 @@ const styles = StyleSheet.create({
   rel: {
     position: 'relative',
     width: '100%',
-    height: '100%'
+    height: '100%',
+    backgroundColor: 'red'
   },
   containerPin: {
     height: 584,

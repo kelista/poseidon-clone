@@ -39,12 +39,85 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
       <ScrollView>
         <StatusBar hidden />
         <View style={ThreePic.container}>
-        <ImageBackground source={require('../../../../assets/images/others/backgroundskp-game.png.png')} style={ThreePic.ThreePicGameBackground}/>
-            <View style={ThreePic.ThreePicGameContainer}>
-                <View style={ThreePic.ThreePicGameTableImageWrapper}>
-                    <Image source={require('../../../../assets/images/others/table.png')} style={ThreePic.ThreePicGameTableImage}/>
-                </View>
+          <View style={ThreePic.ThreePicGameProfile}>
+            <View style={ThreePic.ThreePicGameProfileWrapper}>
+              <Image source={require('../../../../assets/images/others/small-profile.png')} style={ThreePic.ThreePicGameProfileImage}/>
+              <Text style={ThreePic.ThreePicGameProfileUsername}>Rockies07</Text>
             </View>
+          </View>
+          <View style={ThreePic.ThreePicGameBalance}>
+            <View style={ThreePic.ThreePicGameProfileWrapper}>
+              <Image source={require('../../../../assets/images/others/big-coin.png')} style={ThreePic.ThreePicGameBalanceImage}/>
+              <Image source={require('../../../../assets/images/others/big-cointext.png')} style={ThreePic.ThreePicGameBalanceImageSquare}/>
+              <Text style={ThreePic.ThreePicGameBalanceText}>999,999,999</Text>
+            </View>
+          </View>
+          <View style={ThreePic.ThreePicGameCasinoChip}>
+            <View style={ThreePic.ThreePicGameProfileWrapper}>
+              <Image source={require('../../../../assets/images/others/casino-chip.png')} style={ThreePic.ThreePicGameCasinoChipImage}/>
+              <Image source={require('../../../../assets/images/others/big-cointext.png')} style={ThreePic.ThreePicGameBalanceImageSquare}/>
+              <Text style={ThreePic.ThreePicGameBalanceText}>999,999,999</Text>
+            </View>
+          </View>
+          <ImageBackground source={require('../../../../assets/images/others/backgroundskp-game.png.png')} style={ThreePic.ThreePicGameBackground}/>
+          <View style={ThreePic.ThreePicGameContainer}>
+              <View style={ThreePic.ThreePicGameTableImageWrapper}>
+                  <Image source={require('../../../../assets/images/others/threepic-gamelogo.png')} style={ThreePic.ThreePicGameTableLogo}/>
+                  <View style={ThreePic.ThreePicGameTableTextWrapper}>
+                    <Text style={ThreePic.ThreePicGameTableText}>Banker: 3000</Text>
+                    <Text style={ThreePic.ThreePicGameTableText}>Min: 10</Text>
+                    <Text style={ThreePic.ThreePicGameTableText}>Max: 100</Text>
+                  </View>
+                  <Image source={require('../../../../assets/images/others/table.png')} style={ThreePic.ThreePicGameTableImage}/>
+                  <View style={ThreePic.ThreePicGamePinWrapper}>
+                    <View style={ThreePic.ThreePicGamePin1}>
+                      <TouchableOpacity>
+                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={ThreePic.ThreePicGamePin2}>
+                      <TouchableOpacity>
+                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={ThreePic.ThreePicGamePin3}>
+                      <TouchableOpacity>
+                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={ThreePic.ThreePicGamePin4}>
+                      <TouchableOpacity>
+                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={ThreePic.ThreePicGamePin5}>
+                      <TouchableOpacity>
+                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View style={ThreePic.ThreePicGamePin6}>
+                      <TouchableOpacity>
+                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      </TouchableOpacity>
+                    </View>
+                    <View style={ThreePic.ThreePicGamePin7}>
+                      <TouchableOpacity>
+                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      </TouchableOpacity>
+                    </View>
+                    
+                    <View style={ThreePic.ThreePicGamePin8}>
+                      <TouchableOpacity>
+                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      </TouchableOpacity>
+                    </View>
+
+                  </View>
+              </View>
+          </View>
         </View>
       </ScrollView>
     </View>
