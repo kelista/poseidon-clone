@@ -6,12 +6,12 @@ import {
 } from "react-navigation";
 import LoginStyle from "../../../styles/LoginStyle"
 import { CustomButton } from "../../../components/Button"
-import { ROUTES } from "../../../../routes";  
+import { ROUTES } from "../../../../routes";
 import { initBacksound, playBacksound } from '../../../services/sound_manager'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import base from '../../../styles/base';
 import axios from 'axios';
-import {SSContext} from "../../../../routes/simpleStoreContext";
+import { SSContext } from "../../../../routes/simpleStoreContext";
 
 export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
@@ -23,19 +23,19 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const store = useContext(SSContext);
 
   const lobbyHandler = () => {
-    axios.post(path, {username, password})
-    .then((response) => {
-      store.token.setValue(response.data.token);
-      Promise.all([
-        AsyncStorage.setItem("token", response.data.token)
-      ])
-        .then(() => {
-          navigate(ROUTES.PoseidonLobby);
-        })
-    })
-    .catch(() => {
-      alert("Username / Password wrong")
-    })
+    axios.post(path, { username, password })
+      .then((response) => {
+        store.token.setValue(response.data.token);
+        Promise.all([
+          AsyncStorage.setItem("token", response.data.token)
+        ])
+          .then(() => {
+            navigate(ROUTES.PoseidonLobby);
+          })
+      })
+      .catch(() => {
+        alert("Username / Password wrong")
+      })
   };
 
   return (
@@ -50,19 +50,19 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
           </View>
           <View style={LoginStyle.loginBoxWrapper}>
             <View style={LoginStyle.loginBox}>
-              <TextInput 
-                placeholder="Username" 
-                placeholderTextColor="#AEAEAE" 
+              <TextInput
+                placeholder="Username"
+                placeholderTextColor="#AEAEAE"
                 style={LoginStyle.loginInput}
                 value={username}
                 onChangeText={e => setUsername(e)}
               ></TextInput>
             </View>
             <View style={LoginStyle.loginBox}>
-              <TextInput 
-                placeholder="Password" 
-                secureTextEntry={true} 
-                placeholderTextColor="#AEAEAE" 
+              <TextInput
+                placeholder="Password"
+                secureTextEntry={true}
+                placeholderTextColor="#AEAEAE"
                 style={LoginStyle.loginInput}
                 value={password}
                 onChangeText={e => setPassword(e)}

@@ -1,6 +1,6 @@
-import React, {useState, useContext, useEffect, useMemo} from "react";
-import {BSContext} from "./bsContext";
-import {WSContext} from "./wsContext";
+import React, { useState, useContext, useEffect, useMemo } from "react";
+import { BSContext } from "./bsContext";
+import { WSContext } from "./wsContext";
 import { Backsound } from "../src/services/soundServices";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
@@ -17,7 +17,7 @@ import { ThreePicGame2 } from "../src/screens/Poseidon/Game/ThreePic/index2"
 
 import { ROUTES } from "./index"
 import { WebSocketClient } from "../src/services/websocket";
-import {SSContext} from "./simpleStoreContext";
+import { SSContext } from "./simpleStoreContext";
 
 const MainStack = createStackNavigator(
   {
@@ -54,11 +54,11 @@ const MainStack = createStackNavigator(
 
 const AppContainer = createAppContainer(MainStack);
 
-const Wrapped = function() {
+const Wrapped = function () {
   const [bs, setBs] = useState<Backsound>();
   const [wsClient, setWsClient] = useState<WebSocketClient>();
   const [token, setToken] = useState<string>("");
-  
+
   const ss = useMemo(() => ({
     token: {
       value: token,
@@ -67,26 +67,28 @@ const Wrapped = function() {
   }), [token]);
 
   useEffect(() => {
-    Backsound.Factory("mainsound",require("../src/assets/music/Lobby.mp3"))
-    .then(newBacksound => {
-      setBs(newBacksound);
-    });
-  },[bs?true:false]);
+    Backsound.Factory("mainsound", require("../src/assets/music/Lobby.mp3"))
+      .then(newBacksound => {
+        setBs(newBacksound);
+      });
+  }, [bs ? true : false]);
 
   // listen token
   useEffect(() => {
-    if(token) {
-      const client = new WebSocketClient("ws://35.220.179.54:3021/events?token="+token);
+    if (token) {
+      const url = "ws://192.168.43.196:3000/events?token=" + token;
+      console.log(url);
+      const client = new WebSocketClient(url);
       setWsClient(client);
     }
   }, [token]);
 
   // get token
-  useEffect(() => {
-    AsyncStorage.getItem("token").then(token => {
-      if(token) setToken(token);
-    })
-  }, []);
+  // useEffect(() => {
+  //   AsyncStorage.getItem("token").then(token => {
+  //     if (token) setToken(token);
+  //   })
+  // }, []);
 
   return <BSContext.Provider value={bs}>
     <WSContext.Provider value={wsClient}>
