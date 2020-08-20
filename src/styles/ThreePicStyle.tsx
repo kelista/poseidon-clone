@@ -155,7 +155,7 @@ export default StyleSheet.create({
   ThreePicGamePinWrapper: { 
     position: 'relative',
     height: 584,
-    width: windowWidth>= 375? 361 : 331,
+    width: 331,
     // backgroundColor: 'green'
   },
   ThreePicGamePin1: {
