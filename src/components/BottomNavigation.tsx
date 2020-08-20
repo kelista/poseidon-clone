@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions, Image, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const windowWidth = Dimensions.get('window').width;
@@ -38,7 +38,7 @@ export const BottomNavigation = ({home, setting} : { home: Function, setting: Fu
 const styles = StyleSheet.create({
   navigationContainer: {
     position: 'absolute',
-    bottom: 0,
+    bottom: Platform.OS === 'ios' ? 20 : 0,
     width: windowWidth,
     height: 53,
   },
