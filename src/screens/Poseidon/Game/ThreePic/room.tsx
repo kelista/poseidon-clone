@@ -13,9 +13,32 @@ import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 import { WSContext } from '../../../../../routes/wsContext';
 
+interface Room {
+  _id: string;
+  no: number;
+  name: string;
+  min: number;
+  mid: number;
+  max: number;
+  cap: number;
+}
+
+// interface RoomGroup {
+//   _id: string;
+//   codename: string;
+//   rooms: IRoom[];
+// }
+
+interface RoomsRequest {
+  codename: string;
+}
+
 export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const wsClient = useContext(WSContext)
+  const eventName = "lobby/rooms"
+  const payload: RoomsRequest = { codename: "<game-codename>"}
+  const messageStr = JSON.stringify({ event: eventName, data: payload });
 
   const lobbyHandler = () => {
     // stopBacksound()
@@ -27,10 +50,12 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
     navigate(ROUTES.PoseidonThreePicGame);
   };
 
-  // const gameHandler = () => {
-  //   // navigate(ROUTES.RootGame1);
-  //   wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
-  // };
+  useEffect(function ws() {
+    wsClient?.addListener(eventName, async (data) => {
+      console.log(data)
+    })
+    wsClient?.sendMessage(eventName, { message: messageStr })
+  }, [])
 
   return (
     <View style={{flex: 1}}>

@@ -15,30 +15,40 @@ import LobbyStyle from "../../../styles/LobbyStyle"
 import { Backsound } from "../../../services/soundServices"
 import { WSContext } from '../../../../routes/wsContext';
 
+interface Game {
+  _id: string;
+  name: string;
+  codename: string;
+}
+
 export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
   const wsClient = useContext(WSContext)
   const bs = useContext(BSContext);
 
+  const lobbyGamesEvent = "lobby/games";
+  const messageStr = JSON.stringify({ event: lobbyGamesEvent });
+
+  // connect
   useEffect(function cb() {
-    wsClient?.connect(
-      () => {
-        console.log("connected boi");
-      },
-      () => {
-        console.log("remove dari client");
-      }
-    );
-
-    wsClient?.addListener("echo", async (data) => {
-      console.log("ini echo ", data);
-    });
-
-    wsClient?.addListener("lobby/rooms", async (data) => {
-      console.log("ini rooms", data);
+    wsClient?.connect(() => {
+      console.log("connected");
+    }, () => {
+      console.log("disconnected");
     });
   }, []);
+
+  // listen connect
+  useEffect(function cb() {
+    if(wsClient?.isConnected()) {
+      wsClient?.addListener(lobbyGamesEvent, async(data) => {
+        console.log(data);
+      })
+      wsClient?.sendMessage(lobbyGamesEvent, {event: lobbyGamesEvent});
+      // kale
+    }
+  }, [wsClient?true:false, wsClient?.isConnected()]);
 
   // start sound
   useEffect(function bsEffect()  {

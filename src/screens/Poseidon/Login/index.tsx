@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { StyleSheet, Text, View, TextInput, Image, StatusBar, AsyncStorage } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -11,6 +11,7 @@ import { initBacksound, playBacksound } from '../../../services/sound_manager'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import base from '../../../styles/base';
 import axios from 'axios';
+import {SSContext} from "../../../../routes/simpleStoreContext";
 
 export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
@@ -19,9 +20,12 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const [username, setUsername] = useState("test")
   const [password, setPassword] = useState("test")
 
+  const store = useContext(SSContext);
+
   const lobbyHandler = () => {
     axios.post(path, {username, password})
     .then((response) => {
+      store.token.setValue(response.data.token);
       Promise.all([
         AsyncStorage.setItem("token", response.data.token)
       ])

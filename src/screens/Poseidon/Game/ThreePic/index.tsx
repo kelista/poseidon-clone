@@ -16,6 +16,8 @@ import { WSContext } from '../../../../../routes/wsContext';
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const wsClient = useContext(WSContext)
+  const lobbyGamesEvent = "lobby/games"
+  const messageStr = JSON.stringify({ event: lobbyGamesEvent })
 
   const lobbyHandler = () => {
     // stopBacksound()
@@ -27,10 +29,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
     navigate(ROUTES.PoseidonAccount);
   };
 
-  const gameHandler = () => {
-    // navigate(ROUTES.RootGame1);
-    wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
-  };
+  useEffect(function gameInit() {
+
+  }, [])
 
   return (
     <View style={{flex: 1}}>

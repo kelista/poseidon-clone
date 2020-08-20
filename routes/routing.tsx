@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from "react";
+import React, {useState, useContext, useEffect, useMemo} from "react";
 import {BSContext} from "./bsContext";
 import {WSContext} from "./wsContext";
 import { Backsound } from "../src/services/soundServices";
@@ -17,6 +17,7 @@ import { ThreePicGame2 } from "../src/screens/Poseidon/Game/ThreePic/index2"
 
 import { ROUTES } from "./index"
 import { WebSocketClient } from "../src/services/websocket";
+import {SSContext} from "./simpleStoreContext";
 
 const MainStack = createStackNavigator(
   {
@@ -56,22 +57,42 @@ const AppContainer = createAppContainer(MainStack);
 const Wrapped = function() {
   const [bs, setBs] = useState<Backsound>();
   const [wsClient, setWsClient] = useState<WebSocketClient>();
+  const [token, setToken] = useState<string>("");
+  
+  const ss = useMemo(() => ({
+    token: {
+      value: token,
+      setValue: setToken
+    }
+  }), [token]);
 
   useEffect(() => {
     Backsound.Factory("mainsound",require("../src/assets/music/Lobby.mp3"))
     .then(newBacksound => {
       setBs(newBacksound);
     });
+  },[bs?true:false]);
 
-    AsyncStorage.getItem("token").then(token => {
+  // listen token
+  useEffect(() => {
+    if(token) {
       const client = new WebSocketClient("ws://35.220.179.54:3021/events?token="+token);
       setWsClient(client);
+    }
+  }, [token]);
+
+  // get token
+  useEffect(() => {
+    AsyncStorage.getItem("token").then(token => {
+      if(token) setToken(token);
     })
-  },[bs?true:false, wsClient?true:false]);
+  }, []);
 
   return <BSContext.Provider value={bs}>
     <WSContext.Provider value={wsClient}>
-      <AppContainer />
+      <SSContext.Provider value={ss}>
+        <AppContainer />
+      </SSContext.Provider>
     </WSContext.Provider>
   </BSContext.Provider>
 }
