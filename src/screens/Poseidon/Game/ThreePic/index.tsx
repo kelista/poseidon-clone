@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground, Dimensions } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
@@ -18,6 +18,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
   const wsClient = useContext(WSContext)
   const lobbyGamesEvent = "lobby/games"
   const messageStr = JSON.stringify({ event: lobbyGamesEvent })
+
+  const windowWidth = Dimensions.get('window').width;
 
   const lobbyHandler = () => {
     // stopBacksound()
@@ -76,7 +78,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         <Image source={require('../../../../assets/images/others/button_pin.png')}/>
                       </TouchableOpacity>
                     </View>
-
                     <View style={ThreePic.ThreePicGamePin2}>
                       <TouchableOpacity>
                         <Image source={require('../../../../assets/images/others/button_pin.png')}/>
@@ -87,7 +88,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         <Image source={require('../../../../assets/images/others/button_pin.png')}/>
                       </TouchableOpacity>
                     </View>
-
                     <View style={ThreePic.ThreePicGamePin4}>
                       <TouchableOpacity>
                         <Image source={require('../../../../assets/images/others/button_pin.png')}/>
@@ -98,7 +98,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         <Image source={require('../../../../assets/images/others/button_pin.png')}/>
                       </TouchableOpacity>
                     </View>
-
                     <View style={ThreePic.ThreePicGamePin6}>
                       <TouchableOpacity>
                         <Image source={require('../../../../assets/images/others/button_pin.png')}/>
@@ -109,13 +108,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         <Image source={require('../../../../assets/images/others/button_pin.png')}/>
                       </TouchableOpacity>
                     </View>
-                    
                     <View style={ThreePic.ThreePicGamePin8}>
                       <TouchableOpacity>
                         <Image source={require('../../../../assets/images/others/button_pin.png')}/>
                       </TouchableOpacity>
                     </View>
-
                   </View>
               </View>
           </View>
