@@ -13,7 +13,6 @@ import { PoseidonChangePass } from "../src/screens/Poseidon/ChangePassword"
 import { PoseidonSkpRoom } from "../src/screens/Poseidon/Game/Skp/room"
 import { PoseidonThreePicRoom } from "../src/screens/Poseidon/Game/ThreePic/room"
 import { PoseidonThreePicGame } from "../src/screens/Poseidon/Game/ThreePic/index"
-import { ThreePicGame2 } from "../src/screens/Poseidon/Game/ThreePic/index2"
 
 import { ROUTES } from "./index"
 import { WebSocketClient } from "../src/services/websocket";
@@ -41,9 +40,6 @@ const MainStack = createStackNavigator(
     },
     [ROUTES.PoseidonThreePicGame]: {
       screen: PoseidonThreePicGame
-    },
-    [ROUTES.ThreePicGame2]: {
-      screen: ThreePicGame2
     }
   },
   {

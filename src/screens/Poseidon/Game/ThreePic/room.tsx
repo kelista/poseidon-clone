@@ -96,7 +96,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
                     <Image source={require('../../../../assets/images/others/room1-image.png')} style={{}} />
                     <Text style={ThreePic.ThreePicRoomBetText}>Min/Max: 10/2000</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => navigate(ROUTES.ThreePicGame2)}>
+                  <TouchableOpacity>
                     <Image source={require('../../../../assets/images/others/room2-image.png')} style={{}} />
                     <Text style={ThreePic.ThreePicRoomBetText}>Min/Max: 10/2000</Text>
                   </TouchableOpacity>

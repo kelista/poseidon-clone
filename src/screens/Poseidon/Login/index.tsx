@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, StatusBar, AsyncStorage } from 'react-native';
+import React, { useEffect, useState, useContext, useRef } from 'react';
+import { StyleSheet, Text, View, TextInput, Image, StatusBar, AsyncStorage, Keyboard } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
@@ -19,8 +19,11 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const path = host + "/login"
   const [username, setUsername] = useState("test")
   const [password, setPassword] = useState("test")
+  const [bottomPage, setBottomPage] = useState(false)
 
   const store = useContext(SSContext);
+
+  const scrollView = useRef(null)
 
   const lobbyHandler = () => {
     axios.post(path, { username, password })
@@ -38,11 +41,24 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
       })
   };
 
+  useEffect(() => {
+    Keyboard.addListener('keyboardDidShow', keyboardDidShow)
+    Keyboard.addListener('keyboardDidHide', keyboardDidHide)
+  }, [])
+
+  const keyboardDidShow = () => {
+    setBottomPage(true)
+  }
+
+  const keyboardDidHide = () => {
+    setBottomPage(false)
+  }
+
   return (
     <SafeAreaView style={base.safeAreaView}>
       <StatusBar hidden />
-      <ScrollView>
-        <View style={LoginStyle.loginContainer}>
+      <ScrollView ref={scrollView}>
+        <View style={bottomPage ? LoginStyle.loginContainerFocus : LoginStyle.loginContainer}>
           <View style={LoginStyle.loginImageWrapper}>
             <View style={LoginStyle.loginImage}>
               <Image source={require('../../../assets/images/others/logo.png')} />
