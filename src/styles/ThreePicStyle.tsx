@@ -3,6 +3,8 @@ import { StyleSheet, Dimensions } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
+const scale = windowWidth/414
+
 export default StyleSheet.create({
   container: {
     flex: 1,
@@ -130,6 +132,7 @@ export default StyleSheet.create({
   },
   ThreePicGameTableImage: {
     position: 'absolute',
+    transform: [{ scaleX: scale }, { scaleY: scale }]
     // backgroundColor: 'green'
   },
   ThreePicGameTableTextWrapper: {
@@ -156,6 +159,7 @@ export default StyleSheet.create({
     position: 'relative',
     height: 584,
     width: 331,
+    transform: [{ scaleX: scale }, { scaleY: scale }]
     // backgroundColor: 'green'
   },
   ThreePicGamePin1: {
@@ -178,7 +182,7 @@ export default StyleSheet.create({
     width: 67, 
     height: 60, 
     top: '15%',
-    right: '3%', 
+    right: '0%', 
   },
   ThreePicGamePin4: {
     position: 'absolute', 
@@ -192,7 +196,7 @@ export default StyleSheet.create({
     width: 67, 
     height: 60, 
     top: '39%',
-    right: '3%', 
+    right: '0%', 
   },
   ThreePicGamePin6: {
     position: 'absolute', 
@@ -206,13 +210,13 @@ export default StyleSheet.create({
     width: 67, 
     height: 60, 
     top: '68%',
-    right: '3%', 
+    right: '0%', 
   },
   ThreePicGamePin8: {
     position: 'absolute', 
     width: 67, 
     height: 60, 
-    top: '87%',
+    bottom: '5%',
     left: '50%', 
     transform: [{ translateX: -33.5 }]
   }

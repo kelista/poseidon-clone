@@ -136,9 +136,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
           </View>
         </View>
       </ScrollView>
-      <BottomNavigation 
-        home={() => navigate(ROUTES.PoseidonLobby)} 
-        setting={() => navigate(ROUTES.PoseidonAccount)}>
+      <BottomNavigation home={() => navigate(ROUTES.PoseidonLobby)} setting={() => navigate(ROUTES.PoseidonAccount)} status={'account'}>
       </BottomNavigation>
     </View>
     // </SafeAreaView>

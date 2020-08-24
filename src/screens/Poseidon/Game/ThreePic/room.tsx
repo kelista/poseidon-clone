@@ -71,9 +71,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
         <View style={ThreePic.ThreePicBlankSpace}></View>
         </View>
       </ScrollView>
-      <BottomNavigation 
-      home={() => navigate(ROUTES.PoseidonLobby)} 
-        setting={() => navigate(ROUTES.PoseidonAccount)}>
+      <BottomNavigation home={() => navigate(ROUTES.PoseidonLobby)} setting={() => navigate(ROUTES.PoseidonAccount)} status={'room'}>
       </BottomNavigation>
     </View>
   );

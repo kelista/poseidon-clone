@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground, Dimensions } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -9,12 +9,14 @@ import { WebSocketClient } from "../../../../services/websocket"
 import { playBacksound, stopBacksound } from '../../../../services/sound_manager'
 import { CustomHeader } from "../../../../components/Header"
 import { BottomNavigation } from "../../../../components/BottomNavigation"
+import { CheckInWindow } from "../../../../components/CheckIn"
 import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 import { WSContext } from '../../../../../routes/wsContext';
 
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
+  const [modalCheckIn, setModalCheckIn] = useState(false);
   const wsClient = useContext(WSContext)
 
   const windowWidth = Dimensions.get('window').width;
@@ -29,6 +31,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
     navigate(ROUTES.PoseidonAccount);
   };
 
+  const closeOpenCheckIn = () => {
+    setModalCheckIn(!modalCheckIn)
+  }
+
   const gameHandler = () => {
     // navigate(ROUTES.RootGame1);
     wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
@@ -40,6 +46,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
       <CustomheaderLogo name="threepic" lobby={() => lobbyHandler()}></CustomheaderLogo>
       <ScrollView>
         <StatusBar hidden />
+        {
+          modalCheckIn ?
+          <CheckInWindow close={() => closeOpenCheckIn()}/>
+          :
+          <></>
+        }
         <View style={ThreePic.container}>
           <View style={ThreePic.ThreePicGameProfile}>
             <View style={ThreePic.ThreePicGameProfileWrapper}>
@@ -54,13 +66,13 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
               <Text style={ThreePic.ThreePicGameBalanceText}>999,999,999</Text>
             </View>
           </View>
-          <View style={ThreePic.ThreePicGameCasinoChip}>
+          {/* <View style={ThreePic.ThreePicGameCasinoChip}>
             <View style={ThreePic.ThreePicGameProfileWrapper}>
               <Image source={require('../../../../assets/images/others/casino-chip.png')} style={ThreePic.ThreePicGameCasinoChipImage}/>
               <Image source={require('../../../../assets/images/others/big-cointext.png')} style={ThreePic.ThreePicGameBalanceImageSquare}/>
               <Text style={ThreePic.ThreePicGameBalanceText}>999,999,999</Text>
             </View>
-          </View>
+          </View> */}
           <ImageBackground source={require('../../../../assets/images/others/backgroundskp-game.png.png')} style={ThreePic.ThreePicGameBackground}/>
           <View style={ThreePic.ThreePicGameContainer}>
               <View style={ThreePic.ThreePicGameTableImageWrapper}>
@@ -73,43 +85,43 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                   <Image source={require('../../../../assets/images/others/table.png')} style={ThreePic.ThreePicGameTableImage}/>
                   <View style={ThreePic.ThreePicGamePinWrapper}>
                     <View style={ThreePic.ThreePicGamePin1}>
-                      <TouchableOpacity>
-                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      <TouchableOpacity onPress={closeOpenCheckIn}>
+                        <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                       </TouchableOpacity>
                     </View>
                     <View style={ThreePic.ThreePicGamePin2}>
-                      <TouchableOpacity>
-                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      <TouchableOpacity onPress={closeOpenCheckIn}>
+                        <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                       </TouchableOpacity>
                     </View>
                     <View style={ThreePic.ThreePicGamePin3}>
-                      <TouchableOpacity>
-                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      <TouchableOpacity onPress={closeOpenCheckIn}>
+                        <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                       </TouchableOpacity>
                     </View>
                     <View style={ThreePic.ThreePicGamePin4}>
-                      <TouchableOpacity>
-                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      <TouchableOpacity onPress={closeOpenCheckIn}>
+                        <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                       </TouchableOpacity>
                     </View>
                     <View style={ThreePic.ThreePicGamePin5}>
-                      <TouchableOpacity>
-                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      <TouchableOpacity onPress={closeOpenCheckIn}>
+                        <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                       </TouchableOpacity>
                     </View>
                     <View style={ThreePic.ThreePicGamePin6}>
-                      <TouchableOpacity>
-                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      <TouchableOpacity onPress={closeOpenCheckIn}>
+                        <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                       </TouchableOpacity>
                     </View>
                     <View style={ThreePic.ThreePicGamePin7}>
-                      <TouchableOpacity>
-                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      <TouchableOpacity onPress={closeOpenCheckIn}>
+                        <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                       </TouchableOpacity>
                     </View>
                     <View style={ThreePic.ThreePicGamePin8}>
-                      <TouchableOpacity>
-                        <Image source={require('../../../../assets/images/others/button_pin.png')}/>
+                      <TouchableOpacity onPress={closeOpenCheckIn}>
+                        <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -117,6 +129,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
           </View>
         </View>
       </ScrollView>
+      <BottomNavigation home={() => navigate(ROUTES.PoseidonLobby)} setting={() => navigate(ROUTES.PoseidonAccount)} status={'game'}>
+      </BottomNavigation>
     </View>
   );
 };
