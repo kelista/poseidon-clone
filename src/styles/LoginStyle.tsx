@@ -11,6 +11,14 @@ export default StyleSheet.create({
     paddingTop: 42,
     backgroundColor: '#000000'
   },
+  loginContainerFocus: {
+    flex: 1,
+    width: windowWidth,
+    height: windowHeight,
+    paddingTop: 42,
+    backgroundColor: '#000000',
+    marginBottom: 100
+  },
   loginBoxWrapper: {
     flex: 1,
     alignItems: 'center',

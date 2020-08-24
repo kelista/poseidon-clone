@@ -1,8 +1,6 @@
 import { v4 } from "uuid";
 
-const url = 'ws://35.220.179.54:3021/events?token=asd'
-
-export type ListenerCallback = <T = any>(data: T) => void;
+export type ListenerCallback<T = any> = (data: T) => Promise<void>;
 
 export type WebSocketConnectCallback = () => void;
 
@@ -24,12 +22,14 @@ export class WebSocketClient {
   }
 
   connect(connected: () => void, close: () => void) {
-    this.wsc = new WebSocket(url);
+    this.wsc = new WebSocket(this.url);
     this.wsc.onopen = e => {
+      console.log(e);
       this.connected = true;
       connected();
     };
-    this.wsc.onclose = () => {
+    this.wsc.onclose = (e) => {
+      console.log(e);
       this.connected = false;
       close();
     };

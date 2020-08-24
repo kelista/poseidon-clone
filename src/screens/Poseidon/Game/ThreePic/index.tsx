@@ -40,6 +40,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
     wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
   };
 
+  useEffect(function gameInit() {
+
+  }, [])
+
   return (
     <View style={{flex: 1}}>
       {/* <CustomHeader title="Poseidon Club" status="lobby"></CustomHeader> */}
