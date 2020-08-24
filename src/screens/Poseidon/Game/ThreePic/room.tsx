@@ -1,12 +1,10 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground } from 'react-native';
+import React, { useEffect, useContext, useState, useMemo } from 'react';
+import { Text, View, StatusBar, Image, ImageBackground, ImageSourcePropType, ViewStyle, TextStyle, StyleProp } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
 } from "react-navigation";
 import { ROUTES } from "../../../../../routes";
-import { WebSocketClient } from "../../../../services/websocket"
-import { playBacksound, stopBacksound } from '../../../../services/sound_manager'
 import { CustomHeader } from "../../../../components/Header"
 import { BottomNavigation } from "../../../../components/BottomNavigation"
 import ThreePic from "../../../../styles/ThreePicStyle"
@@ -33,32 +31,128 @@ interface RoomsRequest {
   codename: string;
 }
 
+interface RoomSelect {
+  no: number;
+  image: ImageSourcePropType;
+  wrapStyle: StyleProp<ViewStyle>,
+  textStyle: StyleProp<TextStyle>
+}
+
+const rooms: RoomSelect[] = [
+  {
+    no: 1,
+    image: require('../../../../assets/images/others/room1-image.png'),
+    wrapStyle: ThreePic.ThreePicRoomRightPadding,
+    textStyle: ThreePic.ThreePicRoomBetText
+  },
+  {
+    no: 2,
+    image: require('../../../../assets/images/others/room2-image.png'),
+    wrapStyle: {},
+    textStyle: ThreePic.ThreePicRoomBetText
+  },
+  {
+    no: 3,
+    image: require('../../../../assets/images/others/room3-image.png'),
+    wrapStyle: ThreePic.ThreePicRoomRightPadding,
+    textStyle: ThreePic.ThreePicRoomBetText
+  },
+  {
+    no: 4,
+    image: require('../../../../assets/images/others/room4-image.png'),
+    wrapStyle: {},
+    textStyle: ThreePic.ThreePicRoomBetText
+  }
+]
+
+interface RoomSelectComponentProps {
+  image: ImageSourcePropType;
+  press: any;
+  wrapStyle: StyleProp<ViewStyle>,
+  textStyle: StyleProp<TextStyle>,
+  min: number;
+  max: number;
+  key: number;
+}
+
+function RoomSelectRow({data}: {data:RoomSelectComponentProps[]}) {
+  return <View style={ThreePic.ThreePicRoomWrapper}>
+          {data.map((d, index) => {
+            return <RoomSelectComponent {...d} /> 
+          })}
+        </View>
+}
+
+function RoomSelectComponent({ press, image, wrapStyle, textStyle, min, max, key}: RoomSelectComponentProps) {
+  return (
+    <TouchableOpacity key={key} style={wrapStyle} onPress={press}>
+      <Image source={image} style={{}} />
+      <Text style={textStyle}>Min/Max: {min}/{max}</Text>
+    </TouchableOpacity>
+  )
+}
+
 export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const wsClient = useContext(WSContext)
   const lobbyRoomsEvent = "lobby/rooms"
-  const payload: RoomsRequest = { codename: "<game-codename>" }
-  const messageStr = JSON.stringify({ event: lobbyRoomsEvent, data: payload });
   const [listenerReady, setListenerReady] = useState(false);
+  const [availableRooms, setAvailableRooms] = useState<Room[]>([]);
 
   const lobbyHandler = () => {
-    // stopBacksound()
     navigate(ROUTES.PoseidonLobby);
   };
 
   const gameHandler = () => {
-    // stopBacksound()
     navigate(ROUTES.PoseidonThreePicGame);
   };
 
+  const chunkedRooms = useMemo(() => {
+    const _transformed: any[] = availableRooms.map((ar, index) => {
+      const select = rooms.find(r => r.no === ar.no);
+      if(select) {
+        const ret: RoomSelectComponentProps = {
+          image: select.image,
+          press: () => gameHandler(),
+          max: ar.max,
+          min: ar.min,
+          textStyle: select.textStyle,
+          wrapStyle: select.wrapStyle,
+          key: index
+        }
+        return ret;
+      }
+    });
+
+    const transformed : RoomSelectComponentProps[]= _transformed.filter(i => i);
+    
+    const dataPerRow = 2;
+    const rowNums = Math.ceil(transformed.length / dataPerRow); 
+    
+    let allData: RoomSelectComponentProps[][] = [];
+    let index = 0;
+    for(let i = 0; i< rowNums; i++) {
+      const row : RoomSelectComponentProps[] = [];
+      let count = 0;
+      while(count++ < dataPerRow) {
+        row.push(transformed[index++]);
+      }
+      allData.push(row);
+    }
+
+    return allData;
+  }, [availableRooms]);
+
   useEffect(() => {
-    console.log("ready");
     if (!wsClient) return;
-    const listeners: string[] = [
-      wsClient.addListener(lobbyRoomsEvent, async (data) => {
-        console.log("rooms", data);
-      }),
-    ];
+    const listeners: string[] = [];
+
+    const connectCB = async function (data: any) {
+      setAvailableRooms(data.rooms);
+    }
+
+    const roomListenerId = wsClient.addListener(lobbyRoomsEvent, connectCB)
+    listeners.push(roomListenerId);
 
     setListenerReady(true);
 
@@ -68,7 +162,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
       });
     }
 
-  }, []);
+  }, [wsClient ? true : false]);
 
   useEffect(() => {
     if (!listenerReady) return;
@@ -91,27 +185,12 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
             <View style={ThreePic.ThreePicImageWrapper}>
               <ImageBackground source={require('../../../../assets/images/others/skp-roombg.png')} style={ThreePic.ThreePicImageBackground}></ImageBackground>
               <View style={ThreePic.ThreePicRoomContainer}>
-                <View style={ThreePic.ThreePicRoomWrapper}>
-                  <TouchableOpacity style={ThreePic.ThreePicRoomRightPadding} onPress={() => gameHandler()}>
-                    <Image source={require('../../../../assets/images/others/room1-image.png')} style={{}} />
-                    <Text style={ThreePic.ThreePicRoomBetText}>Min/Max: 10/2000</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Image source={require('../../../../assets/images/others/room2-image.png')} style={{}} />
-                    <Text style={ThreePic.ThreePicRoomBetText}>Min/Max: 10/2000</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={ThreePic.ThreePicRoomWrapper}>
-                  <TouchableOpacity style={ThreePic.ThreePicRoomRightPadding}>
-                    <Image source={require('../../../../assets/images/others/room3-image.png')} style={{}} />
-                    <Text style={ThreePic.ThreePicRoomBetText}>Min/Max: 10/2000</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity>
-                    <Image source={require('../../../../assets/images/others/room4-image.png')} style={{}} />
-                    <Text style={ThreePic.ThreePicRoomBetText}>Min/Max: 10/2000</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
+               {
+                chunkedRooms.map((cr) => {
+                  return <RoomSelectRow data={cr} />
+                })
+               }
+               </View>
             </View>
           </View>
           <View style={ThreePic.ThreePicBlankSpace}></View>
