@@ -64,6 +64,7 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
 
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
 
+  // contoh: game Three Pictures => codename nya three-pictures (ini dari backend, jadi tinggal panggil doang)
   const codenames = availableGames.map(g => g.codename);
 
   const lobbyGamesEvent = "lobby/games";
@@ -90,6 +91,9 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
     const connectCB = async function (data: any) {
       setAvailableGames(data);
     }
+
+    // betul
+    // kasarnya kalo nerima "lobbyGamesEvent" panggil si connectCB(response)
 
     const lobbyListenerId = wsClient.addListener(lobbyGamesEvent, connectCB);
     listeners.push(lobbyListenerId);
