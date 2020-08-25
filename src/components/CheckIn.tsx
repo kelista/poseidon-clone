@@ -6,7 +6,7 @@ import Slider from '@react-native-community/slider';
 
 const windowWidth = Dimensions.get('window').width;
 
-export const CheckInWindow = ({close} : { close: Function})=> {
+export const CheckInWindow = ({buyIn, close} : {buyIn: Function, close: Function})=> {
 
 const [balance, setBalance] = useState(0);
 const [sliderValue, setsliderValue] = useState(10);
@@ -76,7 +76,7 @@ useEffect(() => {
                     thumbImage= {require('../assets/images/others/slider-button-new.png')}
                 />
                 <LinearGradient colors={['#E60000', '#730000']} style={[styles.checkInButtonGradient]}>
-                    <TouchableOpacity style={styles.checkInButton}>
+                    <TouchableOpacity style={styles.checkInButton} onPress={() => buyIn()}>
                         <Text style={styles.checkInButtonText}>Buy In</Text>
                     </TouchableOpacity>
                 </LinearGradient>
@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     },
     checkInButtonText: {
         fontSize: 17,
-        fontWeight: "400",
+        fontWeight: "700",
         lineHeight: 23,
         color: '#FFFFFF'
     }

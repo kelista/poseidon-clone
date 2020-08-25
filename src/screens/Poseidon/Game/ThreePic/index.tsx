@@ -10,6 +10,7 @@ import { playBacksound, stopBacksound } from '../../../../services/sound_manager
 import { CustomHeader } from "../../../../components/Header"
 import { BottomNavigation } from "../../../../components/BottomNavigation"
 import { CheckInWindow } from "../../../../components/CheckIn"
+import { BettingWindow } from "../../../../components/Betting"
 import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 import { WSContext } from '../../../../../routes/wsContext';
@@ -17,6 +18,7 @@ import { WSContext } from '../../../../../routes/wsContext';
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const [modalCheckIn, setModalCheckIn] = useState(false);
+  const [modalBetting, setModalBetting] = useState(true);
   const wsClient = useContext(WSContext)
 
   const windowWidth = Dimensions.get('window').width;
@@ -35,6 +37,16 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
     setModalCheckIn(!modalCheckIn)
   }
 
+  const closeOpenBetting = () => {
+    setModalBetting(!modalBetting)
+  }
+
+  const buyIn = () => {
+    closeOpenCheckIn()
+    closeOpenBetting()
+  }
+  
+
   const gameHandler = () => {
     // navigate(ROUTES.RootGame1);
     wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
@@ -52,7 +64,13 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
         <StatusBar hidden />
         {
           modalCheckIn ?
-          <CheckInWindow close={() => closeOpenCheckIn()}/>
+          <CheckInWindow close={() => closeOpenCheckIn()} buyIn={() => buyIn() }/>
+          :
+          <></>
+        }
+        {
+          modalBetting ?
+          <BettingWindow close={() => closeOpenBetting()} submit={() => closeOpenBetting() }/>
           :
           <></>
         }
