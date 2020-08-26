@@ -120,12 +120,13 @@ export default StyleSheet.create({
   },
   ThreePicGameBalanceImageSquare: {
     zIndex: 99,
-    width: 90,
+    width: 100,
     height: 21
   },
   ThreePicGameTableImageWrapper: {
     position: 'relative',
     alignItems: 'center',
+    marginTop: -20,
     height: '100%',
     // backgroundColor: 'yellow',
     justifyContent: 'center'
@@ -168,7 +169,7 @@ export default StyleSheet.create({
     height: 60, 
     bottom: '87%',
     left: '50%', 
-    transform: [{ translateX: -33.5 }]
+    transform: [{ translateX: -27.8 }]
   },
   ThreePicGamePin2: {
     position: 'absolute', 
@@ -218,7 +219,7 @@ export default StyleSheet.create({
     height: 60, 
     bottom: '5%',
     left: '50%', 
-    transform: [{ translateX: -33.5 }]
+    transform: [{ translateX: -27.8 }]
   }
   
 });

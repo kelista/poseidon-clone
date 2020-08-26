@@ -28,8 +28,8 @@ export const CustomHeader = ({ title, status }: { title: string, status: string 
           {
             status == "userLobby" ?
             <View style={styles.userBalance}>
-                <Image source={require('../assets/images/others/balance-image.png')} />
-                <Text style={styles.userBalanceText}>999,999,999</Text>
+              <Image source={require('../assets/images/others/balance-image.png')} />
+              <Text style={styles.userBalanceText}>999,999,999</Text>
             </View>
             :
             <></>
@@ -64,12 +64,13 @@ const styles = StyleSheet.create({
   },
   userBalance: {
     position: 'absolute',
-    right: 32
+    right: 32,
+    textAlign: 'center'
   },
   userBalanceText: {
     fontSize: 16,
     color: '#FFFFFF',
-    right: 11,
+    right: 8,
     position: 'absolute'
   },
   header: {

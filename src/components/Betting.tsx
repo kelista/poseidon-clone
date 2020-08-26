@@ -107,7 +107,7 @@ useEffect(() => {
                         <View style={styles.bettingLastWrapper2}>
                             <TouchableOpacity onPress={resetBet}>
                                 <View style={styles.bettingLastReset}>
-                                    <Text style={[styles.bettingLastText, styles.noPaddingLeft]}>Reset</Text>
+                                    <Text style={[styles.bettingLastText, styles.noPadding]}>Reset</Text>
                                 </View>
                             </TouchableOpacity>
                         </View>
@@ -288,20 +288,25 @@ const styles = StyleSheet.create({
         marginLeft: 4,
     },
     bettingLastChecked: {
-        marginLeft: 5  
+        marginLeft: 2 
     },
-    noPaddingLeft: {
-        paddingLeft: 0,
+    noPadding: {
+		paddingLeft: 0,
+		paddingTop: 0
     },
     bettingLastButton: {
         flexDirection: 'row'
     },
     bettingLastText: {
+		paddingTop: 4,
         paddingLeft: 13,
         fontSize: 10,
         fontWeight: "700",
         lineHeight: 11,
         color: '#E6E6E6'
-    }
+	},
+	resetButtonText: {
+		paddingTop: 0
+	}
 });
 

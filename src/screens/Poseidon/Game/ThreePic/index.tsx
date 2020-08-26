@@ -75,7 +75,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
           <></>
         }
         <View style={ThreePic.container}>
-          <View style={ThreePic.ThreePicGameProfile}>
+          {/* <View style={ThreePic.ThreePicGameProfile}>
             <View style={ThreePic.ThreePicGameProfileWrapper}>
               <Image source={require('../../../../assets/images/others/small-profile.png')} style={ThreePic.ThreePicGameProfileImage}/>
               <Text style={ThreePic.ThreePicGameProfileUsername}>Rockies07</Text>
@@ -84,13 +84,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
           <View style={ThreePic.ThreePicGameBalance}>
             <View style={ThreePic.ThreePicGameProfileWrapper}>
               <Image source={require('../../../../assets/images/others/big-coin.png')} style={ThreePic.ThreePicGameBalanceImage}/>
-              <Image source={require('../../../../assets/images/others/big-cointext.png')} style={ThreePic.ThreePicGameBalanceImageSquare}/>
-              <Text style={ThreePic.ThreePicGameBalanceText}>999,999,999</Text>
-            </View>
-          </View>
-          {/* <View style={ThreePic.ThreePicGameCasinoChip}>
-            <View style={ThreePic.ThreePicGameProfileWrapper}>
-              <Image source={require('../../../../assets/images/others/casino-chip.png')} style={ThreePic.ThreePicGameCasinoChipImage}/>
               <Image source={require('../../../../assets/images/others/big-cointext.png')} style={ThreePic.ThreePicGameBalanceImageSquare}/>
               <Text style={ThreePic.ThreePicGameBalanceText}>999,999,999</Text>
             </View>

@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
   },
   navigationBalanceImageSquare: {
     zIndex: 99,
-    width: 90,
+    width: 100,
     height: 21
   },
   navigationBalanceText: {
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   },
   navigationBalanceWrapper: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   }
 });
 
