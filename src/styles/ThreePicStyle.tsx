@@ -6,11 +6,55 @@ const windowHeight = Dimensions.get('window').height;
 const scale = windowWidth/414
 
 export default StyleSheet.create({
+  relative: {
+    width: '100%',
+    height: '100%',
+    position: 'relative'
+  },
+  absCenter: {
+    top: 0,
+    left: '50%',
+    position: 'absolute',
+  },
+  alertBtn: {
+    width: 32,
+    height: 32,
+    transform: [
+      {translateX: -16}
+    ],
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     width: windowWidth,
     minHeight: windowHeight - 53,
-    backgroundColor: '#000000'
+    backgroundColor: '#000000',
+    position: 'relative'
+  },
+  alertButton: {
+    width: 32,
+    height: 32
+  },
+  infoButton: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 19,
+    right: 30,
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  emojiButton: {
+    position: 'absolute',
+    zIndex: 1,
+    bottom: 76,
+    right: 30,
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ThreePicBlankSpace: {
     height: 53
@@ -66,6 +110,7 @@ export default StyleSheet.create({
   ThreePicGameContainer: {
     width: '100%',
     height: '100%',
+    position: 'relative'
   },
   ThreePicGameProfile: {
     position: 'absolute',
@@ -163,63 +208,128 @@ export default StyleSheet.create({
     transform: [{ scaleX: scale }, { scaleY: scale }]
     // backgroundColor: 'green'
   },
+  SitTable: {
+    marginTop: 17
+  },
+  SitTableBtm: {
+    marginBottom: -17
+  },
+  username: {
+    color: '#FAE88C',
+    fontSize: 12,
+    lineHeight: 14
+  },
+  balance: {
+    color: 'white',
+    fontSize: 11,
+    fontWeight: '700'
+  },
+  row: {
+    flexDirection: 'row'
+  },
+  player1: {
+    width: 50,
+    height: 50,
+    position: 'absolute',
+    left: '50%',
+    top: 0,
+    transform: [{translateX: -25}]
+  },
+  ProfileTable: {
+    width: '100%',
+    height: 36,
+    borderRadius: 3,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    opacity: 1,
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1
+  },
   ThreePicGamePin1: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    bottom: '87%',
+    width: 77, 
+    height: 89, 
+    top: "-2%",
+    // bottom: "84%",
     left: '50%', 
-    transform: [{ translateX: -27.8 }]
+    transform: [{ translateX: -38.5 }],
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 0
   },
   ThreePicGamePin2: {
     position: 'absolute', 
-    width: 67, 
-    height: 60,
-    top: '15%',
-    left: '3%', 
+    width: 77, 
+    height: 89,
+    top: '12%',
+    left: '0%', 
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ThreePicGamePin3: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    top: '15%',
-    right: '0%', 
+    width: 77, 
+    height: 89, 
+    top: '12%',
+    right: '0%',
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center', 
   },
   ThreePicGamePin4: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    top: '39%',
-    left: '3%', 
+    width: 77, 
+    height: 89,
+    top: '37%',
+    left: '0%',
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center',  
   },
   ThreePicGamePin5: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    top: '39%',
-    right: '0%', 
+    width: 77, 
+    height: 89, 
+    top: '37%',
+    right: '0%',
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center', 
   },
   ThreePicGamePin6: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    top: '68%',
-    left: '3%', 
+    width: 77, 
+    height: 89, 
+    top: '66%',
+    left: '0%', 
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center', 
   },
   ThreePicGamePin7: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    top: '68%',
+    width: 77, 
+    height: 89, 
+    top: '66%',
     right: '0%', 
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center', 
   },
   ThreePicGamePin8: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    bottom: '5%',
+    width: 77, 
+    height: 89, 
+    bottom: '0%',
+    marginBottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center', 
     left: '50%', 
-    transform: [{ translateX: -27.8 }]
+    transform: [{ translateX: -38.5 }]
   }
   
 });
