@@ -18,6 +18,7 @@ import { WSContext } from '../../../../../routes/wsContext';
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const [modalCheckIn, setModalCheckIn] = useState(true);
+  const [banker, setBanker] = useState("");
   const [sitStatus, setSitStatus] = useState("");
   const [amount, setAmount] = useState(0);
   const [modalBetting, setModalBetting] = useState(false);
@@ -55,7 +56,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
   };
 
   useEffect(function gameInit() {
-
+    setBanker("player1")
   }, [])
 
   return (
@@ -119,6 +120,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         :
                         <View style={[ThreePic.ThreePicGamePin1, ThreePic.SitTable]}>
                           <View style={ThreePic.relative}>
+                            {
+                              banker == "player1" ? 
+                              <Image source={require('../../../../assets/images/others/banker.png')} style={ThreePic.banker}/>
+                              :
+                              <></>
+                            }
+                            <View style={[ThreePic.amountResultPlayer1, banker == "player1" ? ThreePic.amountResultPlayer1Banker : {}]}>
+                              <View style={ThreePic.amountDiv}>
+                                <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
+                                <Text style={[ThreePic.amountText, ThreePic.negativeAmount]}>
+                                  -2
+                                </Text>
+                              </View>
+                            </View>
                             <Image source={require('../../../../assets/images/others/player1.png')} style={ThreePic.player1}/>
                             <View style={ThreePic.ProfileTable}>
                               <View style={ThreePic.row}>
@@ -141,6 +156,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         :
                         <View style={[ThreePic.ThreePicGamePin2, ThreePic.SitTable]}>
                           <View style={ThreePic.relative}>
+                            {
+                              banker == "player2" ? 
+                              <Image source={require('../../../../assets/images/others/banker.png')} style={ThreePic.banker}/>
+                              :
+                              <></>
+                            }
+                            <View style={[ThreePic.amountResult, banker == "player2" ? ThreePic.amountResultBanker : {}]}>
+                              <View style={ThreePic.amountDiv}>
+                                <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
+                                <Text style={[ThreePic.amountText, ThreePic.positiveAmount]}>
+                                  2
+                                </Text>
+                              </View>
+                            </View>
                             <Image source={require('../../../../assets/images/others/player1.png')} style={ThreePic.player1}/>
                             <View style={ThreePic.ProfileTable}>
                               <View style={ThreePic.row}>
@@ -163,6 +192,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         :
                         <View style={[ThreePic.ThreePicGamePin3, ThreePic.SitTable]}>
                           <View style={ThreePic.relative}>
+                            {
+                              banker == "player3" ? 
+                              <Image source={require('../../../../assets/images/others/banker.png')} style={ThreePic.banker}/>
+                              :
+                              <></>
+                            }
+                            <View style={[ThreePic.amountResult, banker == "player3" ? ThreePic.amountResultBanker : {}]}>
+                              <View style={ThreePic.amountDiv}>
+                                <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
+                                <Text style={[ThreePic.amountText, ThreePic.positiveAmount]}>
+                                  2
+                                </Text>
+                              </View>
+                            </View>
                             <Image source={require('../../../../assets/images/others/player1.png')} style={ThreePic.player1}/>
                             <View style={ThreePic.ProfileTable}>
                               <View style={ThreePic.row}>
@@ -185,6 +228,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         :
                         <View style={[ThreePic.ThreePicGamePin4, ThreePic.SitTable]}>
                           <View style={ThreePic.relative}>
+                            {
+                              banker == "player4" ? 
+                              <Image source={require('../../../../assets/images/others/banker.png')} style={ThreePic.banker}/>
+                              :
+                              <></>
+                            }
+                            <View style={[ThreePic.amountResult, banker == "player4" ? ThreePic.amountResultBanker : {}]}>
+                              <View style={ThreePic.amountDiv}>
+                                <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
+                                <Text style={[ThreePic.amountText, ThreePic.positiveAmount]}>
+                                  2
+                                </Text>
+                              </View>
+                            </View>
                             <Image source={require('../../../../assets/images/others/player1.png')} style={ThreePic.player1}/>
                             <View style={ThreePic.ProfileTable}>
                               <View style={ThreePic.row}>
@@ -207,6 +264,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         :
                         <View style={[ThreePic.ThreePicGamePin5, ThreePic.SitTable]}>
                           <View style={ThreePic.relative}>
+                            {
+                              banker == "player5" ? 
+                              <Image source={require('../../../../assets/images/others/banker.png')} style={ThreePic.banker}/>
+                              :
+                              <></>
+                            }
+                            <View style={[ThreePic.amountResult, banker == "player5" ? ThreePic.amountResultBanker : {}]}>
+                              <View style={ThreePic.amountDiv}>
+                                <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
+                                <Text style={[ThreePic.amountText, ThreePic.positiveAmount]}>
+                                  2
+                                </Text>
+                              </View>
+                            </View>
                             <Image source={require('../../../../assets/images/others/player1.png')} style={ThreePic.player1}/>
                             <View style={ThreePic.ProfileTable}>
                               <View style={ThreePic.row}>
@@ -229,6 +300,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         :
                         <View style={[ThreePic.ThreePicGamePin6, ThreePic.SitTable]}>
                           <View style={ThreePic.relative}>
+                            {
+                              banker == "player6" ? 
+                              <Image source={require('../../../../assets/images/others/banker.png')} style={ThreePic.banker}/>
+                              :
+                              <></>
+                            }
+                            <View style={[ThreePic.amountResult, banker == "player6" ? ThreePic.amountResultBanker : {}]}>
+                              <View style={ThreePic.amountDiv}>
+                                <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
+                                <Text style={[ThreePic.amountText, ThreePic.positiveAmount]}>
+                                  2
+                                </Text>
+                              </View>
+                            </View>
                             <Image source={require('../../../../assets/images/others/player1.png')} style={ThreePic.player1}/>
                             <View style={ThreePic.ProfileTable}>
                               <View style={ThreePic.row}>
@@ -251,6 +336,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         :
                         <View style={[ThreePic.ThreePicGamePin7, ThreePic.SitTable]}>
                           <View style={ThreePic.relative}>
+                            {
+                              banker == "player7" ? 
+                              <Image source={require('../../../../assets/images/others/banker.png')} style={ThreePic.banker}/>
+                              :
+                              <></>
+                            }
+                            <View style={[ThreePic.amountResult, banker == "player7" ? ThreePic.amountResultBanker : {}]}>
+                              <View style={ThreePic.amountDiv}>
+                                <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
+                                <Text style={[ThreePic.amountText, ThreePic.positiveAmount]}>
+                                  2
+                                </Text>
+                              </View>
+                            </View>
                             <Image source={require('../../../../assets/images/others/player1.png')} style={ThreePic.player1}/>
                             <View style={ThreePic.ProfileTable}>
                               <View style={ThreePic.row}>
@@ -273,6 +372,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                         :
                         <View style={[ThreePic.ThreePicGamePin8, ThreePic.SitTableBtm]}>
                           <View style={ThreePic.relative}>
+                            {
+                              banker == "player8" ? 
+                              <Image source={require('../../../../assets/images/others/banker.png')} style={ThreePic.banker}/>
+                              :
+                              <></>
+                            }
+                            <View style={[ThreePic.amountResultPlayer8, banker == "player8" ? ThreePic.amountResultPlayer8Banker : {}]}>
+                              <View style={ThreePic.amountDiv}>
+                                <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
+                                <Text style={[ThreePic.amountText, ThreePic.negativeAmount]}>
+                                  -2
+                                </Text>
+                              </View>
+                            </View>
                             <Image source={require('../../../../assets/images/others/player1.png')} style={ThreePic.player1}/>
                             <View style={ThreePic.ProfileTable}>
                               <View style={ThreePic.row}>

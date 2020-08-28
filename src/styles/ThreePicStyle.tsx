@@ -46,6 +46,74 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
+  amountResult: {
+    position: 'absolute',
+    width: 46,
+    height: 15,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 3,
+    top: -20,
+    left: '50%',
+    transform: [{translateX: -20}]
+  },
+  amountResultBanker: {
+    top: -53,
+    left: '50%',
+  },
+  amountResultPlayer1: {
+    position: 'absolute',
+    width: 46,
+    height: 15,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 3,
+    top: 18,
+    right: -38
+  },
+  banker: {
+    position: 'absolute',
+    top: -34,
+    left: '50%',
+    transform: [{translateX: -76.5}],
+  },
+  amountResultPlayer8: {
+    position: 'absolute',
+    width: 46,
+    height: 15,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 3,
+    top: 18,
+    left: -38
+  },
+  amountResultPlayer8Banker: {
+    top: 18,
+    left: -81
+  },
+  amountResultPlayer1Banker: {
+    top: 18,
+    right: -85
+  },
+  coin: {
+    width: 8,
+    height: 8
+  },
+  positiveAmount: {
+    color: '#00FB2F',
+    marginLeft: 6
+  },
+  negativeAmount: {
+    color: '#FF3D3D',
+    marginLeft: 3
+  },
+  amountDiv: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  amountText: {
+    fontSize: 11,
+    lineHeight: 13,
+  },
   emojiButton: {
     position: 'absolute',
     zIndex: 1,
@@ -228,12 +296,12 @@ export default StyleSheet.create({
     flexDirection: 'row'
   },
   player1: {
-    width: 50,
-    height: 50,
+    width: 52,
+    height: 52,
     position: 'absolute',
     left: '50%',
     top: 0,
-    transform: [{translateX: -25}]
+    transform: [{translateX: -26}]
   },
   ProfileTable: {
     width: '100%',
