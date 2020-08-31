@@ -11,6 +11,7 @@ import { CustomHeader } from "../../../../components/Header"
 import { BottomNavigation } from "../../../../components/BottomNavigation"
 import { CheckInWindow } from "../../../../components/CheckIn"
 import { BettingWindow } from "../../../../components/Betting"
+import { CardWindow } from "../../../../components/CardPhase"
 import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 import { WSContext } from '../../../../../routes/wsContext';
@@ -18,7 +19,8 @@ import { WSContext } from '../../../../../routes/wsContext';
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const [modalCheckIn, setModalCheckIn] = useState(false);
-  const [modalBetting, setModalBetting] = useState(true);
+  const [modalBetting, setModalBetting] = useState(false);
+  const [modalCard, setModalCard] = useState(true);
   const wsClient = useContext(WSContext)
 
   const windowWidth = Dimensions.get('window').width;
@@ -71,6 +73,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
         {
           modalBetting ?
           <BettingWindow close={() => closeOpenBetting()} submit={() => closeOpenBetting() }/>
+          :
+          <></>
+        }
+        {
+          modalCard ?
+          <CardWindow></CardWindow>
           :
           <></>
         }
