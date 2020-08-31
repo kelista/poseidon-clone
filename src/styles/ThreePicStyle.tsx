@@ -6,11 +6,123 @@ const windowHeight = Dimensions.get('window').height;
 const scale = windowWidth/414
 
 export default StyleSheet.create({
+  relative: {
+    width: '100%',
+    height: '100%',
+    position: 'relative'
+  },
+  absCenter: {
+    top: 0,
+    left: '50%',
+    position: 'absolute',
+  },
+  alertBtn: {
+    width: 32,
+    height: 32,
+    transform: [
+      {translateX: -16}
+    ],
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     width: windowWidth,
     minHeight: windowHeight - 53,
-    backgroundColor: '#000000'
+    backgroundColor: '#000000',
+    position: 'relative'
+  },
+  alertButton: {
+    width: 32,
+    height: 32
+  },
+  infoButton: {
+    position: 'absolute',
+    zIndex: 1,
+    top: 19,
+    right: 30,
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  amountResult: {
+    position: 'absolute',
+    width: 46,
+    height: 15,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 3,
+    top: -20,
+    left: '50%',
+    transform: [{translateX: -20}]
+  },
+  amountResultBanker: {
+    top: -53,
+    left: '50%',
+  },
+  amountResultPlayer1: {
+    position: 'absolute',
+    width: 46,
+    height: 15,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 3,
+    top: 18,
+    right: -38
+  },
+  banker: {
+    position: 'absolute',
+    top: -34,
+    left: '50%',
+    transform: [{translateX: -76.5}],
+  },
+  amountResultPlayer8: {
+    position: 'absolute',
+    width: 46,
+    height: 15,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    borderRadius: 3,
+    top: 18,
+    left: -38
+  },
+  amountResultPlayer8Banker: {
+    top: 18,
+    left: -81
+  },
+  amountResultPlayer1Banker: {
+    top: 18,
+    right: -85
+  },
+  coin: {
+    width: 8,
+    height: 8
+  },
+  positiveAmount: {
+    color: '#00FB2F',
+    marginLeft: 6
+  },
+  negativeAmount: {
+    color: '#FF3D3D',
+    marginLeft: 3
+  },
+  amountDiv: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  amountText: {
+    fontSize: 11,
+    lineHeight: 13,
+  },
+  emojiButton: {
+    position: 'absolute',
+    zIndex: 1,
+    bottom: 76,
+    right: 30,
+    width: 32,
+    height: 32,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ThreePicBlankSpace: {
     height: 53
@@ -66,6 +178,7 @@ export default StyleSheet.create({
   ThreePicGameContainer: {
     width: '100%',
     height: '100%',
+    position: 'relative'
   },
   ThreePicGameProfile: {
     position: 'absolute',
@@ -120,12 +233,13 @@ export default StyleSheet.create({
   },
   ThreePicGameBalanceImageSquare: {
     zIndex: 99,
-    width: 90,
+    width: 100,
     height: 21
   },
   ThreePicGameTableImageWrapper: {
     position: 'relative',
     alignItems: 'center',
+    marginTop: -20,
     height: '100%',
     // backgroundColor: 'yellow',
     justifyContent: 'center'
@@ -162,63 +276,128 @@ export default StyleSheet.create({
     transform: [{ scaleX: scale }, { scaleY: scale }]
     // backgroundColor: 'green'
   },
+  SitTable: {
+    marginTop: 17
+  },
+  SitTableBtm: {
+    marginBottom: -17
+  },
+  username: {
+    color: '#FAE88C',
+    fontSize: 12,
+    lineHeight: 14
+  },
+  balance: {
+    color: 'white',
+    fontSize: 11,
+    fontWeight: '700'
+  },
+  row: {
+    flexDirection: 'row'
+  },
+  player1: {
+    width: 52,
+    height: 52,
+    position: 'absolute',
+    left: '50%',
+    top: 0,
+    transform: [{translateX: -26}]
+  },
+  ProfileTable: {
+    width: '100%',
+    height: 36,
+    borderRadius: 3,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    opacity: 1,
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1
+  },
   ThreePicGamePin1: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    bottom: '87%',
+    width: 77, 
+    height: 89, 
+    top: "-2%",
+    // bottom: "84%",
     left: '50%', 
-    transform: [{ translateX: -33.5 }]
+    transform: [{ translateX: -38.5 }],
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 0
   },
   ThreePicGamePin2: {
     position: 'absolute', 
-    width: 67, 
-    height: 60,
-    top: '15%',
-    left: '3%', 
+    width: 77, 
+    height: 89,
+    top: '12%',
+    left: '0%', 
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ThreePicGamePin3: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    top: '15%',
-    right: '0%', 
+    width: 77, 
+    height: 89, 
+    top: '12%',
+    right: '0%',
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center', 
   },
   ThreePicGamePin4: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    top: '39%',
-    left: '3%', 
+    width: 77, 
+    height: 89,
+    top: '37%',
+    left: '0%',
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center',  
   },
   ThreePicGamePin5: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    top: '39%',
-    right: '0%', 
+    width: 77, 
+    height: 89, 
+    top: '37%',
+    right: '0%',
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center', 
   },
   ThreePicGamePin6: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    top: '68%',
-    left: '3%', 
+    width: 77, 
+    height: 89, 
+    top: '66%',
+    left: '0%', 
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center', 
   },
   ThreePicGamePin7: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    top: '68%',
+    width: 77, 
+    height: 89, 
+    top: '66%',
     right: '0%', 
+    marginTop: 0,
+    alignItems: 'center',
+    justifyContent: 'center', 
   },
   ThreePicGamePin8: {
     position: 'absolute', 
-    width: 67, 
-    height: 60, 
-    bottom: '5%',
+    width: 77, 
+    height: 89, 
+    bottom: '0%',
+    marginBottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center', 
     left: '50%', 
-    transform: [{ translateX: -33.5 }]
+    transform: [{ translateX: -38.5 }]
   }
   
 });
