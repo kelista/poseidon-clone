@@ -50,7 +50,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
     closeOpenCheckIn()
     // closeOpenBetting()
   }
-  
+
+  const closeOpenCard = () => {
+    setModalCard(!modalCard)
+  }
 
   const gameHandler = () => {
     // navigate(ROUTES.RootGame1);
@@ -84,12 +87,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
           {
             modalBetting ?
             <BettingWindow close={() => closeOpenBetting()} submit={() => closeOpenBetting() }/>
-            :
-            <></>
-          }
-          {
-            modalCard ?
-            <CardWindow></CardWindow>
             :
             <></>
           }
@@ -337,7 +334,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                       {  
                         sitStatus != "player7" ? 
                           <View style={ThreePic.ThreePicGamePin7}>
-                            <TouchableOpacity onPress={() => setSitStatus("player7")}>
+                            <TouchableOpacity onPress={() => closeOpenCheckIn()}>
                               <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                             </TouchableOpacity>
                           </View>
@@ -349,7 +346,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                               <Image source={require('../../../../assets/images/others/banker.png')} style={ThreePic.banker}/>
                               :
                               <></>
-                            }
+                            } 
                             <View style={[ThreePic.amountResult, banker == "player7" ? ThreePic.amountResultBanker : {}]}>
                               <View style={ThreePic.amountDiv}>
                                 <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
@@ -373,7 +370,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                       {  
                         sitStatus != "player8" ? 
                           <View style={ThreePic.ThreePicGamePin8}>
-                            <TouchableOpacity onPress={() => setSitStatus("player8")}>
+                            <TouchableOpacity onPress={() => closeOpenBetting()}>
                               <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                             </TouchableOpacity>
                           </View>

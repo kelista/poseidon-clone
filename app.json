@@ -1,10 +1,10 @@
 {
-  "name": "poseidon",
-  "displayName": "poseidon",
+  "name": "Poseidon",
+  "displayName": "Poseidon",
   "expo": {
     "name": "poseidon",
     "slug": "poseidon",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "ios": {
       "bundleIdentifier": "com.node8.poseidon"
     },

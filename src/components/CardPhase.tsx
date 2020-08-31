@@ -9,7 +9,7 @@ const windowHeight = Dimensions.get('window').height;
 
 const scale = windowWidth/414
 
-export const CardWindow = ()=> {
+export const CardWindow = ({close} : {close: Function}) => {
 
 const [balance, setBalance] = useState(0);
 const [betValue, setBetValue] = useState(0);
@@ -48,7 +48,7 @@ const [checked, setChecked] = useState(false);
                 </View>
                 <View style={styles.cardButtonContainer}>
                     <LinearGradient colors={['#E60000', '#730000']} style={styles.cardButtonWrapper}>
-                        <TouchableOpacity style={styles.cardButton}>
+                        <TouchableOpacity style={styles.cardButton} onPress={() => close()}>
                             <Text style={styles.cardButtonText}>CONFIRM</Text>
                         </TouchableOpacity>
                     </LinearGradient>
@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
     cardChooseContainer: {
         flexDirection: 'row',
         paddingTop: 19,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     cardButtonContainer: {
         alignItems: 'center',

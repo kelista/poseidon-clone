@@ -29,9 +29,7 @@ export const PoseidonSkpRoom: NavigationScreenComponent<any, any> = (props) => {
   };
 
   const gameHandler = () => {
-    // navigate(ROUTES.RootGame1);
-    wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
-    
+    navigate(ROUTES.PoseidonSkpGame);
   };
 
   return (
@@ -48,21 +46,21 @@ export const PoseidonSkpRoom: NavigationScreenComponent<any, any> = (props) => {
               <ImageBackground source={require('../../../../assets/images/others/skp-roombg.png')} style={skpStyle.skpImageBackground}></ImageBackground>
               <View style={skpStyle.skpRoomContainer}>
                 <View style={skpStyle.skpRoomWrapper}>
-                    <TouchableOpacity style={skpStyle.skpRoomRightPadding}>
+                    <TouchableOpacity style={skpStyle.skpRoomRightPadding} onPress={gameHandler}>
                         <Image source={require('../../../../assets/images/others/room1-image.png')} style={{}}/>
                         <Text style={skpStyle.skpRoomBetText}>Min/Max: 10/2000</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={gameHandler}>
                         <Image source={require('../../../../assets/images/others/room2-image.png')} style={{}}/>
                         <Text style={skpStyle.skpRoomBetText}>Min/Max: 10/2000</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={skpStyle.skpRoomWrapper}>
-                    <TouchableOpacity style={skpStyle.skpRoomRightPadding}>
+                    <TouchableOpacity style={skpStyle.skpRoomRightPadding} onPress={gameHandler}>
                         <Image source={require('../../../../assets/images/others/room3-image.png')} style={{}}/>
                         <Text style={skpStyle.skpRoomBetText}>Min/Max: 10/2000</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={gameHandler}>
                         <Image source={require('../../../../assets/images/others/room4-image.png')} style={{}}/>
                         <Text style={skpStyle.skpRoomBetText}>Min/Max: 10/2000</Text>
                     </TouchableOpacity>
