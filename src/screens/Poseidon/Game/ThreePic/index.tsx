@@ -139,7 +139,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                                 <View style={{width: 17, height: 21, marginLeft: -1}}>
                                   <Image source={require('../../../../assets/images/card/small/card_queen.png')}/>
                                 </View>
-                                <View style={{width: 17, height: 21, marginLeft: -2, marginTop: 2.2, transform: [{ rotate: '15deg'}]}}>
+                                <View style={{width: 17, height: 21, marginLeft: -1, marginTop: 2.2, transform: [{ rotate: '15deg'}]}}>
                                   <Image source={require('../../../../assets/images/card/small/card_king.png')}/>
                                 </View>
                               </View>
@@ -327,7 +327,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                               :
                               <></>
                             }
-                            <View style={{alignItems: 'flex-end', zIndex: 5, height: 25.05, marginTop: 9, transform: [{ translateX: -50.1-14 }]}}>
+                            <View style={{alignItems: 'flex-start', zIndex: 5, height: 25.05, marginTop: 9, transform: [{ translateX: -50.1-14 }]}}>
                               <View style={{flexDirection: 'row'}}>
                                 <View style={{width: 17, height: 21,  marginTop: 2.2, transform: [{ rotate: '-15deg'}]}}>
                                   <Image source={require('../../../../assets/images/card/small/card_jack.png')}/>
