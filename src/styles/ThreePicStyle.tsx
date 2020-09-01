@@ -9,7 +9,8 @@ export default StyleSheet.create({
   relative: {
     width: '100%',
     height: '100%',
-    position: 'relative'
+    position: 'relative',
+    backgroundColor: 'green'
   },
   absCenter: {
     top: 0,
@@ -252,7 +253,7 @@ export default StyleSheet.create({
   ThreePicGameTableTextWrapper: {
     position: 'absolute', 
     zIndex: 99, 
-    top: '44.8%', 
+    top: '49.5%', 
     alignItems: 'center'
   },
   ThreePicGameTableText: {
@@ -263,10 +264,11 @@ export default StyleSheet.create({
   },
   ThreePicGameTableLogo: {
     position: 'absolute',
-    width: 128,
-    height: 72,
+    width: 106,
+    height: 60,
     zIndex: 99,
-    top: '28.3%',
+    top: '34%',
+    opacity: 0.25
     // backgroundColor: 'green'
   },
   ThreePicGamePinWrapper: { 

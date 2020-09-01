@@ -131,6 +131,19 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                               :
                               <></>
                             }
+                            <View style={{alignItems: 'center', zIndex: 5, marginTop: 92, height: 25.05}}>
+                              <View style={{flexDirection: 'row'}}>
+                                <View style={{width: 17, height: 21,  marginTop: 2.2, transform: [{ rotate: '-15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_jack.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -1}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_queen.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -2, marginTop: 2.2, transform: [{ rotate: '15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_king.png')}/>
+                                </View>
+                              </View>
+                            </View>
                             <View style={[ThreePic.amountResultPlayer1, banker == "player1" ? ThreePic.amountResultPlayer1Banker : {}]}>
                               <View style={ThreePic.amountDiv}>
                                 <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
@@ -167,6 +180,19 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                               :
                               <></>
                             }
+                            <View style={{alignItems: 'flex-end', zIndex: 5, height: 25.05, marginTop: 42, transform: [{ translateX: 50.1+14 }]}}>
+                              <View style={{flexDirection: 'row'}}>
+                                <View style={{width: 17, height: 21,  marginTop: 2.2, transform: [{ rotate: '-15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_jack.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -1}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_queen.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -2, marginTop: 2.2, transform: [{ rotate: '15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_king.png')}/>
+                                </View>
+                              </View>
+                            </View>
                             <View style={[ThreePic.amountResult, banker == "player2" ? ThreePic.amountResultBanker : {}]}>
                               <View style={ThreePic.amountDiv}>
                                 <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
@@ -203,6 +229,19 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                               :
                               <></>
                             }
+                            <View style={{alignItems: 'flex-start', zIndex: 5, height: 25.05, marginTop: 42, transform: [{ translateX: -50.1-14 }]}}>
+                              <View style={{flexDirection: 'row'}}>
+                                <View style={{width: 17, height: 21,  marginTop: 2.2, transform: [{ rotate: '-15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_jack.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -1}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_queen.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -2, marginTop: 2.2, transform: [{ rotate: '15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_king.png')}/>
+                                </View>
+                              </View>
+                            </View>
                             <View style={[ThreePic.amountResult, banker == "player3" ? ThreePic.amountResultBanker : {}]}>
                               <View style={ThreePic.amountDiv}>
                                 <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
@@ -239,6 +278,19 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                               :
                               <></>
                             }
+                            <View style={{alignItems: 'flex-end', zIndex: 5, height: 25.05, marginTop: 9, transform: [{ translateX: 50.1+14 }]}}>
+                              <View style={{flexDirection: 'row'}}>
+                                <View style={{width: 17, height: 21,  marginTop: 2.2, transform: [{ rotate: '-15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_jack.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -1}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_queen.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -2, marginTop: 2.2, transform: [{ rotate: '15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_king.png')}/>
+                                </View>
+                              </View>
+                            </View>
                             <View style={[ThreePic.amountResult, banker == "player4" ? ThreePic.amountResultBanker : {}]}>
                               <View style={ThreePic.amountDiv}>
                                 <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
@@ -275,6 +327,19 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                               :
                               <></>
                             }
+                            <View style={{alignItems: 'flex-end', zIndex: 5, height: 25.05, marginTop: 9, transform: [{ translateX: -50.1-14 }]}}>
+                              <View style={{flexDirection: 'row'}}>
+                                <View style={{width: 17, height: 21,  marginTop: 2.2, transform: [{ rotate: '-15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_jack.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -1}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_queen.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -2, marginTop: 2.2, transform: [{ rotate: '15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_king.png')}/>
+                                </View>
+                              </View>
+                            </View>
                             <View style={[ThreePic.amountResult, banker == "player5" ? ThreePic.amountResultBanker : {}]}>
                               <View style={ThreePic.amountDiv}>
                                 <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
@@ -311,6 +376,19 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                               :
                               <></>
                             }
+                            <View style={{alignItems: 'flex-end', zIndex: 5, height: 25.05, marginTop: -8, transform: [{ translateX: +50.1+14 }]}}>
+                              <View style={{flexDirection: 'row'}}>
+                                <View style={{width: 17, height: 21,  marginTop: 2.2, transform: [{ rotate: '-15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_jack.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -1}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_queen.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -2, marginTop: 2.2, transform: [{ rotate: '15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_king.png')}/>
+                                </View>
+                              </View>
+                            </View>
                             <View style={[ThreePic.amountResult, banker == "player6" ? ThreePic.amountResultBanker : {}]}>
                               <View style={ThreePic.amountDiv}>
                                 <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
@@ -346,7 +424,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                               <Image source={require('../../../../assets/images/others/banker.png')} style={ThreePic.banker}/>
                               :
                               <></>
-                            } 
+                            }
+                            <View style={{alignItems: 'flex-end', zIndex: 5, height: 25.05, marginTop: -8, transform: [{ translateX: -50.1-14 }]}}>
+                              <View style={{flexDirection: 'row'}}>
+                                <View style={{width: 17, height: 21,  marginTop: 2.2, transform: [{ rotate: '-15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_jack.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -1}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_queen.png')}/>
+                                </View>
+                                <View style={{width: 17, height: 21, marginLeft: -2, marginTop: 2.2, transform: [{ rotate: '15deg'}]}}>
+                                  <Image source={require('../../../../assets/images/card/small/card_king.png')}/>
+                                </View>
+                              </View>
+                            </View>
                             <View style={[ThreePic.amountResult, banker == "player7" ? ThreePic.amountResultBanker : {}]}>
                               <View style={ThreePic.amountDiv}>
                                 <Image source={require('../../../../assets/images/others/coin.png')} style={ThreePic.coin}/>
