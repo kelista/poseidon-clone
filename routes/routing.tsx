@@ -76,7 +76,7 @@ const Wrapped = function () {
   // listen token
   useEffect(() => {
     if (token) {
-      const url = "ws://35.220.179.54:3021/events?token=" + token;
+      const url = "ws://35.197.156.255:5000/events?token=" + token;
       console.log(url);
       const client = new WebSocketClient(url);
       setWsClient(client);

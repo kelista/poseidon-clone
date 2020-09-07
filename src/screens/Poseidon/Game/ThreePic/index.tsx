@@ -6,7 +6,6 @@ import {
 } from "react-navigation";
 import { ROUTES } from "../../../../../routes";
 import { WebSocketClient } from "../../../../services/websocket"
-import { playBacksound, stopBacksound } from '../../../../services/sound_manager'
 import { CustomHeader } from "../../../../components/Header"
 import { BottomNavigation } from "../../../../components/BottomNavigation"
 import { CheckInWindow } from "../../../../components/CheckIn"
@@ -15,6 +14,7 @@ import { CardWindow } from "../../../../components/CardPhase"
 import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 import { WSContext } from '../../../../../routes/wsContext';
+import { images } from '../../../../services/cardServices'
 
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
@@ -180,16 +180,16 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                               :
                               <></>
                             }
-                            <View style={{alignItems: 'flex-end', zIndex: 5, height: 25.05, marginTop: 42, transform: [{ translateX: 50.1+14 }]}}>
+                            <View style={ThreePic.cardDiv}>
                               <View style={{flexDirection: 'row'}}>
-                                <View style={{width: 17, height: 21,  marginTop: 2.2, transform: [{ rotate: '-15deg'}]}}>
-                                  <Image source={require('../../../../assets/images/card/small/card_jack.png')}/>
+                                <View style={ThreePic.firstCard}>
+                                  <Image source={images['11-heart']} style={ThreePic.cardImage}></Image>
                                 </View>
-                                <View style={{width: 17, height: 21, marginLeft: -1}}>
-                                  <Image source={require('../../../../assets/images/card/small/card_queen.png')}/>
+                                <View style={ThreePic.secondCard}>
+                                  <Image source={images['12-club']} style={ThreePic.cardImage}></Image>
                                 </View>
-                                <View style={{width: 17, height: 21, marginLeft: -1, marginTop: 2.2, transform: [{ rotate: '15deg'}]}}>
-                                  <Image source={require('../../../../assets/images/card/small/card_king.png')}/>
+                                <View style={ThreePic.thirdCard}>
+                                  <Image source={images['13-diamond']} style={ThreePic.cardImage}></Image>
                                 </View>
                               </View>
                             </View>

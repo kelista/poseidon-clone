@@ -12,6 +12,35 @@ export default StyleSheet.create({
     position: 'relative',
     backgroundColor: 'green'
   },
+  firstCard: {
+    width: 17, 
+    height: 21,  
+    marginTop: 2.2, 
+    transform: [{ rotate: '-15deg'}]
+  },
+  secondCard: {
+    width: 17, 
+    height: 21, 
+    marginLeft: -1
+  },
+  thirdCard: {
+    width: 17, 
+    height: 21, 
+    marginLeft: -1, 
+    marginTop: 2.2, 
+    transform: [{ rotate: '15deg'}]
+  },
+  cardDiv: {
+    alignItems: 'flex-end', 
+    zIndex: 5, 
+    height: 25.05, 
+    marginTop: 42, 
+    transform: [{ translateX: 50.1+14 }]
+  },
+  cardImage: {
+    width: 17,
+    height: 21
+  },
   absCenter: {
     top: 0,
     left: '50%',

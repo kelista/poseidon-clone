@@ -15,10 +15,10 @@ import { SSContext } from "../../../../routes/simpleStoreContext";
 
 export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
-  const host = 'http://35.220.179.54:3021'
+  const host = 'http://35.197.156.255:5000'
   const path = host + "/login"
-  const [username, setUsername] = useState("test")
-  const [password, setPassword] = useState("test")
+  const [username, setUsername] = useState("rabbit")
+  const [password, setPassword] = useState("rabbit")
   const [bottomPage, setBottomPage] = useState(false)
 
   const store = useContext(SSContext);
