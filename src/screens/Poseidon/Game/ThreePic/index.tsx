@@ -15,18 +15,56 @@ import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 import { WSContext } from '../../../../../routes/wsContext';
 import { images } from '../../../../services/cardServices'
+import { BSContext } from '../../../../../routes/bsContext';
+import { SSContext } from '../../../../../routes/simpleStoreContext';
+
+interface PlayerInfo {
+  username: string;
+  name: string;
+  balance: number;
+  credit: number;
+}
 
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
+  
+  const wsClient = useContext(WSContext)
+  const bs = useContext(BSContext);
+  const ss = useContext(SSContext);
+
   const [modalCheckIn, setModalCheckIn] = useState(true);
   const [banker, setBanker] = useState("");
   const [sitStatus, setSitStatus] = useState("");
   const [amount, setAmount] = useState(0);
   const [modalBetting, setModalBetting] = useState(false);
   const [modalCard, setModalCard] = useState(true);
-  const wsClient = useContext(WSContext)
+  const infoEvent = "info";
+  const [connecting, setConnecting] = useState(true);
+  const [balancePlayer, setBalancePlayer] = useState(0)
+  const [playerInfo, setPlayerInfo] = useState<PlayerInfo[]>([]);
 
   const windowWidth = Dimensions.get('window').width;
+
+   // listen connect
+  useEffect(function cb() {
+    if (!wsClient) return;
+    const listeners: string[] = [];
+
+    const connectCB = async function (data: any) {
+      setPlayerInfo(data)
+      setBalancePlayer(data.balance)
+      console.log(data)
+    }
+
+    const infoListener = wsClient.addListener(infoEvent, connectCB);
+    listeners.push(infoListener);
+
+    return () => {
+      listeners.map(lst => {
+        wsClient?.removeListener(lst);
+      })
+    }
+  }, [wsClient ? true : false]);
 
   const lobbyHandler = () => {
     // stopBacksound()
@@ -47,6 +85,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
   }
 
   const buyIn = () => {
+    wsClient?.sendMessage(infoEvent, { event: infoEvent });
     closeOpenCheckIn()
     // closeOpenBetting()
   }
@@ -59,6 +98,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
     // navigate(ROUTES.RootGame1);
     wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
   };
+
+  const setPlayerSit = () => {
+    setSitStatus("player1")
+  }
 
   useEffect(function gameInit() {
     setBanker("player1")
@@ -118,7 +161,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                       {
                         sitStatus != "player1" ? 
                           <View style={ThreePic.ThreePicGamePin1}>
-                            <TouchableOpacity onPress={() => setSitStatus("player1")}>
+                            <TouchableOpacity onPress={setPlayerSit}>
                               <Image source={require('../../../../assets/images/others/button-sit.png')}/>
                             </TouchableOpacity>
                           </View>
@@ -155,10 +198,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
                             <Image source={require('../../../../assets/images/others/player1.png')} style={ThreePic.player1}/>
                             <View style={ThreePic.ProfileTable}>
                               <View style={ThreePic.row}>
-                                <Text style={ThreePic.username}>Wyvern</Text>
+                                <Text style={ThreePic.username}>{playerInfo.name}</Text>
                               </View>
                               <View style={ThreePic.row}>
-                                <Text style={ThreePic.balance}>999,999,999</Text>
+                                <Text style={ThreePic.balance}>{playerInfo.credit}</Text>
                               </View>
                             </View>
                           </View>
@@ -507,7 +550,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (props)
           </View>
         </View>
       </ScrollView>
-      <BottomNavigation home={() => navigate(ROUTES.PoseidonLobby)} setting={() => navigate(ROUTES.PoseidonAccount)} status={'game'}>
+      <BottomNavigation home={() => navigate(ROUTES.PoseidonLobby)} setting={() => navigate(ROUTES.PoseidonAccount)} status={'game'} balance={balancePlayer}>
       </BottomNavigation>
     </View>
   );
