@@ -93,9 +93,6 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
       setAvailableGames(data);
     }
 
-    // betul
-    // kasarnya kalo nerima "lobbyGamesEvent" panggil si connectCB(response)
-
     const lobbyListenerId = wsClient.addListener(lobbyGamesEvent, connectCB);
     listeners.push(lobbyListenerId);
 

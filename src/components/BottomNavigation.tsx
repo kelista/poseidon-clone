@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const windowWidth = Dimensions.get('window').width;
 
-export const BottomNavigation = ({home, setting, status} : { home: Function, setting: Function, status: String }) => {
+export const BottomNavigation = ({home, setting, status, balance} : { home: Function, setting: Function, status: String, balance: Number }) => {
   return (
     <View style={styles.navigationContainer}>
       <View style={styles.navigationSecondLayer}>
@@ -29,7 +29,7 @@ export const BottomNavigation = ({home, setting, status} : { home: Function, set
                   <View style={styles.navigationBalanceWrapper}>
                     <Image source={require('../assets/images/others/casino-chip.png')} style={styles.navigationChipImage}/>
                     <Image source={require('../assets/images/others/big-cointext.png')} style={styles.navigationBalanceImageSquare}/>
-                    <Text style={styles.navigationBalanceText}>999,999,999</Text>
+                    <Text style={styles.navigationBalanceText}>{balance}</Text>
                   </View>
                 </LinearGradient>
               </View>
