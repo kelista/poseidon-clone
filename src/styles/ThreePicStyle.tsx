@@ -3,14 +3,13 @@ import { StyleSheet, Dimensions } from 'react-native';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const scale = windowWidth/414
+const scale = (windowWidth+30)/414
 
 export default StyleSheet.create({
   relative: {
     width: '100%',
     height: '100%',
     position: 'relative',
-    backgroundColor: 'green'
   },
   firstCard: {
     width: 17, 
@@ -105,7 +104,7 @@ export default StyleSheet.create({
     left: '50%',
     transform: [{translateX: -76.5}],
   },
-  amountResultPlayer8: {
+  amountResultPlayer5: {
     position: 'absolute',
     width: 46,
     height: 15,
@@ -208,7 +207,7 @@ export default StyleSheet.create({
   ThreePicGameContainer: {
     width: '100%',
     height: '100%',
-    position: 'relative'
+    position: 'relative',
   },
   ThreePicGameProfile: {
     position: 'absolute',
@@ -269,7 +268,7 @@ export default StyleSheet.create({
   ThreePicGameTableImageWrapper: {
     position: 'relative',
     alignItems: 'center',
-    marginTop: -20,
+    marginTop: -25,
     height: '100%',
     // backgroundColor: 'yellow',
     justifyContent: 'center'
@@ -342,7 +341,7 @@ export default StyleSheet.create({
     opacity: 1,
     position: 'absolute',
     left: 0,
-    bottom: 0,
+    bottom: -3,
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1
@@ -351,7 +350,7 @@ export default StyleSheet.create({
     position: 'absolute', 
     width: 77, 
     height: 89, 
-    top: "-2%",
+    top: "-4%",
     // bottom: "84%",
     left: '50%', 
     transform: [{ translateX: -38.5 }],
@@ -359,7 +358,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
     marginTop: 0
   },
-  ThreePicGamePin2: {
+  ThreePicGamePin8: {
     position: 'absolute', 
     width: 77, 
     height: 89,
@@ -369,7 +368,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  ThreePicGamePin3: {
+  ThreePicGamePin2: {
     position: 'absolute', 
     width: 77, 
     height: 89, 
@@ -379,7 +378,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center', 
   },
-  ThreePicGamePin4: {
+  ThreePicGamePin7: {
     position: 'absolute', 
     width: 77, 
     height: 89,
@@ -389,7 +388,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',  
   },
-  ThreePicGamePin5: {
+  ThreePicGamePin3: {
     position: 'absolute', 
     width: 77, 
     height: 89, 
@@ -409,7 +408,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center', 
   },
-  ThreePicGamePin7: {
+  ThreePicGamePin4: {
     position: 'absolute', 
     width: 77, 
     height: 89, 
@@ -419,11 +418,11 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center', 
   },
-  ThreePicGamePin8: {
+  ThreePicGamePin5: {
     position: 'absolute', 
     width: 77, 
     height: 89, 
-    bottom: '0%',
+    bottom: '3%',
     marginBottom: 0,
     alignItems: 'center',
     justifyContent: 'center', 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 export const CustomHeader = ({ title, status }: { title: string, status: string }) => {
@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFFFFF',
     right: 8,
-    position: 'absolute'
+    position: 'absolute',
+    paddingTop: Platform.OS == 'ios' ? 5 : 0
   },
   header: {
     flex: 1,

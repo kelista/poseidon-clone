@@ -7,63 +7,72 @@ const windowWidth = Dimensions.get('window').width;
 export const BottomNavigation = ({home, setting, status, balance} : { home: Function, setting: Function, status: String, balance: Number }) => {
   return (
     <View style={styles.navigationContainer}>
-      <LinearGradient colors={['#6E0000', '#400000']} style={styles.navigationLinear}>
-        {
-          status == 'game' ?
-          <View style={styles.navigationGameContainer}>
-            <View style={styles.navigationGameWrapper}>
-              <View style={styles.navigationGame}>
-                <View style={styles.navigationGameButton}>
-                  <TouchableOpacity style={styles.buttonSelection} onPress={() => home()}>
-                    <Image style={[styles.imgButton, styles.homeNavImg]} source={require('../assets/images/others/home-nav.png')}/>
-                  </TouchableOpacity>
+      <View style={styles.navigationSecondLayer}>
+        <LinearGradient colors={['#6E0000', '#400000']} style={styles.navigationLinear}>
+          {
+            status == 'game' ?
+            <View style={styles.navigationGameContainer}>
+              <View style={styles.navigationGameWrapper}>
+                <View style={styles.navigationGame}>
+                  <View style={styles.navigationGameButton}>
+                    <TouchableOpacity style={styles.buttonSelection} onPress={() => home()}>
+                      <Image style={[styles.imgButton, styles.homeNavImg]} source={require('../assets/images/others/home-nav.png')}/>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.navigationGameButtonlast}>
+                    <TouchableOpacity style={styles.buttonSelection} >
+                      <Image style={[styles.imgButton, styles.reportNavImg]} source={require('../assets/images/others/report-nav.png')} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-                <View style={styles.navigationGameButtonlast}>
-                  <TouchableOpacity style={styles.buttonSelection} >
-                    <Image style={[styles.imgButton, styles.reportNavImg]} source={require('../assets/images/others/report-nav.png')} />
-                  </TouchableOpacity>
-                </View>
+                <LinearGradient colors={['#5B0000', '#2C0000']} style={styles.navigationBalance}>
+                  <View style={styles.navigationBalanceWrapper}>
+                    <Image source={require('../assets/images/others/casino-chip.png')} style={styles.navigationChipImage}/>
+                    <Image source={require('../assets/images/others/big-cointext.png')} style={styles.navigationBalanceImageSquare}/>
+                    <Text style={styles.navigationBalanceText}>{balance}</Text>
+                  </View>
+                </LinearGradient>
               </View>
-              <LinearGradient colors={['#5B0000', '#2C0000']} style={styles.navigationBalance}>
-                <View style={styles.navigationBalanceWrapper}>
-                  <Image source={require('../assets/images/others/casino-chip.png')} style={styles.navigationChipImage}/>
-                  <Image source={require('../assets/images/others/big-cointext.png')} style={styles.navigationBalanceImageSquare}/>
-                  <Text style={styles.navigationBalanceText}>{balance}</Text>
-                </View>
-              </LinearGradient>
             </View>
-          </View>
-          :
-          <View style={styles.navigationWrapper}>
-            <View style={styles.navigationButton}>
-              <TouchableOpacity style={styles.buttonSelection} onPress={() => home()}>
-                <Image style={[styles.imgButton, styles.homeNavImg]} source={require('../assets/images/others/home-nav.png')}/>
-              </TouchableOpacity>
+            :
+            <View style={styles.navigationWrapper}>
+              <View style={styles.navigationButton}>
+                <TouchableOpacity style={styles.buttonSelection} onPress={() => home()}>
+                  <Image style={[styles.imgButton, styles.homeNavImg]} source={require('../assets/images/others/home-nav.png')}/>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.navigationButton}>
+                <TouchableOpacity style={styles.buttonSelection} >
+                  <Image style={[styles.imgButton, styles.reportNavImg]} source={require('../assets/images/others/report-nav.png')} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.navigationButton}>
+                <TouchableOpacity style={styles.buttonSelection} >
+                  <Image style={[styles.imgButton, styles.mailNavImg]} source={require('../assets/images/others/mail-nav.png')} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.navigationButtonLast}>
+                <TouchableOpacity style={styles.buttonSelection} onPress={() => setting()}>
+                  <Image style={[styles.imgButton, styles.settingNavImg]} source={require('../assets/images/others/setting-nav.png')} />
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.navigationButton}>
-              <TouchableOpacity style={styles.buttonSelection} >
-                <Image style={[styles.imgButton, styles.reportNavImg]} source={require('../assets/images/others/report-nav.png')} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.navigationButton}>
-              <TouchableOpacity style={styles.buttonSelection} >
-                <Image style={[styles.imgButton, styles.mailNavImg]} source={require('../assets/images/others/mail-nav.png')} />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.navigationButtonLast}>
-              <TouchableOpacity style={styles.buttonSelection} onPress={() => setting()}>
-                <Image style={[styles.imgButton, styles.settingNavImg]} source={require('../assets/images/others/setting-nav.png')} />
-              </TouchableOpacity>
-            </View>
-          </View>
-        }
-      </LinearGradient>
+          }
+        </LinearGradient>
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   navigationContainer: {
+    position: 'absolute',
+    backgroundColor: 'black',
+    width: '100%',
+    height: 53,
+    bottom: 0,
+  },
+  navigationSecondLayer: {
     position: 'absolute',
     bottom: Platform.OS === 'ios' ? 20 : 0,
     width: windowWidth,
@@ -167,8 +176,8 @@ const styles = StyleSheet.create({
   },
   navigationBalanceImageSquare: {
     zIndex: 99,
-    width: 100,
-    height: 21
+    width: 109,
+    height: 25,
   },
   navigationBalanceText: {
     position: 'absolute',
@@ -176,7 +185,8 @@ const styles = StyleSheet.create({
     fontSize: 14, 
     color: '#FFFFFF', 
     zIndex: 100, 
-    fontWeight: "700"
+    fontWeight: "700",
+    paddingTop: Platform.OS == 'ios' ? 5 : 0
   },
   navigationBalanceWrapper: {
     flexDirection: 'row',

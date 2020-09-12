@@ -15,6 +15,7 @@ import LobbyStyle from "../../../styles/LobbyStyle"
 import { Backsound } from "../../../services/soundServices"
 import { WSContext } from '../../../../routes/wsContext';
 import { SSContext } from '../../../../routes/simpleStoreContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Game {
   _id: string;
@@ -131,53 +132,55 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   if (connecting) return (<Text>Connecting</Text>)
 
   return (
-    <View style={{ flex: 1 }}>
-      <CustomheaderLogo name="lobby" lobby={() => false}></CustomheaderLogo>
-      <ScrollView>
-        <StatusBar hidden />
-        <View style={LobbyStyle.container}>
-          <Image source={require('../../../assets/images/others/home.png')} />
-          <CustomHeader title="Rockies07" status="userLobby"></CustomHeader>
-          <View style={LobbyStyle.lobbyImageContainer}>
-            <View style={LobbyStyle.lobbyImageWrapper}>
-              <ImageBackground source={require('../../../assets/images/others/background-revision.png')} style={LobbyStyle.lobbyImageBackground}></ImageBackground>
-              <View style={LobbyStyle.lobbyGameWrapper}>
-                {/* <View style={LobbyStyle.lobbyGameSkpWrapper}>
-                  <TouchableOpacity onPress={skpGameRoom}>
-                    <Image source={require('../../../assets/images/others/skp-image.png')} style={LobbyStyle.lobbyGameSkp} />
-                  </TouchableOpacity>
-                </View>
-                <View style={LobbyStyle.lobbyGameThreePicWrapper}>
-                  <TouchableOpacity onPress={threePicGameROom}>
-                    <Image source={require('../../../assets/images/others/3pic-image.png')} style={LobbyStyle.lobbyGameThreePic} />
-                  </TouchableOpacity>
-                </View> */}
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
+        <CustomheaderLogo name="lobby" lobby={() => false}></CustomheaderLogo>
+        <ScrollView>
+          <StatusBar hidden />
+          <View style={LobbyStyle.container}>
+            <Image source={require('../../../assets/images/others/home.png')} />
+            <CustomHeader title="Rockies07" status="userLobby"></CustomHeader>
+            <View style={LobbyStyle.lobbyImageContainer}>
+              <View style={LobbyStyle.lobbyImageWrapper}>
+                <ImageBackground source={require('../../../assets/images/others/background-revision.png')} style={LobbyStyle.lobbyImageBackground}></ImageBackground>
+                <View style={LobbyStyle.lobbyGameWrapper}>
+                  {/* <View style={LobbyStyle.lobbyGameSkpWrapper}>
+                    <TouchableOpacity onPress={skpGameRoom}>
+                      <Image source={require('../../../assets/images/others/skp-image.png')} style={LobbyStyle.lobbyGameSkp} />
+                    </TouchableOpacity>
+                  </View>
+                  <View style={LobbyStyle.lobbyGameThreePicWrapper}>
+                    <TouchableOpacity onPress={threePicGameROom}>
+                      <Image source={require('../../../assets/images/others/3pic-image.png')} style={LobbyStyle.lobbyGameThreePic} />
+                    </TouchableOpacity>
+                  </View> */}
 
-                {/* test only */}
-                <View style={LobbyStyle.lobbyGameSkpWrapper}>
-                  <TouchableOpacity onPress={skpGameRoom}>
-                    <Image source={require('../../../assets/images/others/skp-image.png')} style={LobbyStyle.lobbyGameSkp} />
-                  </TouchableOpacity>
+                  {/* test only */}
+                  <View style={LobbyStyle.lobbyGameSkpWrapper}>
+                    <TouchableOpacity onPress={skpGameRoom}>
+                      <Image source={require('../../../assets/images/others/skp-image.png')} style={LobbyStyle.lobbyGameSkp} />
+                    </TouchableOpacity>
+                  </View>
+                  {
+                    games.map(g => {
+                      if (codenames.includes(g.codename)) {
+                        return <GameSelectComponent key={g.codename}
+                          press={() => navigate(g.route)}
+                          image={g.image}
+                          lobbyStyle={g.lobbyStyle}
+                          wrapStyle={g.wrapStyle}
+                        />
+                      }
+                    })
+                  }
                 </View>
-                {
-                  games.map(g => {
-                    if (codenames.includes(g.codename)) {
-                      return <GameSelectComponent key={g.codename}
-                        press={() => navigate(g.route)}
-                        image={g.image}
-                        lobbyStyle={g.lobbyStyle}
-                        wrapStyle={g.wrapStyle}
-                      />
-                    }
-                  })
-                }
               </View>
             </View>
           </View>
-        </View>
-      </ScrollView>
-      <BottomNavigation home={() => navigate(ROUTES.PoseidonLobby)} setting={() => navigate(ROUTES.PoseidonAccount)} status={'room'}>
-      </BottomNavigation>
-    </View>
+        </ScrollView>
+        <BottomNavigation home={() => navigate(ROUTES.PoseidonLobby)} setting={() => navigate(ROUTES.PoseidonAccount)} status={'room'}>
+        </BottomNavigation>
+      </View>
+    </SafeAreaView>
   );
 };
