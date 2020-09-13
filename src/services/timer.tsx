@@ -14,6 +14,7 @@ export function useTimer(): [number, boolean, (v: number) => void] {
     setTime(time);
     setIsCounting(true);
     setTheInterval(setInterval(() => {
+      console.log(Date.now()/1000);
       setTime(c => c - 1);
     }, 1000));
   }, [isCounting]);

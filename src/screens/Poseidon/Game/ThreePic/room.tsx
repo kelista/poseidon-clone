@@ -97,6 +97,8 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
   const { navigate } = props.navigation;
   const wsClient = useContext(WSContext)
   const lobbyRoomsEvent = "lobby/rooms"
+  const moveEvent = "move"
+  const joinEvent = "lobby/join"
   const [listenerReady, setListenerReady] = useState(false);
   const [availableRooms, setAvailableRooms] = useState<Room[]>([]);
 
@@ -104,8 +106,8 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
     navigate(ROUTES.PoseidonLobby);
   };
 
-  const gameHandler = () => {
-    navigate(ROUTES.PoseidonThreePicGame);
+  const gameHandler = (no: number) => {
+    wsClient?.sendMessage(joinEvent, { codename: "three-pictures", no: no })
   };
 
   const chunkedRooms = useMemo(() => {
@@ -114,7 +116,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
       if(select) {
         const ret: RoomSelectComponentProps = {
           image: select.image,
-          press: () => gameHandler(),
+          press: () => gameHandler(index+1),
           max: ar.max,
           min: ar.min,
           textStyle: select.textStyle,
@@ -152,8 +154,17 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (props)
       setAvailableRooms(data.rooms);
     }
 
+    const moveAction = async function (data: any) {
+      if(data !== "L") {
+        navigate(ROUTES.PoseidonThreePicGame);
+      }
+    }
+
     const roomListenerId = wsClient.addListener(lobbyRoomsEvent, connectCB)
     listeners.push(roomListenerId);
+
+    const moveListener = wsClient.addListener(moveEvent, moveAction)
+    listeners.push(moveListener);
 
     setListenerReady(true);
 
