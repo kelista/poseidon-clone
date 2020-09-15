@@ -18,7 +18,10 @@ export const CheckInWindow = (props: any) => {
 		setModalCheckIn,
 		close,
 		balance,
-		setBalancePlayerGame
+    setBalancePlayerGame,
+    bankerPool,
+    minBet,
+    maxBet
 	} = props; 
 	const [sliderValue, setsliderValue] = useState(0);
 	
@@ -55,9 +58,9 @@ export const CheckInWindow = (props: any) => {
             style={styles.checkInImage}
           />
           <View style={styles.checkInBodyWrapper}>
-            <Text style={styles.checkInBodyText}>Banker: 3000</Text>
-            <Text style={styles.checkInBodyText}>Min: 10</Text>
-            <Text style={styles.checkInBodyText}>Max: 100</Text>
+            <Text style={styles.checkInBodyText}>Banker: {bankerPool}</Text>
+            <Text style={styles.checkInBodyText}>Min: {minBet}</Text>
+            <Text style={styles.checkInBodyText}>Max: {maxBet}</Text>
           </View>
           <View style={styles.checkInBoxContainer}>
             <View style={styles.checkInBoxWrapper}>

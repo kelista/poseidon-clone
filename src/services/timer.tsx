@@ -1,31 +1,39 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from "react";
+
+class Timer {
+  isCounting: boolean = false;
+  time: number = 0;
+  interval: any;
+
+  start(time: number, onTick: (time: number, isCounting: boolean) => any) {
+    if (this.isCounting) {
+      clearInterval(this.interval);
+    }
+    this.isCounting = true;
+    this.time = time;
+    this.interval = setInterval(() => {
+      if (this.time <= 0) {
+        this.isCounting = false;
+        console.log("stopped");
+        clearInterval(this.interval);
+      } else {
+        this.time = this.time - 1;
+      }
+      onTick(this.time, this.isCounting);
+    }, 1000);
+    onTick(time, this.isCounting);
+  }
+}
 
 export function useTimer(): [number, boolean, (v: number) => void] {
   const [time, setTime] = useState(0);
-
   const [isCounting, setIsCounting] = useState(false);
-  const [theInterval, setTheInterval] = useState<any>(null);
+  const [timer, setTimer] = useState(new Timer());
 
-  const startTimer = useCallback((time: number) => {
-    if (isCounting) {
-      clearInterval(theInterval);
-      setTheInterval(null);
-    }
+  const onTick = useCallback((time: number, isCounting: boolean) => {
     setTime(time);
-    setIsCounting(true);
-    setTheInterval(setInterval(() => {
-      console.log(Date.now()/1000);
-      setTime(c => c - 1);
-    }, 1000));
-  }, [isCounting]);
+    setIsCounting(isCounting);
+  }, []);
 
-  useEffect(() => {
-    if (time === 0) {
-      clearInterval(theInterval);
-      setTheInterval(null);
-      setIsCounting(false);
-    }
-  }, [time]);
-
-  return [time, isCounting, startTimer];
+  return [time, isCounting, (time: number) => timer.start(time, onTick)];
 }
