@@ -49,6 +49,9 @@ const MainStack = createStackNavigator(
   {
     // mode: "modal",
     headerMode: "none",
+    navigationOptions: {
+      gesturesEnabled: false
+    }
   }
 );
 

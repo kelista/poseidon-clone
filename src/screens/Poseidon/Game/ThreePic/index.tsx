@@ -7,7 +7,7 @@ import {
   TextInput,
   Image,
   ImageBackground,
-  Dimensions,
+  Dimensions, BackHandler
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { NavigationScreenComponent } from "react-navigation";
@@ -176,6 +176,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   // listen connect
   useEffect(
     function cb() {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', lobbyHandler)
+
       if (!wsClient) return;
       const listeners: string[] = [];
 
@@ -227,6 +229,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       // listeners.push(timerListener);
 
       return () => {
+        backHandler.remove()
         listeners.map((lst) => {
           wsClient?.removeListener(lst);
         });
@@ -237,6 +240,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
 
   const lobbyHandler = () => {
     wsClient?.sendMessage("lobby", {});
+    return true
   };
 
   const sitHandler = (seatNumber: number) => {
