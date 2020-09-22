@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback } from "react";
+import React, { useEffect, useContext, useState, useCallback, useMemo } from "react";
 import {
   StyleSheet,
   Text,
@@ -22,7 +22,7 @@ import ThreePic from "../../../../styles/ThreePicStyle";
 import { CustomheaderLogo } from "../../../../components/HeaderLogo";
 import { WSContext } from "../../../../../routes/wsContext";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { images } from "../../../../services/cardServices";
+import { images } from "../../../../services/imageServices";
 import { BSContext } from "../../../../../routes/bsContext";
 import { SSContext } from "../../../../../routes/simpleStoreContext";
 import { useTimer } from "../../../../services/timer";
@@ -47,6 +47,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const { navigate } = props.navigation;
 
   const [time, isCounting, startTimer] = useTimer();
+  const timeImageString = useMemo(() => time+"-timer", [time]);
+  const timeImageString2 = useMemo(() => time+"-timer2", [time]);
 
   const wsClient = useContext(WSContext);
   const bs = useContext(BSContext);
@@ -177,7 +179,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   useEffect(
     function cb() {
       const backHandler = BackHandler.addEventListener('hardwareBackPress', lobbyHandler)
-
       if (!wsClient) return;
       const listeners: string[] = [];
 
@@ -358,6 +359,58 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                     source={require("../../../../assets/images/others/threepic-gamelogo.png")}
                     style={ThreePic.ThreePicGameTableLogo}
                   />
+                  {/* Check timer if > 9 (1 digit) */}
+                  {/* {
+                    time < 10 ?
+                    <View style={ThreePic.ThreePicTimerDiv}>
+                      <View style={ThreePic.relative}>
+                        <Image
+                          source={require("../../../../assets/images/others/5.png")}
+                          style={ThreePic.ThreePicTimer1}
+                        />
+                      </View>
+                    </View>
+                    :
+                    <View style={ThreePic.ThreePicTimerDiv}>
+                      <View style={ThreePic.ThreePicTimer2Div}>
+                        <View style={ThreePic.ThreePic1Digit}>
+                          <Image
+                            source={require("../../../../assets/images/others/1.png")}
+                            style={ThreePic.ThreePicTimer2}
+                          />
+                        </View>
+                        <View style={ThreePic.ThreePic1Digit}>
+                          <Image
+                            source={require("../../../../assets/images/others/5.png")}
+                            style={ThreePic.ThreePicTimer2}
+                          />
+                        </View>
+                      </View>
+                    </View>
+                  } */}
+
+                  {/* Render image */}
+                  {
+                    time < 10 ? 
+                    <View style={ThreePic.ThreePicTimerDiv}>
+                      <View style={ThreePic.relative}>
+                        <Image
+                          source={images[timeImageString2]}
+                          style={ThreePic.ThreePicTimer1}
+                        />
+                      </View>
+                    </View> 
+                    :
+                    <View style={ThreePic.ThreePicTimerDiv}>
+                      <View style={ThreePic.relative}>
+                        <Image
+                          source={images[timeImageString]}
+                          style={ThreePic.ThreePicTimer2}
+                        />
+                      </View>
+                    </View> 
+                  }
+                  
                   <View style={ThreePic.ThreePicGameTableTextWrapper}>
                     <Text style={ThreePic.ThreePicGameTableText}>{time}</Text>
                     <Text style={ThreePic.ThreePicGameTableText}>

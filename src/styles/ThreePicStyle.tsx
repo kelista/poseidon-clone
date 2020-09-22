@@ -191,7 +191,6 @@ export default StyleSheet.create({
       paddingRight: 50
   },
 
-
   //Game
   containerGame: {
     flex: 1,
@@ -294,10 +293,58 @@ export default StyleSheet.create({
     position: 'absolute',
     width: 106,
     height: 60,
-    zIndex: 99,
+    zIndex: 4,
     top: '34%',
     opacity: 0.25
     // backgroundColor: 'green'
+  },
+  ThreePic1Digit: {
+    flex: 0.5,
+    height: '100%',
+    backgroundColor: 'red'
+  },
+  ThreePic1DigitBlue: {
+    flex: 0.5,
+    height: '100%',
+    backgroundColor: 'blue'
+  },
+  ThreePicTimer2: {
+    width: 80,
+    height: 62.5,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [
+      {translateX: -40},
+      {translateY: -31.25}
+    ],
+  },
+  ThreePicTimer1: {
+    position: 'absolute',
+    zIndex: 5,
+    top: '50%',
+    left: '50%',
+    transform: [
+      {translateX: -25}, {translateY: -31.25}
+    ],
+    width: 50,
+    height: 62.5,
+  },
+  ThreePicTimer2Div: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'blue'
+  },
+  ThreePicTimerDiv: {
+    position: 'absolute',
+    zIndex: 5,
+    top: '20%',
+    left: '50%',
+    transform: [
+      {translateX: -50}
+    ],
+    width: 100,
+    height: 100,
   },
   ThreePicGamePinWrapper: { 
     position: 'relative',

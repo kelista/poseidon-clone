@@ -1,4 +1,4 @@
-export const images = {
+export const images :any = {
   'AD': require("../assets/images/card/DiamondDeck/AD.png"),
   '2D': require("../assets/images/card/DiamondDeck/2D.png"),
   '3D': require("../assets/images/card/DiamondDeck/3D.png"),
@@ -54,4 +54,32 @@ export const images = {
   'JS': require("../assets/images/card/SpadeDeck/JS.png"),
   'QS': require("../assets/images/card/SpadeDeck/QS.png"),
   'KS': require("../assets/images/card/SpadeDeck/KS.png"),
+
+  '0-timer': require("../assets/images/timerBlink/0.png"),
+  '1-timer': require("../assets/images/timerBlink/1.png"),
+  '2-timer': require("../assets/images/timerBlink/2.png"),
+  '3-timer': require("../assets/images/timerBlink/3.png"),
+  '4-timer': require("../assets/images/timerBlink/4.png"),
+  '5-timer': require("../assets/images/timerBlink/5.png"),
+  '6-timer': require("../assets/images/timerBlink/6.png"),
+  '7-timer': require("../assets/images/timerBlink/7.png"),
+  '8-timer': require("../assets/images/timerBlink/8.png"),
+  '9-timer': require("../assets/images/timerBlink/9.png"),
+  '10-timer': require("../assets/images/timerBlink/10.png"),
+  '11-timer': require("../assets/images/timerBlink/11.png"),
+  '12-timer': require("../assets/images/timerBlink/12.png"),
+  '13-timer': require("../assets/images/timerBlink/13.png"),
+  '14-timer': require("../assets/images/timerBlink/14.png"),
+  '15-timer': require("../assets/images/timerBlink/15.png"),
+
+  '0-timer2': require("../assets/images/timer/0.png"),
+  '1-timer2': require("../assets/images/timer/1.png"),
+  '2-timer2': require("../assets/images/timer/2.png"),
+  '3-timer2': require("../assets/images/timer/3.png"),
+  '4-timer2': require("../assets/images/timer/4.png"),
+  '5-timer2': require("../assets/images/timer/5.png"),
+  '6-timer2': require("../assets/images/timer/6.png"),
+  '7-timer2': require("../assets/images/timer/7.png"),
+  '8-timer2': require("../assets/images/timer/8.png"),
+  '9-timer2': require("../assets/images/timer/9.png"),
 }

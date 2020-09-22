@@ -37,7 +37,7 @@ const MainStack = createStackNavigator(
       screen: PoseidonSkpRoom
     },
     [ROUTES.PoseidonThreePicRoom]: {
-      screen: PoseidonThreePicRoom
+      screen: PoseidonThreePicRoom,
     },
     [ROUTES.PoseidonThreePicGame]: {
       screen: PoseidonThreePicGame
