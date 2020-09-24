@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const windowWidth = Dimensions.get('window').width;
 
-export const BottomNavigation = ({home, setting, status, balance} : { home: Function, setting: Function, status: String, balance: Number }) => {
+export const BottomNavigation = ({home, setting, status, balance, roundDetail, liveScore} : { home: Function, setting: Function, status: String, balance: Number, roundDetail: Function, liveScore: Function }) => {
   return (
     <View style={styles.navigationContainer}>
       <View style={styles.navigationSecondLayer}>
@@ -15,12 +15,12 @@ export const BottomNavigation = ({home, setting, status, balance} : { home: Func
               <View style={styles.navigationGameWrapper}>
                 <View style={styles.navigationGame}>
                   <View style={styles.navigationGameButton}>
-                    <TouchableOpacity style={styles.buttonSelection} onPress={() => home()}>
-                      <Image style={[styles.imgButton, styles.homeNavImg]} source={require('../assets/images/others/home-nav.png')}/>
+                    <TouchableOpacity style={styles.buttonSelection} onPress={() => roundDetail()}>
+                      <Image style={[styles.imgButton, styles.homeNavImg]} source={require('../assets/images/others/detail_button.png')}/>
                     </TouchableOpacity>
                   </View>
                   <View style={styles.navigationGameButtonlast}>
-                    <TouchableOpacity style={styles.buttonSelection} >
+                    <TouchableOpacity style={styles.buttonSelection} onPress={() => liveScore()}>
                       <Image style={[styles.imgButton, styles.reportNavImg]} source={require('../assets/images/others/report-nav.png')} />
                     </TouchableOpacity>
                   </View>
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF', 
     zIndex: 100, 
     fontWeight: "700",
-    paddingTop: Platform.OS == 'ios' ? 5 : 0
+    paddingTop: Platform.OS == 'ios' ? 2 : 0
   },
   navigationBalanceWrapper: {
     flexDirection: 'row',

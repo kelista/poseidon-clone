@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     right: 8,
     position: 'absolute',
-    paddingTop: Platform.OS == 'ios' ? 5 : 0
+    paddingTop: Platform.OS == 'ios' ? 2 : 0
   },
   header: {
     flex: 1,

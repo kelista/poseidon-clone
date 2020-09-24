@@ -17,6 +17,7 @@ import { CustomHeader } from "../../../../components/Header";
 import { BottomNavigation } from "../../../../components/BottomNavigation";
 import { CheckInWindow } from "../../../../components/CheckIn";
 import { BettingWindow } from "../../../../components/Betting";
+import { RoundDetail } from "../../../../components/RoundDetail";
 import { CardWindow } from "../../../../components/CardPhase";
 import ThreePic from "../../../../styles/ThreePicStyle";
 import { CustomheaderLogo } from "../../../../components/HeaderLogo";
@@ -60,6 +61,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [amount, setAmount] = useState(0);
   const [modalBetting, setModalBetting] = useState(false);
   const [modalCard, setModalCard] = useState(true);
+  const [modalRound, setModalRound] = useState(false);
+  const [modalLive, setModalLive] = useState(false);
   const infoEvent = "info";
   const moveEvent = "move";
   const metaEvent = "game/meta";
@@ -276,6 +279,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     setModalCard(!modalCard);
   };
 
+  const closeOpenRoundDetail = () => {
+    setModalRound(!modalRound)
+  }
+
+  const closeOpenLiveScore = () => {
+    setModalLive(!modalLive)
+  }
+
   const sendBet = (amount: number) => {
     wsClient?.sendMessage(gameBetEvent, { amount });
   };
@@ -309,6 +320,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
               </View>
             </View>
             <StatusBar hidden />
+            {
+            modalRound ?
+              <RoundDetail></RoundDetail>
+              :
+              <></>
+            }
             {modalCheckIn ? (
               <CheckInWindow
                 close={() => closeOpenCheckIn()}
@@ -928,8 +945,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 height: 25.05,
                                 marginTop: -60.5,
                                 transform: [{ translateX: -14 }],
-                              }}
-                            >
+                              }}>
                               <View style={{ flexDirection: "row" }}>
                                 <View
                                   style={{
@@ -1389,6 +1405,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
           setting={() => navigate(ROUTES.PoseidonAccount)}
           status={"game"}
           balance={balancePlayerGame}
+          roundDetail={() => closeOpenRoundDetail()}
+          liveScore={() => false}
         ></BottomNavigation>
       </View>
     </SafeAreaView>
