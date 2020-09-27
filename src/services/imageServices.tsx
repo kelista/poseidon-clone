@@ -82,4 +82,12 @@ export const images :any = {
   '7-timer2': require("../assets/images/timer/7.png"),
   '8-timer2': require("../assets/images/timer/8.png"),
   '9-timer2': require("../assets/images/timer/9.png"),
+  '10-timer2': require("../assets/images/timer/10.png"),
+  '11-timer2': require("../assets/images/timer/11.png"),
+  '12-timer2': require("../assets/images/timer/12.png"),
+  '13-timer2': require("../assets/images/timer/13.png"),
+  '14-timer2': require("../assets/images/timer/14.png"),
+  '15-timer2': require("../assets/images/timer/15.png"),
+
+  'circle': require("../assets/images/timer/circle.png"),
 }

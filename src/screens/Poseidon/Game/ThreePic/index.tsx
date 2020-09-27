@@ -1,4 +1,10 @@
-import React, { useEffect, useContext, useState, useCallback, useMemo } from "react";
+import React, {
+  useEffect,
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import {
   StyleSheet,
   Text,
@@ -7,7 +13,8 @@ import {
   TextInput,
   Image,
   ImageBackground,
-  Dimensions, BackHandler
+  Dimensions,
+  BackHandler,
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { NavigationScreenComponent } from "react-navigation";
@@ -17,7 +24,6 @@ import { CustomHeader } from "../../../../components/Header";
 import { BottomNavigation } from "../../../../components/BottomNavigation";
 import { CheckInWindow } from "../../../../components/CheckIn";
 import { BettingWindow } from "../../../../components/Betting";
-import { RoundDetail } from "../../../../components/RoundDetail";
 import { CardWindow } from "../../../../components/CardPhase";
 import ThreePic from "../../../../styles/ThreePicStyle";
 import { CustomheaderLogo } from "../../../../components/HeaderLogo";
@@ -48,8 +54,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const { navigate } = props.navigation;
 
   const [time, isCounting, startTimer] = useTimer();
-  const timeImageString = useMemo(() => time+"-timer", [time]);
-  const timeImageString2 = useMemo(() => time+"-timer2", [time]);
+  const timeImageString = useMemo(() => time + "-timer", [time]);
+  const timeImageString2 = useMemo(() => time + "-timer2", [time]);
 
   const wsClient = useContext(WSContext);
   const bs = useContext(BSContext);
@@ -61,8 +67,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [amount, setAmount] = useState(0);
   const [modalBetting, setModalBetting] = useState(false);
   const [modalCard, setModalCard] = useState(true);
-  const [modalRound, setModalRound] = useState(false);
-  const [modalLive, setModalLive] = useState(false);
   const infoEvent = "info";
   const moveEvent = "move";
   const metaEvent = "game/meta";
@@ -97,6 +101,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
 
   const gameInfoAction = useCallback(async function (data: any) {
     let banker = data.banker;
+
     setBanker(banker);
     const playerStates = [
       setPlayer1,
@@ -110,7 +115,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     ];
 
     playerStates.forEach((p, index) => {
-      const player = data.players.find((d: any) => d.seatNumber === index + 1);
+      const player = data.players.find((d: any) => d.seatNumber === index+1);
       if (player) {
         player.cards = [];
         p(player);
@@ -121,22 +126,27 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   }, []);
 
   const metaAction = useCallback(async function (data: any) {
-    setMinBet(data.min)
-    setMidBet(data.mid)
-    setMaxBet(data.max)
+    setMinBet(data.min);
+    setMidBet(data.mid);
+    setMaxBet(data.max);
   }, []);
 
-  const timerAction = useCallback(async function (data: any) {
-    startTimer(data.timer);
-  }, [isCounting]);
+  const timerAction = useCallback(
+    async function (data: any) {
+      startTimer(data.timer);
+    },
+    [isCounting]
+  );
 
   const poolAction = useCallback(async function (data: any) {
-    setBankerPool(data.pool)
+    setBankerPool(data.pool);
   }, []);
 
   // method
   const gamePhaseAction = useCallback(async (data: any) => {
     setPhase(data.phase);
+
+    wsClient?.sendMessage(infoEvent, {});
 
     if (data.phase === "result") {
       const playerStates = [
@@ -149,11 +159,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
         setPlayer7,
         setPlayer8,
       ];
-  
+
       playerStates.forEach((p, index) => {
         p((player) => {
           if (player) {
-            const np = {...player};
+            const np = { ...player };
             const username = player.username;
             const result = data.data.find((d: any) => d.username === username);
             if (result) {
@@ -171,8 +181,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   useEffect(() => {
     if (phase === "bet" && banker !== username && balancePlayerGame != 0) {
       setModalBetting(true);
-    } else if(phase === 'fresh') {
-      setBankerPool(0)
+      console.log("You are :", username);
+    } else if (phase === "fresh") {
+      setBankerPool(0);
     } else {
       setModalBetting(false);
     }
@@ -181,7 +192,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   // listen connect
   useEffect(
     function cb() {
-      const backHandler = BackHandler.addEventListener('hardwareBackPress', lobbyHandler)
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        lobbyHandler
+      );
       if (!wsClient) return;
       const listeners: string[] = [];
 
@@ -221,7 +235,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       listeners.push(gamePhaseListener);
 
       const timerListener = wsClient.addListener(
-        gamePhaseEvent,async (data:any) =>  timerAction(data)
+        gamePhaseEvent,
+        async (data: any) => timerAction(data)
       );
       listeners.push(timerListener);
 
@@ -233,7 +248,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       // listeners.push(timerListener);
 
       return () => {
-        backHandler.remove()
+        backHandler.remove();
         listeners.map((lst) => {
           wsClient?.removeListener(lst);
         });
@@ -244,7 +259,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
 
   const lobbyHandler = () => {
     wsClient?.sendMessage("lobby", {});
-    return true
+    return true;
   };
 
   const sitHandler = (seatNumber: number) => {
@@ -279,14 +294,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     setModalCard(!modalCard);
   };
 
-  const closeOpenRoundDetail = () => {
-    setModalRound(!modalRound)
-  }
-
-  const closeOpenLiveScore = () => {
-    setModalLive(!modalLive)
-  }
-
   const sendBet = (amount: number) => {
     wsClient?.sendMessage(gameBetEvent, { amount });
   };
@@ -320,12 +327,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
               </View>
             </View>
             <StatusBar hidden />
-            {
-            modalRound ?
-              <RoundDetail></RoundDetail>
-              :
-              <></>
-            }
             {modalCheckIn ? (
               <CheckInWindow
                 close={() => closeOpenCheckIn()}
@@ -407,34 +408,44 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                   } */}
 
                   {/* Render image */}
-                  {
-                    time < 10 ? 
                     <View style={ThreePic.ThreePicTimerDiv}>
                       <View style={ThreePic.relative}>
                         <Image
-                          source={images[timeImageString2]}
-                          style={ThreePic.ThreePicTimer1}
-                        />
+                          source={images['circle']}
+                          style={ThreePic.ThreePicCircle}
+                        ></Image>
+                        {
+                          time < 10 ? 
+                            <Image
+                              source={images[timeImageString2]}
+                              style={ThreePic.ThreePicTimer1}
+                            /> 
+                          :
+                            time == 11 ?
+                              <Image
+                                source={images[timeImageString2]}
+                                style={ThreePic.ThreePicTimer3}
+                              />
+                              :
+                              <Image
+                                source={images[timeImageString2]}
+                                style={ThreePic.ThreePicTimer2}
+                              />
+                        }
+                        
                       </View>
                     </View> 
-                    :
-                    <View style={ThreePic.ThreePicTimerDiv}>
-                      <View style={ThreePic.relative}>
-                        <Image
-                          source={images[timeImageString]}
-                          style={ThreePic.ThreePicTimer2}
-                        />
-                      </View>
-                    </View> 
-                  }
-                  
+
                   <View style={ThreePic.ThreePicGameTableTextWrapper}>
-                    <Text style={ThreePic.ThreePicGameTableText}>{time}</Text>
                     <Text style={ThreePic.ThreePicGameTableText}>
                       Banker: {bankerPool}
                     </Text>
-                    <Text style={ThreePic.ThreePicGameTableText}>Min: {minBet}</Text>
-                    <Text style={ThreePic.ThreePicGameTableText}>Max: {maxBet}</Text>
+                    <Text style={ThreePic.ThreePicGameTableText}>
+                      Min: {minBet}
+                    </Text>
+                    <Text style={ThreePic.ThreePicGameTableText}>
+                      Max: {maxBet}
+                    </Text>
                   </View>
                   <Image
                     source={require("../../../../assets/images/others/table-new.png")}
@@ -533,7 +544,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                   source={require("../../../../assets/images/others/coin.png")}
                                   style={ThreePic.coin}
                                 />
-                                <Text style={[ThreePic.amountText, player1?.result > 0 ? ThreePic.positiveAmount : ThreePic.negativeAmount]}>
+                                <Text
+                                  style={[
+                                    ThreePic.amountText,
+                                    player1?.result > 0
+                                      ? ThreePic.positiveAmount
+                                      : ThreePic.negativeAmount,
+                                  ]}
+                                >
                                   {player1?.result}
                                 </Text>
                               </View>
@@ -650,7 +668,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                   source={require("../../../../assets/images/others/coin.png")}
                                   style={ThreePic.coin}
                                 />
-                                <Text style={[ThreePic.amountText, player2?.result > 0 ? ThreePic.positiveAmount : ThreePic.negativeAmount]}>
+                                <Text
+                                  style={[
+                                    ThreePic.amountText,
+                                    player2?.result > 0
+                                      ? ThreePic.positiveAmount
+                                      : ThreePic.negativeAmount,
+                                  ]}
+                                >
                                   {player2?.result}
                                 </Text>
                               </View>
@@ -767,7 +792,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                   source={require("../../../../assets/images/others/coin.png")}
                                   style={ThreePic.coin}
                                 />
-                                <Text style={[ThreePic.amountText, player3?.result > 0 ? ThreePic.positiveAmount : ThreePic.negativeAmount]}>
+                                <Text
+                                  style={[
+                                    ThreePic.amountText,
+                                    player3?.result > 0
+                                      ? ThreePic.positiveAmount
+                                      : ThreePic.negativeAmount,
+                                  ]}
+                                >
                                   {player3?.result}
                                 </Text>
                               </View>
@@ -885,7 +917,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                   source={require("../../../../assets/images/others/coin.png")}
                                   style={ThreePic.coin}
                                 />
-                                <Text style={[ThreePic.amountText, player4?.result > 0 ? ThreePic.positiveAmount : ThreePic.negativeAmount]}>
+                                <Text
+                                  style={[
+                                    ThreePic.amountText,
+                                    player4?.result > 0
+                                      ? ThreePic.positiveAmount
+                                      : ThreePic.negativeAmount,
+                                  ]}
+                                >
                                   {player4?.result}
                                 </Text>
                               </View>
@@ -945,7 +984,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 height: 25.05,
                                 marginTop: -60.5,
                                 transform: [{ translateX: -14 }],
-                              }}>
+                              }}
+                            >
                               <View style={{ flexDirection: "row" }}>
                                 <View
                                   style={{
@@ -1005,7 +1045,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                   source={require("../../../../assets/images/others/coin.png")}
                                   style={ThreePic.coin}
                                 />
-                                <Text style={[ThreePic.amountText, player5?.result > 0 ? ThreePic.positiveAmount : ThreePic.negativeAmount]}>
+                                <Text
+                                  style={[
+                                    ThreePic.amountText,
+                                    player5?.result > 0
+                                      ? ThreePic.positiveAmount
+                                      : ThreePic.negativeAmount,
+                                  ]}
+                                >
                                   {player5?.result}
                                 </Text>
                               </View>
@@ -1122,7 +1169,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                   source={require("../../../../assets/images/others/coin.png")}
                                   style={ThreePic.coin}
                                 />
-                                <Text style={[ThreePic.amountText, player6?.result > 0 ? ThreePic.positiveAmount : ThreePic.negativeAmount]}>
+                                <Text
+                                  style={[
+                                    ThreePic.amountText,
+                                    player6?.result > 0
+                                      ? ThreePic.positiveAmount
+                                      : ThreePic.negativeAmount,
+                                  ]}
+                                >
                                   {player6?.result}
                                 </Text>
                               </View>
@@ -1239,7 +1293,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                   source={require("../../../../assets/images/others/coin.png")}
                                   style={ThreePic.coin}
                                 />
-                                <Text style={[ThreePic.amountText, player7?.result > 0 ? ThreePic.positiveAmount : ThreePic.negativeAmount]}>
+                                <Text
+                                  style={[
+                                    ThreePic.amountText,
+                                    player7?.result > 0
+                                      ? ThreePic.positiveAmount
+                                      : ThreePic.negativeAmount,
+                                  ]}
+                                >
                                   {player7?.result}
                                 </Text>
                               </View>
@@ -1356,7 +1417,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                   source={require("../../../../assets/images/others/coin.png")}
                                   style={ThreePic.coin}
                                 />
-                                <Text style={[ThreePic.amountText, player8?.result > 0 ? ThreePic.positiveAmount : ThreePic.negativeAmount]}>
+                                <Text
+                                  style={[
+                                    ThreePic.amountText,
+                                    player8?.result > 0
+                                      ? ThreePic.positiveAmount
+                                      : ThreePic.negativeAmount,
+                                  ]}
+                                >
                                   {player8?.result}
                                 </Text>
                               </View>
@@ -1405,8 +1473,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
           setting={() => navigate(ROUTES.PoseidonAccount)}
           status={"game"}
           balance={balancePlayerGame}
-          roundDetail={() => closeOpenRoundDetail()}
-          liveScore={() => false}
         ></BottomNavigation>
       </View>
     </SafeAreaView>

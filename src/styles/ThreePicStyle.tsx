@@ -294,7 +294,7 @@ export default StyleSheet.create({
     width: 106,
     height: 60,
     zIndex: 4,
-    top: '34%',
+    top: '41%',
     opacity: 0.25
     // backgroundColor: 'green'
   },
@@ -308,15 +308,37 @@ export default StyleSheet.create({
     height: '100%',
     backgroundColor: 'blue'
   },
+  ThreePicCircle: {
+    position: 'absolute',
+    width: 95,
+    height: 95,
+    top: '50%',
+    left: '50%',
+    transform: [
+      {translateX: -47.5},
+      {translateY: -47.5}
+    ]
+  },
   ThreePicTimer2: {
-    width: 80,
-    height: 62.5,
+    width: 61,
+    height: 46,
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: [
-      {translateX: -40},
-      {translateY: -31.25}
+      {translateX: -30.5},
+      {translateY: -23}
+    ],
+  },
+  ThreePicTimer3: {
+    width: 55,
+    height: 44,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [
+      {translateX: -27.5},
+      {translateY: -22}
     ],
   },
   ThreePicTimer1: {
@@ -325,10 +347,10 @@ export default StyleSheet.create({
     top: '50%',
     left: '50%',
     transform: [
-      {translateX: -25}, {translateY: -31.25}
+      {translateX: -17.5}, {translateY: -23.5}
     ],
-    width: 50,
-    height: 62.5,
+    width: 35,
+    height: 47,
   },
   ThreePicTimer2Div: {
     flex: 1,
@@ -338,13 +360,14 @@ export default StyleSheet.create({
   ThreePicTimerDiv: {
     position: 'absolute',
     zIndex: 5,
-    top: '20%',
+    top: '31%',
     left: '50%',
     transform: [
       {translateX: -50}
     ],
     width: 100,
     height: 100,
+    borderRadius: 100,
   },
   ThreePicGamePinWrapper: { 
     position: 'relative',
