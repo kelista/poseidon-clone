@@ -24,6 +24,7 @@ import { CustomHeader } from "../../../../components/Header";
 import { BottomNavigation } from "../../../../components/BottomNavigation";
 import { CheckInWindow } from "../../../../components/CheckIn";
 import { BettingWindow } from "../../../../components/Betting";
+import { RoundDetail } from "../../../../components/RoundDetail";
 import { CardWindow } from "../../../../components/CardPhase";
 import ThreePic from "../../../../styles/ThreePicStyle";
 import { CustomheaderLogo } from "../../../../components/HeaderLogo";
@@ -67,6 +68,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [sitStatus, setSitStatus] = useState("");
   const [amount, setAmount] = useState(0);
   const [modalBetting, setModalBetting] = useState(false);
+  const [modalRound, setModalRound] = useState(false);
   const [modalCard, setModalCard] = useState(true);
   const infoEvent = "info";
   const moveEvent = "move";
@@ -305,6 +307,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     // setModalBetting(!modalBetting)
   };
 
+  const closeOpenRoundDetail = () => {
+    setModalRound(!modalRound)
+  }
+
   const buyIn = () => {
     closeOpenCheckIn();
     // closeOpenBetting()
@@ -347,6 +353,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
               </View>
             </View>
             <StatusBar hidden />
+            {
+            modalRound ?
+              <RoundDetail></RoundDetail>
+              :
+              <></>
+            }
             {modalCheckIn ? (
               <CheckInWindow
                 close={() => closeOpenCheckIn()}
@@ -1489,7 +1501,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
           </View>
         </ScrollView>
         <BottomNavigation
-          home={() => navigate(ROUTES.PoseidonLobby)}
+          roundDetail={() => closeOpenRoundDetail()}
           setting={() => navigate(ROUTES.PoseidonAccount)}
           status={"game"}
           balance={balancePlayerGame}
