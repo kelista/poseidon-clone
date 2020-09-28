@@ -4,7 +4,7 @@
   "expo": {
     "name": "poseidon",
     "slug": "poseidon",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "ios": {
       "bundleIdentifier": "com.node8.poseidon"
     },

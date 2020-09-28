@@ -50,6 +50,8 @@ interface Player {
   result?: number;
 }
 
+const multiplier = 2;
+
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   props
 ) => {
@@ -83,6 +85,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [balancePlayerGame, setBalancePlayerGame] = useState(
     props.balancePlayerGame
   );
+  const [userBet, setUserBet] = useState(0);
   const [username, setUsername] = useState("");
   const [minBet, setMinBet] = useState(0);
   const [midBet, setMidBet] = useState(0);
@@ -118,10 +121,18 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     ];
 
     playerStates.forEach((p, index) => {
-      const player = data.players.find((d: any) => d.seatNumber === index+1);
+      const player = data.players.find((d: any) => d.seatNumber === index + 1);
       if (player) {
         player.cards = [];
         p(player);
+        setUsername((u) => {
+          if (player.username === u) {
+            const totalBet = player.username === banker ? 0 : player.bet;
+            setUserBet(totalBet / multiplier);
+            console.log("Userbet :", userBet);
+          }
+          return u;
+        });
       } else {
         p(undefined);
       }
@@ -190,26 +201,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       setModalBetting(false);
     }
   }, [phase, banker, username]);
-
-  useEffect(() => {
-    if(player1?.username == username) {
-      setBalancePlayerGame(player1?.balance)
-    } else if(player2?.username == username) {
-      setBalancePlayerGame(player2?.balance)
-    } else if(player3?.username == username) {
-      setBalancePlayerGame(player3?.balance)
-    } else if(player4?.username == username) {
-      setBalancePlayerGame(player4?.balance)
-    } else if(player5?.username == username) {
-      setBalancePlayerGame(player5?.balance)
-    } else if(player6?.username == username) {
-      setBalancePlayerGame(player6?.balance)
-    } else if(player7?.username == username) {
-      setBalancePlayerGame(player7?.balance)
-    } else if(player8?.username == username) {
-      setBalancePlayerGame(player8?.balance)
-    }
-  }, [player1, player2, username]);
 
   // listen connect
   useEffect(
@@ -308,8 +299,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   };
 
   const closeOpenRoundDetail = () => {
-    setModalRound(!modalRound)
-  }
+    setModalRound(!modalRound);
+  };
 
   const buyIn = () => {
     closeOpenCheckIn();
@@ -332,7 +323,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
       <View style={{ flex: 1 }}>
         {/* <CustomHeader title="Poseidon Club" status="lobby"></CustomHeader> */}
         <CustomheaderLogo
@@ -353,12 +344,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
               </View>
             </View>
             <StatusBar hidden />
-            {
-            modalRound ?
-              <RoundDetail></RoundDetail>
-              :
-              <></>
-            }
+            {modalRound ? <RoundDetail></RoundDetail> : <></>}
             {modalCheckIn ? (
               <CheckInWindow
                 close={() => closeOpenCheckIn()}
@@ -440,33 +426,30 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                   } */}
 
                   {/* Render image */}
-                    <View style={ThreePic.ThreePicTimerDiv}>
-                      <View style={ThreePic.relative}>
+                  <View style={ThreePic.ThreePicTimerDiv}>
+                    <View style={ThreePic.relative}>
+                      <Image
+                        source={images["circle"]}
+                        style={ThreePic.ThreePicCircle}
+                      ></Image>
+                      {time < 10 ? (
                         <Image
-                          source={images['circle']}
-                          style={ThreePic.ThreePicCircle}
-                        ></Image>
-                        {
-                          time < 10 ? 
-                            <Image
-                              source={images[timeImageString2]}
-                              style={ThreePic.ThreePicTimer1}
-                            /> 
-                          :
-                            time == 11 ?
-                              <Image
-                                source={images[timeImageString2]}
-                                style={ThreePic.ThreePicTimer3}
-                              />
-                              :
-                              <Image
-                                source={images[timeImageString2]}
-                                style={ThreePic.ThreePicTimer2}
-                              />
-                        }
-                        
-                      </View>
-                    </View> 
+                          source={images[timeImageString2]}
+                          style={ThreePic.ThreePicTimer1}
+                        />
+                      ) : time == 11 ? (
+                        <Image
+                          source={images[timeImageString2]}
+                          style={ThreePic.ThreePicTimer3}
+                        />
+                      ) : (
+                        <Image
+                          source={images[timeImageString2]}
+                          style={ThreePic.ThreePicTimer2}
+                        />
+                      )}
+                    </View>
+                  </View>
 
                   <View style={ThreePic.ThreePicGameTableTextWrapper}>
                     <Text style={ThreePic.ThreePicGameTableText}>
@@ -603,7 +586,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player1?.bet}
+                                {player1.balance}
                               </Text>
                             </View>
                           </View>
@@ -727,7 +710,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player2?.bet}
+                                {player2.balance}
                               </Text>
                             </View>
                           </View>
@@ -851,7 +834,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player3?.bet}
+                                {player3.balance}
                               </Text>
                             </View>
                           </View>
@@ -976,7 +959,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player4?.bet}
+                                {player4.balance}
                               </Text>
                             </View>
                           </View>
@@ -1104,7 +1087,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player5?.bet}
+                                {player5.balance}
                               </Text>
                             </View>
                           </View>
@@ -1228,7 +1211,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player6?.bet}
+                                {player6.balance}
                               </Text>
                             </View>
                           </View>
@@ -1352,7 +1335,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player7?.bet}
+                                {player7.balance}
                               </Text>
                             </View>
                           </View>
@@ -1476,7 +1459,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player8?.bet}
+                                {player8.balance}
                               </Text>
                             </View>
                           </View>
@@ -1504,7 +1487,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
           roundDetail={() => closeOpenRoundDetail()}
           setting={() => navigate(ROUTES.PoseidonAccount)}
           status={"game"}
-          balance={balancePlayerGame}
+          balance={userBet}
         ></BottomNavigation>
       </View>
     </SafeAreaView>
