@@ -207,7 +207,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
   }, [wsClient ? true : false, listenerReady]);
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={{ flex: 1 }}>
         {/* <CustomHeader title="Poseidon Club" status="lobby"></CustomHeader> */}
         <CustomheaderLogo

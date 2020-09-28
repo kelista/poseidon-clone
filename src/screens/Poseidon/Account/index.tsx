@@ -54,7 +54,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   }, [])
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={{flex: 1}}>
         <CustomheaderLogo name="account" lobby={() => lobbyHandler()}></CustomheaderLogo>
         <ScrollView>

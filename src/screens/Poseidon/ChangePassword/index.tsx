@@ -22,7 +22,7 @@ export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) =
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
     <View style={{flex: 1}}>
       {/* <CustomHeader title="Change Password" status="changePass"></CustomHeader> */}
       <CustomheaderLogo name="Change Password" lobby={() => accountHandler()}></CustomheaderLogo>

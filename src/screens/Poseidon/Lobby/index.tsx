@@ -132,7 +132,7 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   if (connecting) return (<Text>Connecting</Text>)
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <View style={{ flex: 1 }}>
         <CustomheaderLogo name="lobby" lobby={() => false}></CustomheaderLogo>
         <ScrollView>
