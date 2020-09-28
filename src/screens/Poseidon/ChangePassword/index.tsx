@@ -7,7 +7,8 @@ import {
 import ChangePassStyle from "../../../styles/ChangePassStyle"
 
 import { CustomButton } from "../../../components/Button"
-import { CustomHeader } from "../../../components/Header"
+// import { CustomHeader } from "../../../components/Header"
+import { CustomheaderLogo } from "../../../components/HeaderLogo"
 import { BottomNavigation } from "../../../components/BottomNavigation"
 import { ROUTES } from "../../../../routes";
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -15,10 +16,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
+  const accountHandler = () => {
+    // stopBacksound()
+    navigate(ROUTES.PoseidonAccount);
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
     <View style={{flex: 1}}>
-      <CustomHeader title="Change Password" status="changePass"></CustomHeader>
+      {/* <CustomHeader title="Change Password" status="changePass"></CustomHeader> */}
+      <CustomheaderLogo name="Change Password" lobby={() => accountHandler()}></CustomheaderLogo>
       <ScrollView>
         <StatusBar hidden />
         <View style={ChangePassStyle.container}>
