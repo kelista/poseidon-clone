@@ -5,7 +5,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const scale = windowWidth/414
-const screenHeight = windowHeight * 1.1
+const scaleTable = (windowWidth+30)/414
 
 export default StyleSheet.create({
   relative: {
@@ -166,7 +166,7 @@ export default StyleSheet.create({
   ThreePicImageWrapper: {
     height: '100%', 
     width: '100%',
-    backgroundColor: 'yellow'
+    // backgroundColor: 'yellow'
   },
   ThreePicImageBackground: {
     position: 'absolute', 
@@ -269,14 +269,14 @@ export default StyleSheet.create({
   ThreePicGameTableImageWrapper: {
     position: 'relative',
     alignItems: 'center',
-    marginTop: windowHeight-screenHeight,
-    height: '110%',
-    // backgroundColor: 'yellow',
+    marginTop: -25,
+    height: '100%',
+    // backgroundColor: 'blue',
     justifyContent: 'center',
   },
   ThreePicGameTableImage: {
     position: 'absolute',
-    transform: [{ scaleX: scale }, { scaleY: scale }]
+    transform: [{ scaleX: scaleTable}, { scaleY: scaleTable }],
     // backgroundColor: 'green'
   },
   ThreePicGameTableTextWrapper: {
@@ -357,7 +357,7 @@ export default StyleSheet.create({
   ThreePicTimer2Div: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: 'blue'
+    // backgroundColor: 'blue'
   },
   ThreePicTimerDiv: {
     position: 'absolute',
@@ -375,7 +375,7 @@ export default StyleSheet.create({
     position: 'relative',
     height: 584,
     width: 331,
-    transform: [{ scaleX: scale }, { scaleY: scale }]
+    transform: [{ scaleX: scaleTable }, { scaleY: scaleTable }]
     // backgroundColor: 'green'
   },
   SitTable: {
