@@ -92,18 +92,20 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
                     />
                   </Svg>
                 </TouchableOpacity>
-                <TouchableOpacity style={AccountStyle.accountMenu} onPress={toggleClick}>
+                <View style={AccountStyle.accountMenu} >
                   <Image source={require('../../../assets/images/others/sound-menu.png')} style={AccountStyle.accountMenuImage} />
                   <Text style={AccountStyle.accountMenuText}>BGM / Sounds</Text>
                   <View style={AccountStyle.accountMenuToogle}>
-                    {
-                      toggle ? 
-                      <View style={AccountStyle.accountMenuToogleOn}></View>
-                      :
-                      <View style={AccountStyle.accountMenuToogleOff}></View>
-                    }
+                    <TouchableOpacity onPress={toggleClick}>
+                      {
+                        toggle ? 
+                        <View style={AccountStyle.accountMenuToogleOn}></View>
+                        :
+                        <View style={AccountStyle.accountMenuToogleOff}></View>
+                      }
+                    </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
+                </View>
                 <TouchableOpacity style={AccountStyle.accountMenu}>
                   <Image source={require('../../../assets/images/others/term-menu.png')} style={AccountStyle.accountMenuImage} />
                   <Text style={AccountStyle.accountMenuText}>Terms and Conditions</Text>

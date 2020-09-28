@@ -1,9 +1,11 @@
+import { transform } from '@babel/core';
 import { StyleSheet, Dimensions } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const scale = windowWidth/414
+const screenHeight = windowHeight * 1.1
 
 export default StyleSheet.create({
   relative: {
@@ -267,10 +269,10 @@ export default StyleSheet.create({
   ThreePicGameTableImageWrapper: {
     position: 'relative',
     alignItems: 'center',
-    marginTop: -25,
-    height: '100%',
+    marginTop: windowHeight-screenHeight,
+    height: '110%',
     // backgroundColor: 'yellow',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   ThreePicGameTableImage: {
     position: 'absolute',
