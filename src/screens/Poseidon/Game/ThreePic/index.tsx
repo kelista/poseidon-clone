@@ -44,6 +44,7 @@ interface Player {
   seatNumber: number;
   bot: boolean;
   balance: number;
+  bet: number;
   cards: string[];
   result?: number;
 }
@@ -181,13 +182,32 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   useEffect(() => {
     if (phase === "bet" && banker !== username && balancePlayerGame != 0) {
       setModalBetting(true);
-      console.log("You are :", username);
     } else if (phase === "fresh") {
       setBankerPool(0);
     } else {
       setModalBetting(false);
     }
   }, [phase, banker, username]);
+
+  useEffect(() => {
+    if(player1?.username == username) {
+      setBalancePlayerGame(player1?.balance)
+    } else if(player2?.username == username) {
+      setBalancePlayerGame(player2?.balance)
+    } else if(player3?.username == username) {
+      setBalancePlayerGame(player3?.balance)
+    } else if(player4?.username == username) {
+      setBalancePlayerGame(player4?.balance)
+    } else if(player5?.username == username) {
+      setBalancePlayerGame(player5?.balance)
+    } else if(player6?.username == username) {
+      setBalancePlayerGame(player6?.balance)
+    } else if(player7?.username == username) {
+      setBalancePlayerGame(player7?.balance)
+    } else if(player8?.username == username) {
+      setBalancePlayerGame(player8?.balance)
+    }
+  }, [player1, player2, username]);
 
   // listen connect
   useEffect(
@@ -571,7 +591,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player1?.balance}
+                                {player1?.bet}
                               </Text>
                             </View>
                           </View>
@@ -695,7 +715,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player2?.balance}
+                                {player2?.bet}
                               </Text>
                             </View>
                           </View>
@@ -819,7 +839,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player3?.balance}
+                                {player3?.bet}
                               </Text>
                             </View>
                           </View>
@@ -944,7 +964,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player4?.balance}
+                                {player4?.bet}
                               </Text>
                             </View>
                           </View>
@@ -1072,7 +1092,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player5?.balance}
+                                {player5?.bet}
                               </Text>
                             </View>
                           </View>
@@ -1196,7 +1216,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player6?.balance}
+                                {player6?.bet}
                               </Text>
                             </View>
                           </View>
@@ -1320,7 +1340,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player7?.balance}
+                                {player7?.bet}
                               </Text>
                             </View>
                           </View>
@@ -1444,7 +1464,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.balance}>
-                                {player8?.balance}
+                                {player8?.bet}
                               </Text>
                             </View>
                           </View>
