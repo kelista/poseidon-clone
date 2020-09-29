@@ -25,6 +25,7 @@ import { BottomNavigation } from "../../../../components/BottomNavigation";
 import { CheckInWindow } from "../../../../components/CheckIn";
 import { BettingWindow } from "../../../../components/Betting";
 import { RoundDetail } from "../../../../components/RoundDetail";
+import { LiveScore } from "../../../../components/LiveScore";
 import { CardWindow } from "../../../../components/CardPhase";
 import ThreePic from "../../../../styles/ThreePicStyle";
 import { CustomheaderLogo } from "../../../../components/HeaderLogo";
@@ -71,6 +72,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [amount, setAmount] = useState(0);
   const [modalBetting, setModalBetting] = useState(false);
   const [modalRound, setModalRound] = useState(false);
+  const [modalLive, setModalLive] = useState(false);
   const [modalCard, setModalCard] = useState(true);
   const infoEvent = "info";
   const moveEvent = "move";
@@ -300,6 +302,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
 
   const closeOpenRoundDetail = () => {
     setModalRound(!modalRound);
+    setModalLive(false)
+  };
+
+  const closeOpenLiveScore = () => {
+    setModalLive(!modalLive);
+    setModalRound(false);
   };
 
   const buyIn = () => {
@@ -345,6 +353,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
             </View>
             <StatusBar hidden />
             {modalRound ? <RoundDetail></RoundDetail> : <></>}
+            {modalLive ? <LiveScore></LiveScore> : <></>}
             {modalCheckIn ? (
               <CheckInWindow
                 close={() => closeOpenCheckIn()}
@@ -1485,6 +1494,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
         </ScrollView>
         <BottomNavigation
           roundDetail={() => closeOpenRoundDetail()}
+          liveScore={() => closeOpenLiveScore()}
           setting={() => navigate(ROUTES.PoseidonAccount)}
           status={"game"}
           balance={userBet}

@@ -536,18 +536,31 @@ export const RoundDetail = () => {
                     </View>
                 </View>
             </View>
-            <Slider
-                style={styles.RoundDetailSlider}
-                step={1}
-                minimumValue={0}
-                maximumValue={balance}
-                minimumTrackTintColor="#FFFFFF"
-                maximumTrackTintColor="#8E8E8E"
-                value={sliderValue}
-                onValueChange={(sliderValue) => setSliderMethod(sliderValue)}
-                thumbTintColor="#730000"
-                thumbImage={require("../assets/images/others/slider-button-new.png")}
-            />
+						<View style={{width: "100%", paddingLeft: 10, paddingRight: 10}}>
+							<Slider
+									style={styles.RoundDetailSlider}
+									step={1}
+									minimumValue={0}
+									maximumValue={balance}
+									minimumTrackTintColor="#FFFFFF"
+									maximumTrackTintColor="#8E8E8E"
+									value={sliderValue}
+									onValueChange={(sliderValue) => setSliderMethod(sliderValue)}
+									thumbTintColor="#730000"
+									thumbImage={require("../assets/images/others/slider-button-new.png")}
+							/>
+						</View>
+            <View style={styles.RoundDetailPaging}>
+							<View style={{position: 'relative', width: '100%'}}>
+								<TouchableOpacity style={styles.RoundDetailPagingButtonBackward}></TouchableOpacity>
+								<TouchableOpacity style={styles.RoundDetailPagingButtonBack}></TouchableOpacity>
+								<View style={{width: '100%', alignItems: 'center'}}>
+							  	<Text style={styles.RoundDetailPagingText}>57 / 57</Text>
+								</View>
+								<TouchableOpacity style={styles.RoundDetailPagingButtonBackwardReverse}></TouchableOpacity>
+								<TouchableOpacity style={styles.RoundDetailPagingButtonBackReverse}></TouchableOpacity>
+							</View>
+            </View>
         </View>
     </View>
   );
@@ -648,6 +661,58 @@ const styles = StyleSheet.create({
     fontSize: 12, 
     lineHeight: 14, 
     color: '#F03939'
-  }
+  },
+  RoundDetailPaging: {
+		position: 'relative',
+    height: 18,
+		width: '100%',
+		marginTop: 18,
+		paddingLeft: 25,
+		paddingRight: 25,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
+	RoundDetailPagingText: {
+		fontSize: 11,
+    fontWeight: 'bold',
+    lineHeight: 12,
+    color: '#FAE88C'
+	},
+	RoundDetailPagingButtonBackward: {
+		position: 'absolute',
+		left: 0,
+		width: 18,
+		height: 18,
+		backgroundColor: '#FAE88C',
+		borderRadius: 18,
+		transform: [{ translateY: -4.5 }]
+	},
+	RoundDetailPagingButtonBack: {
+		position: 'absolute',
+		left: 25,
+		width: 18,
+		height: 18,
+		backgroundColor: '#FAE88C',
+		borderRadius: 18,
+		transform: [{ translateY: -4.5 }]
+	},
+	RoundDetailPagingButtonBackwardReverse: {
+		position: 'absolute',
+		right: 0,
+		width: 18,
+		height: 18,
+		backgroundColor: '#FAE88C',
+		borderRadius: 18,
+		transform: [{ translateY: -4.5 }]
+	},
+	RoundDetailPagingButtonBackReverse: {
+		position: 'absolute',
+		right: 25,
+		width: 18,
+		height: 18,
+		backgroundColor: '#FAE88C',
+		borderRadius: 18,
+		transform: [{ translateY: -4.5 }]
+	}
 });
 
