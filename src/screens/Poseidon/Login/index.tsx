@@ -8,7 +8,7 @@ import LoginStyle from "../../../styles/LoginStyle"
 import { CustomButton } from "../../../components/Button"
 import { ROUTES } from "../../../../routes";
 import { initBacksound, playBacksound } from '../../../services/sound_manager'
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Constants from "expo-constants";
 import base from '../../../styles/base';
 import axios from 'axios';
 import { SSContext } from "../../../../routes/simpleStoreContext";
@@ -55,7 +55,7 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   }
 
   return (
-    <SafeAreaView style={base.safeAreaView}>
+    <View style={{paddingTop: Platform.OS === 'ios' ? Constants.statusBarHeight : 0}}>
       <StatusBar hidden />
       <ScrollView ref={scrollView}>
         <View style={bottomPage ? LoginStyle.loginContainerFocus : LoginStyle.loginContainer}>
@@ -88,7 +88,7 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
