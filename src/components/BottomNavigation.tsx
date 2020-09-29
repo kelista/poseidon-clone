@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const windowWidth = Dimensions.get('window').width;
 
-export const BottomNavigation = ({home, setting, status, balance, roundDetail, liveScore} : { home: Function, setting: Function, status: String, balance: Number, roundDetail: Function, liveScore: Function }) => {
+export const BottomNavigation = ({home, setting, status, balance, roundDetail} : { home: Function, setting: Function, status: String, balance: Number, roundDetail: Function }) => {
   return (
     <View style={styles.navigationContainer}>
       <View style={styles.navigationSecondLayer}>
@@ -20,7 +20,7 @@ export const BottomNavigation = ({home, setting, status, balance, roundDetail, l
                     </TouchableOpacity>
                   </View>
                   <View style={styles.navigationGameButtonlast}>
-                    <TouchableOpacity style={styles.buttonSelection} onPress={() => liveScore()}>
+                    <TouchableOpacity style={styles.buttonSelection}>
                       <Image style={[styles.imgButton, styles.reportNavImg]} source={require('../assets/images/others/report-nav.png')} />
                     </TouchableOpacity>
                   </View>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   navigationSecondLayer: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 0 : 0,
+    bottom: Platform.OS === 'ios' ? 20 : 0,
     width: windowWidth,
     height: 53,
   },

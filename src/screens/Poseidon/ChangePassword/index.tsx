@@ -11,7 +11,7 @@ import { CustomButton } from "../../../components/Button"
 import { CustomheaderLogo } from "../../../components/HeaderLogo"
 import { BottomNavigation } from "../../../components/BottomNavigation"
 import { ROUTES } from "../../../../routes";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Constants from "expo-constants";
 
 export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
@@ -22,8 +22,7 @@ export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) =
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
-    <View style={{flex: 1}}>
+    <View style={{paddingTop: Platform.OS === 'ios' ? Constants.statusBarHeight : 0}}>
       {/* <CustomHeader title="Change Password" status="changePass"></CustomHeader> */}
       <CustomheaderLogo name="Change Password" lobby={() => accountHandler()}></CustomheaderLogo>
       <ScrollView>
@@ -46,6 +45,5 @@ export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) =
         setting={() => navigate(ROUTES.PoseidonAccount)}>
       </BottomNavigation>
     </View>
-   </SafeAreaView>
   );
 };
