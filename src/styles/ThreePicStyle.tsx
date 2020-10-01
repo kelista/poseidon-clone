@@ -174,7 +174,8 @@ export default StyleSheet.create({
     width: '100%'
   },
   ThreePicRoomContainer: {
-    height: Platform.OS === 'ios' ? windowHeight - 391.1 : windowHeight - 373.1,
+    // height: Platform.OS === 'ios' ? windowHeight - 391.1 : windowHeight - 373.1,
+    height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -209,6 +210,7 @@ export default StyleSheet.create({
     width: '100%',
     height: windowHeight - 106,
     position: 'relative',
+    alignItems: 'center'
   },
   ThreePicGameProfile: {
     position: 'absolute',
@@ -267,7 +269,7 @@ export default StyleSheet.create({
     height: 21
   },
   ThreePicGameTableImageWrapper: {
-    position: 'relative',
+    position: 'absolute',
     alignItems: 'center',
     marginTop: 0,
     height: '100%',

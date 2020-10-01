@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Circle, Rect, Path } from 'react-native-svg';
 
@@ -67,7 +67,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textShadowColor: 'rgba(0, 0, 0, 0.57)',
     textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 1
+    textShadowRadius: 1,
+    paddingTop: Platform.OS == 'ios' ? 2 : 0
   },
 });
 

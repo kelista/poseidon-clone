@@ -25,7 +25,8 @@ export default StyleSheet.create({
     width: '100%'
   },
   lobbyGameWrapper: {
-    height: Platform.OS === 'ios' ? windowHeight - 391.1 : windowHeight - 373.1,
+    // height: Platform.OS === 'ios' ? windowHeight - 391.1 : windowHeight - 373.1,
+    height: '100%',
     width: '100%',
     textAlign: 'center',
     alignItems: 'center',
