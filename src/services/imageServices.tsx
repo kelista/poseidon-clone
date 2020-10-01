@@ -55,6 +55,8 @@ export const images :any = {
   'QS': require("../assets/images/card/SpadeDeck/QS.png"),
   'KS': require("../assets/images/card/SpadeDeck/KS.png"),
 
+  'back': require("../assets/images/card/BackCard.png"),
+
   '0-timer': require("../assets/images/timerBlink/0.png"),
   '1-timer': require("../assets/images/timerBlink/1.png"),
   '2-timer': require("../assets/images/timerBlink/2.png"),

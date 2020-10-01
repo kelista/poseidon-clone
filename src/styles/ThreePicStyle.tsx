@@ -1,5 +1,5 @@
 import { transform } from '@babel/core';
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -174,12 +174,12 @@ export default StyleSheet.create({
     width: '100%'
   },
   ThreePicRoomContainer: {
-    height: '100%',
+    height: Platform.OS === 'ios' ? windowHeight - 391.1 : windowHeight - 373.1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   ThreePicRoomWrapper: {
-      flexDirection: 'row'
+    flexDirection: 'row',
   },
   ThreePicRoomBetText: {
     position: 'absolute',
@@ -207,7 +207,7 @@ export default StyleSheet.create({
   },
   ThreePicGameContainer: {
     width: '100%',
-    height: '100%',
+    height: windowHeight - 106,
     position: 'relative',
   },
   ThreePicGameProfile: {
@@ -269,7 +269,7 @@ export default StyleSheet.create({
   ThreePicGameTableImageWrapper: {
     position: 'relative',
     alignItems: 'center',
-    marginTop: -25,
+    marginTop: 0,
     height: '100%',
     // backgroundColor: 'blue',
     justifyContent: 'center',
@@ -277,7 +277,6 @@ export default StyleSheet.create({
   ThreePicGameTableImage: {
     position: 'absolute',
     transform: [{ scaleX: scaleTable}, { scaleY: scaleTable }],
-    // backgroundColor: 'green'
   },
   ThreePicGameTableTextWrapper: {
     position: 'absolute', 

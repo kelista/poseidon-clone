@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Slider from "@react-native-community/slider";
@@ -6,12 +6,16 @@ import Slider from "@react-native-community/slider";
 const windowWidth = Dimensions.get('window').width;
 const scale = windowWidth/414
 
-export const LiveScore = () => {
-    const balance = 1000;
-    const [sliderValue, setsliderValue] = useState(0);
-    const setSliderMethod = (sliderValue: number) => {
-		setsliderValue(sliderValue)
-    }
+export const LiveScore = (props: any) => {
+  const {
+    result,
+    info
+  } = props
+  const balance = 1000;
+  const [sliderValue, setsliderValue] = useState(0);
+  const setSliderMethod = (sliderValue: number) => {
+  setsliderValue(sliderValue)
+  }
     
   return (
     <View style={styles.LiveScoreContainer}>
@@ -26,30 +30,18 @@ export const LiveScore = () => {
                       <Text style={styles.LiveScoreBodyTitleText}>Player</Text>
                     </LinearGradient>
                     <View style={styles.LiveScoreBodyContentDetail}>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowText}>Wyvern</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowText}>Wyvern</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowText}>Wyvern</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowText}>Wyvern</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowText}>Wyvern</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowText}>Wyvern</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowText}>Wyvern</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowText}>Wyvern</Text>
-                      </View>
+                      {
+                        result ? 
+                          result.map(d => {
+                            return (
+                              <View style={styles.LiveScoreBodyContentDetailRow}>
+                                <Text style={styles.LiveScoreBodyContentDetailRowText}>{d.username}</Text>
+                              </View>
+                            )
+                          })
+                          :
+                          <></>
+                      }
                     </View>
                   </View>
                   <View style={[styles.LiveScoreBodyContent, styles.marginLeft]}>
@@ -57,31 +49,18 @@ export const LiveScore = () => {
                       <Text style={styles.LiveScoreBodyTitleText}>Win/Lose</Text>
                     </LinearGradient>
                     <View style={styles.LiveScoreBodyContentDetail}>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowValueGreen}>+1,234</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowValueRed}>-1,234</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowValueGreen}>+1,234</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowValueRed}>-1,234</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowValueGreen}>+1,234</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowValueRed}>-1,234</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowValueGreen}>+1,234</Text>
-                      </View>
-                      <View style={styles.LiveScoreBodyContentDetailRow}>
-                        <Text style={styles.LiveScoreBodyContentDetailRowValueRed}>-1,234</Text>
-                      </View>
-
+                      {
+                        result ? 
+                          result.map(d => {
+                            return (
+                              <View style={styles.LiveScoreBodyContentDetailRow}>
+                                <Text style={d.win < 0 ? styles.LiveScoreBodyContentDetailRowValueRed : styles.LiveScoreBodyContentDetailRowValueGreen}>{d.win > 0 ? "+" + d.win : d.win}</Text>
+                              </View>
+                            )
+                          })
+                          :
+                          <></>
+                      }
                     </View>
                   </View>
                 </View>
@@ -91,36 +70,22 @@ export const LiveScore = () => {
                 <Text style={styles.LiveScoreBodySpectatorTitleText}>Spectators</Text>
               </LinearGradient>
               <View style={styles.LiveScoreBodySpectatorContent}>
-                <View style={styles.LiveScoreBodySpectatorContentPlayer}>
-                  <Image source={require('../assets/images/others/player1.png')} style={styles.LiveScoreBodySpectatorContentPlayerIcon}/>
-                  <View style={{}}>
-                      <Text style={{fontSize: 8, lineHeight: 9, color: '#FAE88C'}}>Wyvern</Text>
-                  </View>
-                </View>
-                <View style={styles.LiveScoreBodySpectatorContentPlayer}>
-                  <Image source={require('../assets/images/others/player1.png')} style={styles.LiveScoreBodySpectatorContentPlayerIcon}/>
-                  <View style={{}}>
-                      <Text style={{fontSize: 8, lineHeight: 9, color: '#FAE88C'}}>Wyvern</Text>
-                  </View>
-                </View>
-                <View style={styles.LiveScoreBodySpectatorContentPlayer}>
-                  <Image source={require('../assets/images/others/player1.png')} style={styles.LiveScoreBodySpectatorContentPlayerIcon}/>
-                  <View style={{}}>
-                      <Text style={{fontSize: 8, lineHeight: 9, color: '#FAE88C'}}>Wyvern</Text>
-                  </View>
-                </View>
-                <View style={styles.LiveScoreBodySpectatorContentPlayer}>
-                  <Image source={require('../assets/images/others/player1.png')} style={styles.LiveScoreBodySpectatorContentPlayerIcon}/>
-                  <View style={{}}>
-                      <Text style={{fontSize: 8, lineHeight: 9, color: '#FAE88C'}}>Wyvern</Text>
-                  </View>
-                </View>
-                <View style={styles.LiveScoreBodySpectatorContentPlayer}>
-                  <Image source={require('../assets/images/others/player1.png')} style={styles.LiveScoreBodySpectatorContentPlayerIcon}/>
-                  <View style={{}}>
-                      <Text style={{fontSize: 8, lineHeight: 9, color: '#FAE88C'}}>Wyvern</Text>
-                  </View>
-                </View>
+                {
+                  info ? 
+                    info.map(d => {
+                      if(d.seatNumber == 0)
+                        return (
+                          <View style={styles.LiveScoreBodySpectatorContentPlayer}>
+                            <Image source={require('../assets/images/others/player1.png')} style={styles.LiveScoreBodySpectatorContentPlayerIcon}/>
+                            <View style={{}}>
+                              <Text style={{fontSize: 8, lineHeight: 9, color: '#FAE88C'}}>{d.username}</Text>
+                            </View>
+                          </View>
+                        )
+                    })
+                    :
+                    <></>
+                }
               </View>
             </View>
         </View>

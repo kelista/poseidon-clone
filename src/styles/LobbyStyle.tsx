@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -25,10 +25,11 @@ export default StyleSheet.create({
     width: '100%'
   },
   lobbyGameWrapper: {
-    height: '100%', 
+    height: Platform.OS === 'ios' ? windowHeight - 391.1 : windowHeight - 373.1,
     width: '100%',
     textAlign: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    // backgroundColor: 'blue'
   },
   lobbyGameSkpWrapper: {
     marginTop: 4,

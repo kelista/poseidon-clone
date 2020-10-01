@@ -12,6 +12,7 @@ import Constants from "expo-constants";
 import base from '../../../styles/base';
 import axios from 'axios';
 import { SSContext } from "../../../../routes/simpleStoreContext";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
@@ -55,40 +56,43 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   }
 
   return (
-    <View style={{paddingTop: Platform.OS === 'ios' ? Constants.statusBarHeight : 0}}>
-      <StatusBar hidden />
-      <ScrollView ref={scrollView}>
-        <View style={bottomPage ? LoginStyle.loginContainerFocus : LoginStyle.loginContainer}>
-          <View style={LoginStyle.loginImageWrapper}>
-            <View style={LoginStyle.loginImage}>
-              <Image source={require('../../../assets/images/others/logo.png')} />
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+      <StatusBar barStyle="light-content" />
+      <View style={{flex: 1}}>
+        <StatusBar hidden />
+        <ScrollView ref={scrollView}>
+          <View style={bottomPage ? LoginStyle.loginContainerFocus : LoginStyle.loginContainer}>
+            <View style={LoginStyle.loginImageWrapper}>
+              <View style={LoginStyle.loginImage}>
+                <Image source={require('../../../assets/images/others/logo.png')} />
+              </View>
+            </View>
+            <View style={LoginStyle.loginBoxWrapper}>
+              <View style={LoginStyle.loginBox}>
+                <TextInput
+                  placeholder="Username"
+                  placeholderTextColor="#AEAEAE"
+                  style={LoginStyle.loginInput}
+                  value={username}
+                  onChangeText={e => setUsername(e)}
+                ></TextInput>
+              </View>
+              <View style={LoginStyle.loginBox}>
+                <TextInput
+                  placeholder="Password"
+                  secureTextEntry={true}
+                  placeholderTextColor="#AEAEAE"
+                  style={LoginStyle.loginInput}
+                  value={password}
+                  onChangeText={e => setPassword(e)}
+                ></TextInput>
+              </View>
+              <CustomButton title="Sign In" click={() => lobbyHandler()} type="login"></CustomButton>
             </View>
           </View>
-          <View style={LoginStyle.loginBoxWrapper}>
-            <View style={LoginStyle.loginBox}>
-              <TextInput
-                placeholder="Username"
-                placeholderTextColor="#AEAEAE"
-                style={LoginStyle.loginInput}
-                value={username}
-                onChangeText={e => setUsername(e)}
-              ></TextInput>
-            </View>
-            <View style={LoginStyle.loginBox}>
-              <TextInput
-                placeholder="Password"
-                secureTextEntry={true}
-                placeholderTextColor="#AEAEAE"
-                style={LoginStyle.loginInput}
-                value={password}
-                onChangeText={e => setPassword(e)}
-              ></TextInput>
-            </View>
-            <CustomButton title="Sign In" click={() => lobbyHandler()} type="login"></CustomButton>
-          </View>
-        </View>
-      </ScrollView>
-    </View>
+        </ScrollView>
+      </View>
+    </SafeAreaView>
   );
 };
 

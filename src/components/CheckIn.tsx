@@ -103,8 +103,8 @@ export const CheckInWindow = (props: any) => {
             maximumTrackTintColor="#8E8E8E"
             value={sliderValue}
             onValueChange={(sliderValue) => setSliderMethod(sliderValue)}
-            thumbTintColor="#730000"
-            thumbImage={require("../assets/images/others/slider-button-new.png")}
+            thumbTintColor="#E30000"
+            // thumbImage={require("../assets/images/others/slider-button-new.png")}
           />
           <LinearGradient
             colors={["#E60000", "#730000"]}

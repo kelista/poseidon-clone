@@ -11,7 +11,7 @@ import { CustomButton } from "../../../components/Button"
 import { CustomheaderLogo } from "../../../components/HeaderLogo"
 import { BottomNavigation } from "../../../components/BottomNavigation"
 import { ROUTES } from "../../../../routes";
-import Constants from "expo-constants";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
@@ -22,28 +22,31 @@ export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) =
   }
 
   return (
-    <View style={{paddingTop: Platform.OS === 'ios' ? Constants.statusBarHeight : 0}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+      <StatusBar barStyle="light-content" />
+      <View style={{flex: 1}}>
       {/* <CustomHeader title="Change Password" status="changePass"></CustomHeader> */}
-      <CustomheaderLogo name="Change Password" lobby={() => accountHandler()}></CustomheaderLogo>
-      <ScrollView>
-        <StatusBar hidden />
-        <View style={ChangePassStyle.container}>
-          <View style={ChangePassStyle.box}>
-            <TextInput placeholder="Current Password" placeholderTextColor="#AEAEAE" style={ChangePassStyle.input}></TextInput>
+        <CustomheaderLogo name="Change Password" lobby={() => accountHandler()}></CustomheaderLogo>
+        <ScrollView>
+          <StatusBar hidden />
+          <View style={ChangePassStyle.container}>
+            <View style={ChangePassStyle.box}>
+              <TextInput placeholder="Current Password" placeholderTextColor="#AEAEAE" style={ChangePassStyle.input}></TextInput>
+            </View>
+            <View style={ChangePassStyle.box}>
+              <TextInput placeholder="New Password" placeholderTextColor="#AEAEAE" style={ChangePassStyle.input}></TextInput>
+            </View>
+            <View style={ChangePassStyle.box}>
+              <TextInput placeholder="Confirm New Pasword" placeholderTextColor="#AEAEAE" style={ChangePassStyle.input}></TextInput>
+            </View>
+            <CustomButton title="Save New Password" click={() => navigate(ROUTES.PoseidonLobby)} type="changePass"></CustomButton>
           </View>
-          <View style={ChangePassStyle.box}>
-            <TextInput placeholder="New Password" placeholderTextColor="#AEAEAE" style={ChangePassStyle.input}></TextInput>
-          </View>
-          <View style={ChangePassStyle.box}>
-            <TextInput placeholder="Confirm New Pasword" placeholderTextColor="#AEAEAE" style={ChangePassStyle.input}></TextInput>
-          </View>
-          <CustomButton title="Save New Password" click={() => navigate(ROUTES.PoseidonLobby)} type="changePass"></CustomButton>
-        </View>
-      </ScrollView>
-      <BottomNavigation 
-        home={() => navigate(ROUTES.PoseidonLobby)} 
-        setting={() => navigate(ROUTES.PoseidonAccount)}>
-      </BottomNavigation>
-    </View>
+        </ScrollView>
+        <BottomNavigation 
+          home={() => navigate(ROUTES.PoseidonLobby)} 
+          setting={() => navigate(ROUTES.PoseidonAccount)}>
+        </BottomNavigation>
+      </View>
+    </SafeAreaView>
   );
 };

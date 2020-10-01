@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   navigationSecondLayer: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 20 : 0,
+    bottom: Platform.OS === 'ios' ? 0 : 0,
     width: windowWidth,
     height: 53,
   },

@@ -18,7 +18,7 @@ import { BottomNavigation } from "../../../../components/BottomNavigation";
 import ThreePic from "../../../../styles/ThreePicStyle";
 import { CustomheaderLogo } from "../../../../components/HeaderLogo";
 import { WSContext } from "../../../../../routes/wsContext";
-import Constants from "expo-constants";
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface Room {
   _id: string;
@@ -207,42 +207,45 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
   }, [wsClient ? true : false, listenerReady]);
 
   return (
-    <View style={{paddingTop: Platform.OS === 'ios' ? Constants.statusBarHeight : 0}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+      <StatusBar barStyle="light-content" />
+      <View style={{flex: 1}}>
       {/* <CustomHeader title="Poseidon Club" status="lobby"></CustomHeader> */}
-      <CustomheaderLogo
-        name="threepic"
-        lobby={() => lobbyHandler()}
-      ></CustomheaderLogo>
-      <ScrollView>
-        <StatusBar hidden />
-        <View style={ThreePic.container}>
-          <Image
-            source={require("../../../../assets/images/others/home.png")}
-          />
-          <CustomHeader title="Rockies07" status="userLobby"></CustomHeader>
-          <View style={ThreePic.ThreePicImageContainer}>
-            <View style={ThreePic.ThreePicImageWrapper}>
-              <ImageBackground
-                source={require("../../../../assets/images/others/skp-roombg.png")}
-                style={ThreePic.ThreePicImageBackground}
-              ></ImageBackground>
-              <View style={ThreePic.ThreePicRoomContainer}>
-                {chunkedRooms.map((cr, index) => {
-                  console.log(index);
-                  return <RoomSelectRow key={index+"s"} keyProp={index} data={cr} />;
-                })}
+        <CustomheaderLogo
+          name="threepic"
+          lobby={() => lobbyHandler()}
+        ></CustomheaderLogo>
+        <ScrollView>
+          <StatusBar hidden />
+          <View style={ThreePic.container}>
+            <Image
+              source={require("../../../../assets/images/others/home.png")}
+            />
+            <CustomHeader title="Rockies07" status="userLobby"></CustomHeader>
+            <View style={ThreePic.ThreePicImageContainer}>
+              <View style={ThreePic.ThreePicImageWrapper}>
+                <ImageBackground
+                  source={require("../../../../assets/images/others/skp-roombg.png")}
+                  style={ThreePic.ThreePicImageBackground}
+                ></ImageBackground>
+                <View style={ThreePic.ThreePicRoomContainer}>
+                  {chunkedRooms.map((cr, index) => {
+                    console.log(index);
+                    return <RoomSelectRow key={index+"s"} keyProp={index} data={cr} />;
+                  })}
+                </View>
               </View>
             </View>
+            <View style={ThreePic.ThreePicBlankSpace}></View>
           </View>
-          <View style={ThreePic.ThreePicBlankSpace}></View>
-        </View>
-      </ScrollView>
-      <BottomNavigation
-        home={() => navigate(ROUTES.PoseidonLobby)}
-        setting={() => navigate(ROUTES.PoseidonAccount)}
-        status={"room"}
-        balance={0}
-      ></BottomNavigation>
-    </View>
+        </ScrollView>
+        <BottomNavigation
+          home={() => navigate(ROUTES.PoseidonLobby)}
+          setting={() => navigate(ROUTES.PoseidonAccount)}
+          status={"room"}
+          balance={0}
+        ></BottomNavigation>
+      </View>
+    </SafeAreaView>
   );
 };
