@@ -366,7 +366,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
         name="threepic"
         lobby={() => lobbyHandler()}
       ></CustomheaderLogo>
-      <ScrollView scrollEnabled={true}>
+      <ScrollView scrollEnabled={false}>
         <View style={ThreePic.relative}>
           <View style={ThreePic.infoButton}>
             <View style={ThreePic.relative}>
