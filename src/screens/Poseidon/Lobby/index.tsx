@@ -150,7 +150,7 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
         <CustomheaderLogo name="lobby" lobby={() => false}></CustomheaderLogo>
         <ScrollView>
           <StatusBar hidden />
-          <View style={LobbyStyle.container}>
+          <View style={{...styleSafeArea}}>
             <Image source={require('../../../assets/images/others/home.png')} />
             <CustomHeader title="Rockies07" status="userLobby"></CustomHeader>
             <View style={LobbyStyle.lobbyImageContainer}>
