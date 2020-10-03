@@ -5,7 +5,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const scale = windowWidth/414
-const scaleTable = (windowWidth+30)/414
+const scaleTable = windowWidth/375
 
 export default StyleSheet.create({
   relative: {
@@ -271,7 +271,7 @@ export default StyleSheet.create({
   ThreePicGameTableImageWrapper: {
     position: 'absolute',
     alignItems: 'center',
-    marginTop: 0,
+    marginTop: 12,
     height: '100%',
     // backgroundColor: 'blue',
     justifyContent: 'center',

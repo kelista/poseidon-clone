@@ -35,7 +35,7 @@ import { images } from "../../../../services/imageServices";
 import { BSContext } from "../../../../../routes/bsContext";
 import { SSContext } from "../../../../../routes/simpleStoreContext";
 import { useTimer } from "../../../../services/timer";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface EventDataPhase {
   phase: string;
@@ -342,6 +342,18 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     wsClient?.sendMessage(metaEvent, {});
   }, []);
 
+  const insets = useSafeAreaInsets();
+
+  const styleSafeArea:any = useMemo(() => {
+    const windowHeight = Dimensions.get('window').height;
+    return {
+      width: '100%',
+      height: windowHeight - (insets.bottom + insets.top) - 106,
+      position: 'relative',
+      alignItems: 'center'
+    }
+  },[insets])
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <StatusBar barStyle="light-content" />
@@ -446,7 +458,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
               source={require("../../../../assets/images/others/backgroundskp-game.png.png")}
               style={ThreePic.ThreePicGameBackground}
             />
-            <View style={ThreePic.ThreePicGameContainer}>
+            <View style={{...styleSafeArea}}>
               <View style={ThreePic.ThreePicGameTableImageWrapper}>
                 <Image
                   source={require("../../../../assets/images/others/threepic-gamelogo.png")}
