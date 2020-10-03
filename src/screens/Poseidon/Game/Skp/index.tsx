@@ -1,5 +1,5 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground, Dimensions } from 'react-native';
+import React, { useEffect, useContext, useState, useCallback, useRef, useMemo } from 'react';
+import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground, Dimensions, LayoutChangeEvent } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
@@ -61,6 +61,26 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
     wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
   };
 
+  const [containerHeight, setContainerHeight] = useState(584);
+  const [containerWidth, setContainerWidth] = useState(361);
+
+  const measure = useCallback((e: LayoutChangeEvent) => {
+    console.log(e);
+    setContainerHeight(e.nativeEvent.layout.height);
+    setContainerWidth(e.nativeEvent.layout.width);
+  }, []);
+
+  const scaleStyle = useMemo(() => {
+    const sc = Math.min(
+      584 / (containerHeight),
+      361 / (containerWidth)
+    );
+    console.log(sc);
+    const style = { transform: [{scaleX: sc, scaleY: sc}]}
+    return style;
+  }, [containerHeight, containerWidth])
+  
+
   useEffect(function gameInit() {
     setBanker("player1")
   }, [])
@@ -114,8 +134,11 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
                 </View>
               </View> */}
               <ImageBackground source={require('../../../../assets/images/others/backgroundskp-game.png.png')} style={ThreePic.ThreePicGameBackground}/>
-              <View style={ThreePic.ThreePicGameContainer}>
-                  <View style={ThreePic.ThreePicGameTableImageWrapper}>
+              <View style={{
+                display: "flex",
+                flex: 1,
+              }} onLayout={e => measure(e)}>
+                  <View style={scaleStyle}>
                       <Image source={require('../../../../assets/images/others/skp-image.png')} style={ThreePic.ThreePicGameTableLogo}/>
                       <View style={ThreePic.ThreePicGameTableTextWrapper}>
                         <Text style={ThreePic.ThreePicGameTableText}>Banker: 3000</Text>
