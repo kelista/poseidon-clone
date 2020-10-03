@@ -85,6 +85,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const gamePhaseEvent = "game/phase";
   const gameBetEvent = "game/bet";
   const [connecting, setConnecting] = useState(true);
+  const [buyInStat, setBuyInStat] = useState(false);
   const [balancePlayer, setBalancePlayer] = useState(0);
   const [balancePlayerGame, setBalancePlayerGame] = useState(
     props.balancePlayerGame
@@ -136,6 +137,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
           if (player.username === u) {
             const totalBet = player.username === banker ? 0 : player.bet;
             setUserBet(totalBet / multiplier);
+            setBalancePlayerGame(player.balance)
           }
           return u;
         });
@@ -203,7 +205,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   }, []);
 
   useEffect(() => {
-    if (phase === "bet" && banker !== username && balancePlayerGame != 0) {
+    if (phase === "bet" && banker !== username && balancePlayerGame != 0 && buyInStat) {
       setModalBetting(true);
       setModalLive(false);
       setModalRound(false);
@@ -291,6 +293,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     if (balancePlayerGame == 0) {
       setModalCheckIn(true);
     } else {
+      setBuyInStat(true)
       wsClient?.sendMessage(buyInEvent, {
         amount: balancePlayerGame,
         seatNumber: seatNumber,

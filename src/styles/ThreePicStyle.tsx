@@ -363,7 +363,7 @@ export default StyleSheet.create({
   ThreePicTimerDiv: {
     position: 'absolute',
     zIndex: 5,
-    top: '31%',
+    top: '29%',
     left: '50%',
     transform: [
       {translateX: -50}
@@ -375,6 +375,7 @@ export default StyleSheet.create({
   ThreePicGamePinWrapper: { 
     position: 'relative',
     height: 584,
+    zIndex: 5,
     width: 331,
     transform: [{ scaleX: scaleTable }, { scaleY: scaleTable }]
     // backgroundColor: 'green'
