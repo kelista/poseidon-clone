@@ -161,7 +161,7 @@ export default StyleSheet.create({
   ThreePicImageContainer: {
     flex: 1,
     height: '100%',
-    width: '100%'
+    width: '100%',
   },
   ThreePicImageWrapper: {
     height: '100%', 
@@ -271,7 +271,7 @@ export default StyleSheet.create({
   ThreePicGameTableImageWrapper: {
     position: 'absolute',
     alignItems: 'center',
-    marginTop: 12,
+    marginTop: 2,
     height: '100%',
     // backgroundColor: 'blue',
     justifyContent: 'center',

@@ -8,7 +8,7 @@ import {
   ImageSourcePropType,
   ViewStyle,
   TextStyle,
-  StyleProp,
+  StyleProp, Dimensions
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { NavigationScreenComponent } from "react-navigation";
@@ -18,7 +18,7 @@ import { BottomNavigation } from "../../../../components/BottomNavigation";
 import ThreePic from "../../../../styles/ThreePicStyle";
 import { CustomheaderLogo } from "../../../../components/HeaderLogo";
 import { WSContext } from "../../../../../routes/wsContext";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Room {
   _id: string;
@@ -206,6 +206,20 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
     wsClient.sendMessage(lobbyRoomsEvent, { codename: "three-pictures" });
   }, [wsClient ? true : false, listenerReady]);
 
+  const insets = useSafeAreaInsets();
+
+  const styleSafeArea:any = useMemo(() => {
+    const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
+    return {
+      flex: 1,
+      width: windowWidth,
+      minHeight: windowHeight - (insets.bottom + insets.top) - 53,
+      backgroundColor: '#000000',
+      position: 'relative'
+    }
+  },[insets])
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <StatusBar barStyle="light-content" />
@@ -217,7 +231,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
         ></CustomheaderLogo>
         <ScrollView>
           <StatusBar hidden />
-          <View style={ThreePic.container}>
+          <View style={{...styleSafeArea}}>
             <Image
               source={require("../../../../assets/images/others/home.png")}
             />
