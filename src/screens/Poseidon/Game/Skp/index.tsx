@@ -65,7 +65,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
   const [containerWidth, setContainerWidth] = useState(361);
 
   const measure = useCallback((e: LayoutChangeEvent) => {
-    console.log(e);
+    console.log("measured");
     setContainerHeight(e.nativeEvent.layout.height);
     setContainerWidth(e.nativeEvent.layout.width);
   }, []);
