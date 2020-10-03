@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground, ImageSourcePropType, StyleProp, ViewStyle, ImageStyle } from 'react-native';
+import React, { useEffect, useState, useContext, useMemo } from 'react';
+import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground, ImageSourcePropType, StyleProp, ViewStyle, ImageStyle, Dimensions } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
   NavigationScreenComponent,
@@ -15,7 +15,7 @@ import LobbyStyle from "../../../styles/LobbyStyle"
 import { Backsound } from "../../../services/soundServices"
 import { WSContext } from '../../../../routes/wsContext';
 import { SSContext } from '../../../../routes/simpleStoreContext';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 interface Game {
   _id: string;
@@ -127,6 +127,18 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
     wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
 
   };
+
+  const insets = useSafeAreaInsets();
+
+  const styleSafeArea:any = useMemo(() => {
+    const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
+    return {
+      minHeight: windowHeight - (insets.bottom + insets.top) - 53,
+      width: windowWidth,
+      backgroundColor: '#000000'
+    }
+  },[insets])
 
 
   if (connecting) return (<Text>Connecting</Text>)
