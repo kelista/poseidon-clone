@@ -6,8 +6,12 @@ export const StatementInfo = () => {
 
   const [modalReport, setModalReport] = useState(true);
 
-  const changeWeek = () => {
-    setModalReport(!modalReport)
+  const thisWeek = () => {
+    setModalReport(true)
+  }
+
+  const lastWeek = () => {
+    setModalReport(false)
   }
 
   return (
@@ -29,12 +33,12 @@ export const StatementInfo = () => {
       <View style={styles.statementBody}>
         <View style={styles.statementBoxContainer}>
           <View style={styles.statementBoxWrapper}>
-            <TouchableOpacity style={styles.statementBoxContent} onPress={changeWeek}>
+            <TouchableOpacity style={styles.statementBoxContent} onPress={thisWeek}>
               <LinearGradient colors={[modalReport ? "#3C0000" : "#6E0000", "#400000"]} style={styles.statementBoxContentGradient}>
                 <Text style={styles.statementBoxContentTitleText}>This Week</Text>
               </LinearGradient>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.statementBoxContent} onPress={changeWeek}>
+            <TouchableOpacity style={styles.statementBoxContent} onPress={lastWeek}>
               <LinearGradient colors={[modalReport ? "#6E0000" : '#3C0000', "#400000"]} style={styles.statementBoxContentGradient}>
                 <Text style={styles.statementBoxContentTitleText}>Last Week</Text>
               </LinearGradient>
