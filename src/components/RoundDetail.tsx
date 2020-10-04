@@ -14,7 +14,7 @@ import ThreePic from "../styles/ThreePicStyle";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const windowWidth = Dimensions.get("window").width;
-const scale = windowWidth / 414;
+const scale = windowWidth / 375;
 
 export const RoundDetail = (props: any) => {
   const { roundDetail } = props;
