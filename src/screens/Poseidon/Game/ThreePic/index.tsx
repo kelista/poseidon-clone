@@ -367,8 +367,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     const windowHeight = Dimensions.get('window').height;
     const windowWidth = Dimensions.get('window').width;
     const sc = Math.min(
-      584 / (windowHeight - (insets.bottom + insets.top) - 56),
-      361 / (windowWidth)
+      361 / (windowWidth),
+      584 / (windowHeight - (insets.bottom + insets.top) - 56)
     );
     console.log(sc)
     const style = { 
@@ -383,8 +383,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     const windowHeight = Dimensions.get('window').height;
     const windowWidth = Dimensions.get('window').width;
     const sc = Math.min(
-      584 / (windowHeight - (insets.bottom + insets.top) - 56),
-      361 / (windowWidth)
+      361 / (windowWidth),
+      584 / (windowHeight - (insets.bottom + insets.top) - 56)
     );
     const style = { 
       position: 'relative',
@@ -580,9 +580,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                 </View>
                 <Image
                   source={require("../../../../assets/images/others/table-new.png")}
-                  style={{...ThreePicGameTableImage}}
+                  style={ThreePic.ThreePicGameTableImage}
                 />
-                <View style={{...ThreePicGamePinWrapper}}>
+                <View style={ThreePic.ThreePicGamePinWrapper}>
                   {!player1 ? (
                     <View style={ThreePic.ThreePicGamePin1}>
                       <TouchableOpacity onPress={() => sitHandler(1)}>
