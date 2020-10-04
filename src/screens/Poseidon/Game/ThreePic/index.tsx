@@ -79,6 +79,34 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [modalCard, setModalCard] = useState(true);
   const [modalWaiting, setModalWaiting] = useState(true);
   const [seatNumberNow, setSeatNumberNow] = useState(0);
+  const [roundDetail, setRoundDetail] = useState(
+    {
+      "page": 1,
+      "reports": [
+        {
+          "username": "redis",
+          "amount": -2,
+          "cards": [
+            "6C",
+            "7C",
+            "2C"
+          ]
+        },
+        {
+          "username": "rabbit",
+          "amount": 2,
+          "cards": [
+            "10C",
+            "8C",
+            "10D"
+          ]
+        }
+      ],
+      "roundId": "3eec4e1a-1398-4d0f-8e7a-0447d7ee0bbb",
+      "tableId": "5f786a9f4507b700d661bed9",
+      "totalRound": 1
+    }
+  )
   const infoEvent = "info";
   const moveEvent = "move";
   const metaEvent = "game/meta";
@@ -431,7 +459,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
             </View>
           </View>
           <StatusBar hidden />
-          {modalRound ? <RoundDetail></RoundDetail> : <></>}
+          {modalRound ? <RoundDetail roundDetail={roundDetail}></RoundDetail> : <></>}
           {modalLive ? <LiveScore result={result} info={info}></LiveScore> : <></>}
           {modalCheckIn ? (
             <CheckInWindow

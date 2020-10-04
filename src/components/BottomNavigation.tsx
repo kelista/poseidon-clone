@@ -21,7 +21,7 @@ export const BottomNavigation = ({home, setting, status, balance, roundDetail, l
                   </View>
                   <View style={styles.navigationGameButtonlast}>
                     <TouchableOpacity style={styles.buttonSelection} onPress={() => liveScore()}>
-                      <Image style={[styles.imgButton, styles.reportNavImg]} source={require('../assets/images/others/report-nav.png')} />
+                      <Image style={[styles.imgButton, styles.reportNavImg]} source={require('../assets/images/others/live-score.png')} />
                     </TouchableOpacity>
                   </View>
                 </View>
