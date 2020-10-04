@@ -533,37 +533,39 @@ export const RoundDetail = () => {
                     </View>
                 </View>
             </View>
-            <View style={{width: "100%", paddingLeft: 10, paddingRight: 10}}>
-                <Slider
-                    style={styles.RoundDetailSlider}
-                    step={1}
-                    minimumValue={0}
-                    maximumValue={balance}
-                    minimumTrackTintColor="#FFFFFF"
-                    maximumTrackTintColor="#8E8E8E"
-                    value={sliderValue}
-                    onValueChange={(sliderValue) => setSliderMethod(sliderValue)}
-                    thumbTintColor="#E30000"
-                    // thumbImage={require("../assets/images/others/slider-button-new.png")}
-                />
-            </View>
-            <View style={styles.RoundDetailPaging}>
-              <View style={{position: 'relative', width: '100%'}}>
-                  <TouchableOpacity style={styles.RoundDetailPagingButtonBackward}>
-                    <Image source={require('../assets/images/others/button-backward.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.RoundDetailPagingButtonBack}>
-                    <Image source={require('../assets/images/others/button-back.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
-                  </TouchableOpacity>
-                  <View style={{width: '100%', alignItems: 'center'}}>
-                  <Text style={styles.RoundDetailPagingText}>57 / 57</Text>
-                  </View>
-                  <TouchableOpacity style={styles.RoundDetailPagingButtonBackwardReverse}>
-                    <Image source={require('../assets/images/others/button-backward.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.RoundDetailPagingButtonBackReverse}>
-                    <Image source={require('../assets/images/others/button-back.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
-                  </TouchableOpacity>
+            <View style={{ width: '100%', position: 'absolute', bottom: 85}}>
+              <View style={{width: "100%", paddingLeft: 10, paddingRight: 10}}>
+                  <Slider
+                      style={styles.RoundDetailSlider}
+                      step={1}
+                      minimumValue={0}
+                      maximumValue={balance}
+                      minimumTrackTintColor="#FFFFFF"
+                      maximumTrackTintColor="#8E8E8E"
+                      value={sliderValue}
+                      onValueChange={(sliderValue) => setSliderMethod(sliderValue)}
+                      thumbTintColor="#E30000"
+                      // thumbImage={require("../assets/images/others/slider-button-new.png")}
+                  />
+              </View>
+              <View style={styles.RoundDetailPaging}>
+                <View style={{position: 'relative', width: '100%'}}>
+                    <TouchableOpacity style={styles.RoundDetailPagingButtonBackward}>
+                      <Image source={require('../assets/images/others/button-backward.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.RoundDetailPagingButtonBack}>
+                      <Image source={require('../assets/images/others/button-back.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
+                    </TouchableOpacity>
+                    <View style={{width: '100%', alignItems: 'center'}}>
+                    <Text style={styles.RoundDetailPagingText}>57 / 57</Text>
+                    </View>
+                    <TouchableOpacity style={styles.RoundDetailPagingButtonBackwardReverse}>
+                      <Image source={require('../assets/images/others/button-backward.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.RoundDetailPagingButtonBackReverse}>
+                      <Image source={require('../assets/images/others/button-back.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
+                    </TouchableOpacity>
+                </View>
               </View>
             </View>
         </View>
