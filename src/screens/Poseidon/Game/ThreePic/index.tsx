@@ -78,6 +78,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [modalLive, setModalLive] = useState(false);
   const [modalCard, setModalCard] = useState(true);
   const [modalWaiting, setModalWaiting] = useState(true);
+  const [seatNumberNow, setSeatNumberNow] = useState(0);
   const infoEvent = "info";
   const moveEvent = "move";
   const metaEvent = "game/meta";
@@ -89,9 +90,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [connecting, setConnecting] = useState(true);
   const [buyInStat, setBuyInStat] = useState(false);
   const [balancePlayer, setBalancePlayer] = useState(0);
-  const [balancePlayerGame, setBalancePlayerGame] = useState(
-    props.balancePlayerGame
-  );
+  const [balancePlayerGame, setBalancePlayerGame] = useState(0);
   const [userBet, setUserBet] = useState(0);
   const [username, setUsername] = useState("");
   const [minBet, setMinBet] = useState(0);
@@ -292,16 +291,23 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   };
 
   const sitHandler = (seatNumber: number) => {
-    if (balancePlayerGame == 0) {
-      setModalCheckIn(true);
-    } else {
-      setBuyInStat(true)
-      wsClient?.sendMessage(buyInEvent, {
-        amount: balancePlayerGame,
-        seatNumber: seatNumber,
-      });
+    if (!buyInStat) {
+      if (balancePlayerGame == 0) {
+        setSeatNumberNow(seatNumber)
+        setModalCheckIn(true);
+      } else {
+        sendBuyIn(seatNumber)
+      }
     }
   };
+
+  const sendBuyIn = (seatNumber: number) => {
+    setBuyInStat(true)
+    wsClient?.sendMessage(buyInEvent, {
+      amount: balancePlayerGame,
+      seatNumber: seatNumber,
+    });
+  }
 
   const accountHandler = () => {
     navigate(ROUTES.PoseidonAccount);
@@ -351,6 +357,13 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     wsClient?.sendMessage(metaEvent, {});
   }, []);
 
+
+  useEffect(() => {
+    if(balancePlayerGame != 0 && !buyInStat && seatNumberNow != 0) {
+      sendBuyIn(seatNumberNow)
+    }
+  }, [balancePlayerGame, buyInStat, seatNumberNow]);
+
   const insets = useSafeAreaInsets();
 
   const styleSafeArea:any = useMemo(() => {
@@ -370,7 +383,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       361 / (windowWidth),
       584 / (windowHeight - (insets.bottom + insets.top) - 56)
     );
-    console.log(sc)
     const style = { 
       position: 'absolute',
       transform: [{ scaleX: sc}, { scaleY: sc }]
