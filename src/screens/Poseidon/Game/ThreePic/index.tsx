@@ -363,6 +363,39 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     }
   },[insets])
 
+  const ThreePicGameTableImage:any = useMemo(() => {
+    const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
+    const sc = Math.min(
+      584 / (windowHeight - (insets.bottom + insets.top) - 56),
+      361 / (windowWidth)
+    );
+    console.log(sc)
+    const style = { 
+      position: 'absolute',
+      transform: [{ scaleX: sc}, { scaleY: sc }]
+    }
+    return style
+  }, [insets])
+
+
+  const ThreePicGamePinWrapper:any = useMemo(() => {
+    const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
+    const sc = Math.min(
+      584 / (windowHeight - (insets.bottom + insets.top) - 56),
+      361 / (windowWidth)
+    );
+    const style = { 
+      position: 'relative',
+      height: 584,
+      zIndex: 5,
+      width: 331,
+      transform: [{ scaleX: sc}, { scaleY: sc }], 
+    }
+    return style
+  }, [insets])
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <StatusBar barStyle="light-content" />
@@ -547,9 +580,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                 </View>
                 <Image
                   source={require("../../../../assets/images/others/table-new.png")}
-                  style={ThreePic.ThreePicGameTableImage}
+                  style={{...ThreePicGameTableImage}}
                 />
-                <View style={ThreePic.ThreePicGamePinWrapper}>
+                <View style={{...ThreePicGamePinWrapper}}>
                   {!player1 ? (
                     <View style={ThreePic.ThreePicGamePin1}>
                       <TouchableOpacity onPress={() => sitHandler(1)}>
