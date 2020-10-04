@@ -29,7 +29,7 @@ export const RoundDetail = (props: any) => {
   const pagingArea:any = useMemo(() => {
     const windowHeight = Dimensions.get('window').height;
     return {
-      width: "100%", position: "absolute", bottom: 85 + insets.bottom
+      width: "100%", position: "absolute", bottom: 85 + insets.bottom + insets.top
     }
   },[insets])
 
