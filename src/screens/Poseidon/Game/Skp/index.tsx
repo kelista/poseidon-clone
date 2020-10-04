@@ -15,7 +15,7 @@ import { CardWindow } from "../../../../components/CardPhase"
 import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 import { WSContext } from '../../../../../routes/wsContext';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WaitingInfo } from "../../../../components/Waiting"
 
 export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
@@ -86,6 +86,18 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
     return style;
   }, [containerHeight, containerWidth])
 
+  const insets = useSafeAreaInsets();
+
+  const styleSafeArea:any = useMemo(() => {
+    const windowHeight = Dimensions.get('window').height;
+    return {
+      width: '100%',
+      height: windowHeight - (insets.bottom + insets.top) - 106,
+      position: 'relative',
+      alignItems: 'center'
+    }
+  },[insets])
+
   useEffect(function gameInit() {
     setBanker("player1")
   }, [])
@@ -145,8 +157,8 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
                 </View>
               </View> */}
               <ImageBackground source={require('../../../../assets/images/others/backgroundskp-game.png.png')} style={ThreePic.ThreePicGameBackground}/>
-              <View style={ThreePic.ThreePicGameContainer} onLayout={e => measure(e)}>
-                  <View style={ThreePic.ThreePicGameTableImageWrapper}>
+                <View style={ThreePic.ThreePicGameContainer} onLayout={e => measure(e)}>
+                  <View style={{...scaleStyle}}>
                       <Image source={require('../../../../assets/images/others/skp-image.png')} style={ThreePic.ThreePicGameTableLogo}/>
                       <View style={ThreePic.ThreePicGameTableTextWrapper}>
                         <Text style={ThreePic.ThreePicGameTableText}>Banker: 3000</Text>
@@ -445,7 +457,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
                         }     
                       </View>
                   </View>
-              </View>
+                </View>
             </View>
             <View style={ThreePic.emojiButton}>
               <View style={ThreePic.relative}>
