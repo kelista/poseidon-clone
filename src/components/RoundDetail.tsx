@@ -548,15 +548,23 @@ export const RoundDetail = () => {
                 />
             </View>
             <View style={styles.RoundDetailPaging}>
-                <View style={{position: 'relative', width: '100%'}}>
-                    <TouchableOpacity style={styles.RoundDetailPagingButtonBackward}></TouchableOpacity>
-                    <TouchableOpacity style={styles.RoundDetailPagingButtonBack}></TouchableOpacity>
-                    <View style={{width: '100%', alignItems: 'center'}}>
-                    <Text style={styles.RoundDetailPagingText}>57 / 57</Text>
-                    </View>
-                    <TouchableOpacity style={styles.RoundDetailPagingButtonBackwardReverse}></TouchableOpacity>
-                    <TouchableOpacity style={styles.RoundDetailPagingButtonBackReverse}></TouchableOpacity>
-                </View>
+              <View style={{position: 'relative', width: '100%'}}>
+                  <TouchableOpacity style={styles.RoundDetailPagingButtonBackward}>
+                    <Image source={require('../assets/images/others/button-backward.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.RoundDetailPagingButtonBack}>
+                    <Image source={require('../assets/images/others/button-back.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
+                  </TouchableOpacity>
+                  <View style={{width: '100%', alignItems: 'center'}}>
+                  <Text style={styles.RoundDetailPagingText}>57 / 57</Text>
+                  </View>
+                  <TouchableOpacity style={styles.RoundDetailPagingButtonBackwardReverse}>
+                    <Image source={require('../assets/images/others/button-backward.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.RoundDetailPagingButtonBackReverse}>
+                    <Image source={require('../assets/images/others/button-back.png')} style={styles.RoundDetailPagingButtonBackwardImage}/>
+                  </TouchableOpacity>
+              </View>
             </View>
         </View>
     </View>
@@ -683,7 +691,11 @@ const styles = StyleSheet.create({
 		backgroundColor: '#FAE88C',
 		borderRadius: 18,
 		transform: [{ translateY: -4.5 }]
-	},
+  },
+  RoundDetailPagingButtonBackwardImage: {
+    width: 18,
+		height: 18,
+  },
 	RoundDetailPagingButtonBack: {
 		position: 'absolute',
 		left: 25,
@@ -700,7 +712,7 @@ const styles = StyleSheet.create({
 		height: 18,
 		backgroundColor: '#FAE88C',
 		borderRadius: 18,
-		transform: [{ translateY: -4.5 }]
+		transform: [{ translateY: -4.5 }, { rotate: "-180deg" }]
 	},
 	RoundDetailPagingButtonBackReverse: {
 		position: 'absolute',
@@ -709,7 +721,7 @@ const styles = StyleSheet.create({
 		height: 18,
 		backgroundColor: '#FAE88C',
 		borderRadius: 18,
-		transform: [{ translateY: -4.5 }]
+		transform: [{ translateY: -4.5 }, { rotate: "-180deg" }]
 	}
 });
 
