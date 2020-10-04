@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     paddingTop: 29,
     paddingLeft: 17,
     paddingRight: 17,
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    backgroundColor: "rgba(0, 0, 0, 0.9)",
   },
   statementWrapper: {
     flexDirection: 'row',
