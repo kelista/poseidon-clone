@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Slider from "@react-native-community/slider";
 import { images } from "../services/imageServices";
 import ThreePic from "../styles/ThreePicStyle";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const windowWidth = Dimensions.get("window").width;
 const scale = windowWidth / 414;
@@ -22,6 +23,15 @@ export const RoundDetail = (props: any) => {
   const setSliderMethod = (sliderValue: number) => {
     setsliderValue(sliderValue);
   };
+  
+  const insets = useSafeAreaInsets();
+
+  const pagingArea:any = useMemo(() => {
+    const windowHeight = Dimensions.get('window').height;
+    return {
+      width: "100%", position: "absolute", bottom: 85 + insets.bottom
+    }
+  },[insets])
 
   return (
     <View style={styles.RoundDetailContainer}>
@@ -128,7 +138,7 @@ export const RoundDetail = (props: any) => {
             <></>
           )}
         </View>
-        <View style={{ width: "100%", position: "absolute", bottom: 85 }}>
+        <View style={{...pagingArea }}>
           <View style={{ width: "100%", paddingLeft: 10, paddingRight: 10 }}>
             <Slider
               style={styles.RoundDetailSlider}
