@@ -16,6 +16,7 @@ import { Backsound } from "../../../services/soundServices"
 import { WSContext } from '../../../../routes/wsContext';
 import { SSContext } from '../../../../routes/simpleStoreContext';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatementInfo } from '../../../components/Statement'
 
 interface Game {
   _id: string;
@@ -64,6 +65,7 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   const ss = useContext(SSContext);
 
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
+  const [modalStatement, setModalStatement] = useState(false)
 
   // contoh: game Three Pictures => codename nya three-pictures (ini dari backend, jadi tinggal panggil doang)
   const codenames = availableGames.map(g => g.codename);
@@ -125,8 +127,11 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   const hold = () => {
     // navigate(ROUTES.RootGame1);
     wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
-
   };
+
+  const closeOpenStatement = () => {
+    setModalStatement(!modalStatement)
+  }
 
   const insets = useSafeAreaInsets();
 
@@ -148,8 +153,11 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
       <StatusBar barStyle="light-content" />
       <View style={{flex: 1}}>
         <CustomheaderLogo name="lobby" lobby={() => false}></CustomheaderLogo>
-        <ScrollView>
+        <ScrollView scrollEnabled={modalStatement ? false : true}>
           <StatusBar hidden />
+          {
+            modalStatement ? <StatementInfo></StatementInfo> : <></>
+          }
           <View style={{...styleSafeArea}}>
             <Image source={require('../../../assets/images/others/home.png')} />
             <CustomHeader title="Rockies07" status="userLobby"></CustomHeader>
@@ -191,7 +199,7 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
             </View>
           </View>
         </ScrollView>
-        <BottomNavigation home={() => navigate(ROUTES.PoseidonLobby)} setting={() => navigate(ROUTES.PoseidonAccount)} status={'room'}>
+        <BottomNavigation home={() => navigate(ROUTES.PoseidonLobby)} setting={() => navigate(ROUTES.PoseidonAccount)} status={'room'} liveScore={() => closeOpenStatement()}>
         </BottomNavigation>
       </View>
     </SafeAreaView>

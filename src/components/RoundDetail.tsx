@@ -15,86 +15,83 @@ export const RoundDetail = () => {
     
   return (
     <View style={styles.RoundDetailContainer}>
-        <View style={styles.RoundBodyWrapper}>
-            <View style={styles.RoundDetailTitle}>
-                <Text style={styles.RoundDetailTitleText}>Round Detail</Text>
-            </View>
-            <LinearGradient colors={["#6E0000", "#400000"]} style={styles.RoundDetailHeader} >
-                <Text style={styles.RoundDetailHeaderText}>Round: #1234123</Text>
-            </LinearGradient>
+      <View style={styles.RoundBodyWrapper}>
+          <View style={styles.RoundDetailTitle}>
+            <Text style={styles.RoundDetailTitleText}>Round Detail</Text>
+          </View>
+          <LinearGradient colors={["#6E0000", "#400000"]} style={styles.RoundDetailHeader} >
+            <Text style={styles.RoundDetailHeaderText}>Round: #1234123</Text>
+          </LinearGradient>
             <View>
-                <View style={styles.RoundDetailList}>
-                    <View style={styles.RoundDetailListRowOne}>
-                        <View style={styles.RoundDetailListRowOneWrapper}>
-                            <Image source={require('../assets/images/others/player1.png')} style={styles.RoundDetailUserIcon}/>
-                            <View style={{}}>
-                                <Text style={styles.RoundDetailListRowOneText}>Wyvern</Text>
-                            </View>
-                        </View>
+              <View style={styles.RoundDetailList}>
+                <View style={styles.RoundDetailListRowOne}>
+                  <View style={styles.RoundDetailListRowOneWrapper}>
+                    <Image source={require('../assets/images/others/player1.png')} style={styles.RoundDetailUserIcon}/>
+                      <View style={{}}>
+                        <Text style={styles.RoundDetailListRowOneText}>Wyvern</Text>
+                          </View>
+                      </View>
                     </View>
                     <View style={styles.RoundDetailListRowTwo}>
-                        <View style={{ flexDirection: "row" }}>
-                            <View
-                                style={{
-                                width: 17,
-                                height: 21,
-                                marginTop: 2.2,
-                                transform: [{ rotate: "-15deg" }],
-                                }}
-                            >
-                                <Image source={require('../assets/images/card/small/card_jack.png')}/>
-                                {/* <Image
-                                source={images[player1?.cards[0]]}
-                                style={ThreePic.cardImage}
-                                /> */}
-                            </View>
-                            <View
-                                style={{
-                                width: 17,
-                                height: 21,
-                                marginLeft: -1,
-                                }}
-                            >
-                                <Image source={require('../assets/images/card/small/card_queen.png')}/>
-                                {/* <Image
-                                source={images[player1?.cards[1]]}
-                                style={ThreePic.cardImage}
-                                ></Image> */}
-                            </View>
-                            <View
-                                style={{
-                                width: 17,
-                                height: 21,
-                                marginLeft: -1,
-                                marginTop: 2.2,
-                                transform: [{ rotate: "15deg" }],
-                                }}
-                            >
-                                <Image source={require('../assets/images/card/small/card_king.png')}/>
-                                {/* <Image
-                                source={images[player1?.cards[2]]}
-                                style={ThreePic.cardImage}
-                                ></Image> */}
-                            </View>
+                      <View style={{ flexDirection: "row" }}>
+                        <View
+                          style={{
+                          width: 17,
+                          height: 21,
+                          marginTop: 2.2,
+                          transform: [{ rotate: "-15deg" }],
+                          }}>
+                          <Image source={require('../assets/images/card/small/card_jack.png')}/>
+                          {/* <Image
+                          source={images[player1?.cards[0]]}
+                          style={ThreePic.cardImage}
+                          /> */}
                         </View>
-                        <View style={{paddingTop: 5.6}}>
-                            <Text style={{fontSize: 8, lineHeight: 9, color: '#FFFFFF'}}>9Pts</Text>
+                        <View
+                          style={{
+                          width: 17,
+                          height: 21,
+                          marginLeft: -1,
+                          }}>
+                          <Image source={require('../assets/images/card/small/card_queen.png')}/>
+                          {/* <Image
+                          source={images[player1?.cards[1]]}
+                          style={ThreePic.cardImage}
+                          ></Image> */}
                         </View>
+                        <View
+                          style={{
+                          width: 17,
+                          height: 21,
+                          marginLeft: -1,
+                          marginTop: 2.2,
+                          transform: [{ rotate: "15deg" }],
+                          }}>
+                          <Image source={require('../assets/images/card/small/card_king.png')}/>
+                          {/* <Image
+                          source={images[player1?.cards[2]]}
+                          style={ThreePic.cardImage}
+                          ></Image> */}
+                        </View>
+                      </View>
+                      <View style={{paddingTop: 5.6}}>
+                        <Text style={{fontSize: 8, lineHeight: 9, color: '#FFFFFF'}}>9Pts</Text>
+                      </View>
                     </View>
                     <View style={styles.RoundDetailListRowThree}>
-                        <View style={styles.RoundDetailListRowThreeWrapper}>
-                            <Text style={styles.RoundDetailListRowThreeText}>+1,234</Text>
-                        </View>
-                    </View>
+                      <View style={styles.RoundDetailListRowThreeWrapper}>
+                          <Text style={styles.RoundDetailListRowThreeText}>+1,234</Text>
+                      </View>
+                  </View>
                 </View>
                 <View style={styles.RoundDetailList}>
-                    <View style={styles.RoundDetailListRowOne}>
-                        <View style={styles.RoundDetailListRowOneWrapper}>
-                            <Image source={require('../assets/images/others/player1.png')} style={styles.RoundDetailUserIcon}/>
-                            <View style={{}}>
-                                <Text style={styles.RoundDetailListRowOneText}>Wyvern</Text>
-                            </View>
+                  <View style={styles.RoundDetailListRowOne}>
+                    <View style={styles.RoundDetailListRowOneWrapper}>
+                      <Image source={require('../assets/images/others/player1.png')} style={styles.RoundDetailUserIcon}/>
+                        <View style={{}}>
+                          <Text style={styles.RoundDetailListRowOneText}>Wyvern</Text>
                         </View>
+                      </View>
                     </View>
                     <View style={styles.RoundDetailListRowTwo}>
                         <View style={{ flexDirection: "row" }}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useCallback, useRef, useMemo } from 'react';
+import React, { useEffect, useContext, useState, useCallback, useMemo } from 'react';
 import { StyleSheet, Text, View, StatusBar, TextInput, Image, ImageBackground, Dimensions, LayoutChangeEvent } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -16,6 +16,7 @@ import ThreePic from "../../../../styles/ThreePicStyle"
 import { CustomheaderLogo } from "../../../../components/HeaderLogo"
 import { WSContext } from '../../../../../routes/wsContext';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { WaitingInfo } from "../../../../components/Waiting"
 
 export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
@@ -25,6 +26,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
   const [amount, setAmount] = useState(0);
   const [modalBetting, setModalBetting] = useState(false);
   const [modalCard, setModalCard] = useState(true);
+  const [modalWaiting, setModalWaiting] = useState(true)
   const wsClient = useContext(WSContext)
 
   const windowWidth = Dimensions.get('window').width;
@@ -45,6 +47,10 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
 
   const closeOpenBetting = () => {
     setModalBetting(!modalBetting)
+  }
+
+  const closeOpenWaiting = () => {
+    setModalWaiting(!modalWaiting)
   }
 
   const buyIn = () => {
@@ -70,16 +76,15 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
     setContainerWidth(e.nativeEvent.layout.width);
   }, []);
 
-  const scaleStyle = useMemo(() => {
+  const scaleStyle :any= useMemo(() => {
     const sc = Math.min(
       584 / (containerHeight),
       361 / (containerWidth)
     );
     console.log(sc);
-    const style = { transform: [{scaleX: sc, scaleY: sc}]}
+    const style = { transform: [{scaleX: sc, scaleY: sc}], position: 'relative'}
     return style;
   }, [containerHeight, containerWidth])
-  
 
   useEffect(function gameInit() {
     setBanker("player1")
@@ -101,6 +106,12 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
               </View> 
             </View>
             <StatusBar hidden />
+            {
+              modalWaiting ? 
+              <WaitingInfo></WaitingInfo>
+              :
+              <></>
+            }
             {
               modalCheckIn ?
               <CheckInWindow close={() => closeOpenCheckIn()} buyIn={() => buyIn() }/>
@@ -134,11 +145,8 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (props) => {
                 </View>
               </View> */}
               <ImageBackground source={require('../../../../assets/images/others/backgroundskp-game.png.png')} style={ThreePic.ThreePicGameBackground}/>
-              <View style={{
-                display: "flex",
-                flex: 1,
-              }} onLayout={e => measure(e)}>
-                  <View style={scaleStyle}>
+              <View style={ThreePic.ThreePicGameContainer} onLayout={e => measure(e)}>
+                  <View style={ThreePic.ThreePicGameTableImageWrapper}>
                       <Image source={require('../../../../assets/images/others/skp-image.png')} style={ThreePic.ThreePicGameTableLogo}/>
                       <View style={ThreePic.ThreePicGameTableTextWrapper}>
                         <Text style={ThreePic.ThreePicGameTableText}>Banker: 3000</Text>

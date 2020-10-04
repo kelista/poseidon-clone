@@ -26,6 +26,7 @@ import { BottomNavigation } from "../../../../components/BottomNavigation";
 import { CheckInWindow } from "../../../../components/CheckIn";
 import { BettingWindow } from "../../../../components/Betting";
 import { RoundDetail } from "../../../../components/RoundDetail";
+import { WaitingInfo } from "../../../../components/Waiting"
 import { LiveScore } from "../../../../components/LiveScore";
 import { CardWindow } from "../../../../components/CardPhase";
 import ThreePic from "../../../../styles/ThreePicStyle";
@@ -76,6 +77,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [modalRound, setModalRound] = useState(false);
   const [modalLive, setModalLive] = useState(false);
   const [modalCard, setModalCard] = useState(true);
+  const [modalWaiting, setModalWaiting] = useState(true);
   const infoEvent = "info";
   const moveEvent = "move";
   const metaEvent = "game/meta";
@@ -323,6 +325,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     setModalRound(false);
   };
 
+  const closeOpenWaiting = () => {
+    setModalWaiting(!modalWaiting)
+  }
+
   const buyIn = () => {
     closeOpenCheckIn();
     // closeOpenBetting()
@@ -496,7 +502,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     </View>
                   } */}
-
+  
                 {/* Render image */}
                 <View style={ThreePic.ThreePicTimerDiv}>
                   <View style={ThreePic.relative}>
@@ -522,7 +528,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                     )}
                   </View>
                 </View>
-
+                {
+                  modalWaiting ? 
+                  <WaitingInfo></WaitingInfo>
+                  :
+                  <></>
+                }
                 <View style={ThreePic.ThreePicGameTableTextWrapper}>
                   <Text style={ThreePic.ThreePicGameTableText}>
                     Banker: {bankerPool}

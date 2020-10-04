@@ -42,7 +42,7 @@ export const BottomNavigation = ({home, setting, status, balance, roundDetail, l
                 </TouchableOpacity>
               </View>
               <View style={styles.navigationButton}>
-                <TouchableOpacity style={styles.buttonSelection} >
+                <TouchableOpacity style={styles.buttonSelection} onPress={() => liveScore()}>
                   <Image style={[styles.imgButton, styles.reportNavImg]} source={require('../assets/images/others/report-nav.png')} />
                 </TouchableOpacity>
               </View>
