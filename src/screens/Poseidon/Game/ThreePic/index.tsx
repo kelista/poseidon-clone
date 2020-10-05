@@ -55,6 +55,16 @@ interface Player {
 
 const multiplier = 2;
 
+const infoEvent = "info";
+const moveEvent = "move";
+const metaEvent = "game/meta";
+const poolEvent = "game/pool";
+const historyEvent = "game/history";
+const buyInEvent = "game/sign";
+const gameInfoEvent = "game/info";
+const gamePhaseEvent = "game/phase";
+const gameBetEvent = "game/bet";
+
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   props
 ) => {
@@ -77,44 +87,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [modalRound, setModalRound] = useState(false);
   const [modalLive, setModalLive] = useState(false);
   const [modalCard, setModalCard] = useState(true);
-  const [modalWaiting, setModalWaiting] = useState(true);
+  const [modalWaiting, setModalWaiting] = useState(false);
   const [seatNumberNow, setSeatNumberNow] = useState(0);
-  const [roundDetail, setRoundDetail] = useState(
-    {
-      "page": 1,
-      "reports": [
-        {
-          "username": "redis",
-          "amount": -2,
-          "cards": [
-            "6C",
-            "7C",
-            "2C"
-          ]
-        },
-        {
-          "username": "rabbit",
-          "amount": 2,
-          "cards": [
-            "10C",
-            "8C",
-            "10D"
-          ]
-        }
-      ],
-      "roundId": "3eec4e1a-1398-4d0f-8e7a-0447d7ee0bbb",
-      "tableId": "5f786a9f4507b700d661bed9",
-      "totalRound": 1
-    }
-  )
-  const infoEvent = "info";
-  const moveEvent = "move";
-  const metaEvent = "game/meta";
-  const poolEvent = "game/pool";
-  const buyInEvent = "game/sign";
-  const gameInfoEvent = "game/info";
-  const gamePhaseEvent = "game/phase";
-  const gameBetEvent = "game/bet";
+  const [roundDetailPage, setRoundDetailPage] = useState(1);
+  const [roundDetailCount, setRoundDetailCount] = useState(0);
+  
   const [connecting, setConnecting] = useState(true);
   const [buyInStat, setBuyInStat] = useState(false);
   const [balancePlayer, setBalancePlayer] = useState(0);
@@ -408,12 +385,16 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     const windowHeight = Dimensions.get('window').height;
     const windowWidth = Dimensions.get('window').width;
     const sc = Math.min(
-      361 / (windowWidth),
-      584 / (windowHeight - (insets.bottom + insets.top) - 56)
+      (windowWidth) / 361,
+      (windowHeight - (insets.bottom + insets.top) - 56) / 584
+    );
+    const sc2 = Math.min(
+      (windowWidth) / 400,
+      (windowHeight - (insets.bottom + insets.top) - 56) / 644
     );
     const style = { 
       position: 'absolute',
-      transform: [{ scaleX: sc}, { scaleY: sc }]
+      transform: [{ scaleX: windowHeight <= 736 ? sc2 : sc }, { scaleY: windowHeight <= 736 ? sc2 : sc }]
     }
     return style
   }, [insets])
@@ -423,15 +404,19 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     const windowHeight = Dimensions.get('window').height;
     const windowWidth = Dimensions.get('window').width;
     const sc = Math.min(
-      361 / (windowWidth),
-      584 / (windowHeight - (insets.bottom + insets.top) - 56)
+      (windowWidth) / 361,
+      (windowHeight - (insets.bottom + insets.top) - 56) / 584
+    );
+    const sc2 = Math.min(
+      (windowWidth) / 400,
+      (windowHeight - (insets.bottom + insets.top) - 56) / 644
     );
     const style = { 
       position: 'relative',
       height: 584,
       zIndex: 5,
       width: 331,
-      transform: [{ scaleX: sc}, { scaleY: sc }], 
+      transform: [{ scaleX: windowHeight <= 736? sc2 : sc}, { scaleY: windowHeight <= 736 ? sc2 : sc }], 
     }
     return style
   }, [insets])
@@ -459,7 +444,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
             </View>
           </View>
           <StatusBar hidden />
-          {modalRound ? <RoundDetail roundDetail={roundDetail}></RoundDetail> : <></>}
+          {/* disini bill */}
+          {/* oke kalem ya */}
+          {modalRound ? <RoundDetail></RoundDetail> : <></>}
           {modalLive ? <LiveScore result={result} info={info}></LiveScore> : <></>}
           {modalCheckIn ? (
             <CheckInWindow
@@ -620,9 +607,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                 </View>
                 <Image
                   source={require("../../../../assets/images/others/table-new.png")}
-                  style={ThreePic.ThreePicGameTableImage}
+                  style={{...ThreePicGameTableImage}}
                 />
-                <View style={ThreePic.ThreePicGamePinWrapper}>
+                <View style={{...ThreePicGamePinWrapper}}>
                   {!player1 ? (
                     <View style={ThreePic.ThreePicGamePin1}>
                       <TouchableOpacity onPress={() => sitHandler(1)}>

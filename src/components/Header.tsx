@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export const CustomHeader = ({ title, status }: { title: string, status: string }) => {
+export const CustomHeader = ({ title, status, balance }: { title: string, balance: number, status: string }) => {
   return (
     <View style={{}}>
       <LinearGradient colors={['#6E0000', '#400000']} locations={[0, 1]} style={styles.loginButton}>
@@ -29,7 +29,7 @@ export const CustomHeader = ({ title, status }: { title: string, status: string 
             status == "userLobby" ?
             <View style={styles.userBalance}>
               <Image source={require('../assets/images/others/balance-image.png')} />
-              <Text style={styles.userBalanceText}>999,999,999</Text>
+              <Text style={styles.userBalanceText}>{balance}</Text>
             </View>
             :
             <></>

@@ -1,14 +1,70 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { WSContext } from "../../routes/wsContext";
+import moment from "moment"
+
+const infoEvent = "info";
 
 export const StatementInfo = () => {
-
+  
+  const wsClient = useContext(WSContext);
   const [modalReport, setModalReport] = useState(true);
-
+  // 0 untuk this week
+  // -1 untuk last week
+  const [weekTab, setWeekTab] = useState<0 | -1>(0);
+  
+  const [report, setReport] = useState<any>();
+  const [username, setUsername] = useState("");
+  const [balancePlayer, setBalancePlayer] = useState(0);
   const changeWeek = () => {
-    setModalReport(!modalReport)
+    if(modalReport) {
+      setModalReport(false)
+    } else {
+      setModalReport(true)
+    }
+    if(weekTab == 0) {
+      setWeekTab(-1)
+    } else {
+      setWeekTab(0)
+    }
   }
+  const lobbyEvent = "lobby/statement"
+
+  useEffect(
+    function cb() {
+      if (!wsClient) return;
+      const listeners: string[] = [];
+
+      const lobbyAction = async function (data: any) {
+        console.log(data);
+        setReport(data);
+      };
+
+      const infoAction = async function (data: any) {
+        setUsername(data.username);
+        setBalancePlayer(data.balance);
+      }
+
+      const lobbyListener = wsClient.addListener(lobbyEvent, lobbyAction);
+      listeners.push(lobbyListener);
+
+      const infoListener = wsClient.addListener(infoEvent, infoAction);
+      listeners.push(infoListener);
+
+      return () => {
+        listeners.map((lst) => {
+          wsClient?.removeListener(lst);
+        });
+      };
+    },
+    [wsClient ? true : false]
+  );
+
+  useEffect(function gameInit() {
+    wsClient?.sendMessage(lobbyEvent, { week: weekTab });
+    wsClient?.sendMessage(infoEvent, { });
+  }, [weekTab])
 
   return (
     <View style={styles.statementContainer}>
@@ -18,11 +74,11 @@ export const StatementInfo = () => {
         </View>
         <View style={styles.statementProfileDetail}>
           <Text style={styles.statementProfileTitle}>Poseidon Club</Text>
-          <Text style={styles.statementProfileName}>Rockies07</Text>
+          <Text style={styles.statementProfileName}>{username}</Text>
           <Text style={styles.statementProfileId}>ID: S100127</Text>
           <View style={styles.statementUserBalance}>
             <Image source={require('../assets/images/others/balance-image.png')} />
-            <Text style={styles.statementUserBalanceText}>999,999,999</Text>
+            <Text style={styles.statementUserBalanceText}>{balancePlayer}</Text>
           </View>
         </View>
       </View>
@@ -40,46 +96,23 @@ export const StatementInfo = () => {
               </LinearGradient>
             </TouchableOpacity>
             </View>
-            <View style={styles.statementBoxWrapper}>
-              <View style={styles.statementBoxContentBalance}>
-                <Text style={styles.statementBoxContentWeekText}>30.09.2020 (Today)</Text>
-              </View>
-              <View style={styles.statementBoxContentBalance}>
-                <Text style={styles.statementBoxContentValueText}>+1,234</Text>
-              </View>
-            </View>
-            <View style={styles.statementBoxWrapper}>
-              <View style={styles.statementBoxContentBalance}>
-                <Text style={styles.statementBoxContentWeekText}>29.09.2020 (Yesterday)</Text>
-              </View>
-              <View style={styles.statementBoxContentBalance}>
-                <Text style={styles.statementBoxContentValueTextRed}>-1,234</Text>
-              </View>
-            </View>
-            <View style={styles.statementBoxWrapper}>
-              <View style={styles.statementBoxContentBalance}>
-                <Text style={styles.statementBoxContentWeekText}>28.09.2020</Text>
-              </View>
-              <View style={styles.statementBoxContentBalance}>
-                <Text style={styles.statementBoxContentValueText}>+1,234</Text>
-              </View>
-            </View>
-            <View style={styles.statementBoxWrapper}>
-              <View style={styles.statementBoxContentBalance}>
-                <Text style={styles.statementBoxContentWeekText}>27.09.2020</Text>
-              </View>
-              <View style={styles.statementBoxContentBalance}>
-                <Text style={styles.statementBoxContentValueTextRed}>-1,234</Text>
-              </View>
-            </View>
-            <View style={styles.statementBoxWrapper}>
-              <View style={styles.statementBoxContentBalanceLast}>
-                <Text style={styles.statementBoxContentWeekText}>28.09.2020</Text>
-              </View>
-              <View style={styles.statementBoxContentBalanceLast}>
-                <Text style={styles.statementBoxContentValueTextRed}>-1,234</Text>
-              </View>
-            </View>
+            {
+              report ?
+                report.statements.map((d:any, index:number) => {
+                  return (
+                  <View style={styles.statementBoxWrapper} key={index}>
+                    <View style={styles.statementBoxContentBalance}>
+                      <Text style={styles.statementBoxContentWeekText}>{moment(d.date).format('DD.MM.yy')}</Text>
+                    </View>
+                    <View style={styles.statementBoxContentBalance}>
+                      <Text style={d.amount < 0 ? styles.statementBoxContentValueTextRed : styles.statementBoxContentValueText}>{d.amount > 0 ? "+" + d.amount : d.amount}</Text>
+                    </View>
+                  </View>
+                  )
+                })
+              :
+                <></>
+            }
         </View>
       </View>
     </View>

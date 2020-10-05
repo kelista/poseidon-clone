@@ -13,13 +13,19 @@ import AccountStyle from "../../../styles/AccountStyle"
 import { CustomButton } from "../../../components/Button"
 import { CustomheaderLogo } from "../../../components/HeaderLogo"
 import { BottomNavigation } from "../../../components/BottomNavigation"
+import { WSContext } from "../../../../routes/wsContext";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Svg, { Path } from 'react-native-svg';
 
+const infoEvent = "info";
+
 export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
   const [toggle, setToggle] = useState(true);
+  const [username, setUsername] = useState("");
+  const [balancePlayer, setBalancePlayer] = useState(0);
+  const wsClient = useContext(WSContext);
 
   const bs = useContext(BSContext);
 
@@ -31,6 +37,28 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const logoutHandler = () => {
     navigate(ROUTES.PoseidonLogin);
   };
+
+  useEffect(
+    function cb() {
+      if (!wsClient) return;
+      const listeners: string[] = [];
+
+      const infoAction = async function (data: any) {
+        setUsername(data.username);
+        setBalancePlayer(data.balance);
+      }
+
+      const infoListener = wsClient.addListener(infoEvent, infoAction);
+      listeners.push(infoListener);
+
+      return () => {
+        listeners.map((lst) => {
+          wsClient?.removeListener(lst);
+        });
+      };
+    },
+    [wsClient ? true : false]
+  );
 
   const toggleClick = () => {
     if(toggle) {
@@ -53,6 +81,10 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
     }
   }, [])
 
+  useEffect(function gameInit() {
+    wsClient?.sendMessage(infoEvent, { });
+  }, [])
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <StatusBar barStyle="light-content" />
@@ -73,11 +105,11 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
               </View>
             </View>
             <View style={AccountStyle.accountUser}>
-              <Text style={AccountStyle.accountUserName}>Rockies07</Text>
+              <Text style={AccountStyle.accountUserName}>{username}</Text>
               <Text style={AccountStyle.accountUserId}>ID: S100127</Text>
               <View style={AccountStyle.accountUserBalance}>
                 <Image source={require('../../../assets/images/others/balance-image.png')}/>
-                <Text style={AccountStyle.accountUserBalanceText}>999,999,999</Text>
+                <Text style={AccountStyle.accountUserBalanceText}>{balancePlayer}</Text>
               </View>
             </View>
             <View style={AccountStyle.accountMenuContainer}>

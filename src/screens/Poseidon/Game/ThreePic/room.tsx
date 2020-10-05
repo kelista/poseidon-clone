@@ -112,6 +112,7 @@ function RoomSelectComponent({
     </TouchableOpacity>
   );
 }
+const infoEvent = "info";
 
 export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
   props
@@ -123,6 +124,8 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
   const joinEvent = "lobby/join";
   const [listenerReady, setListenerReady] = useState(false);
   const [availableRooms, setAvailableRooms] = useState<Room[]>([]);
+  const [username, setUsername] = useState("");
+  const [balancePlayer, setBalancePlayer] = useState(0);
 
   const lobbyHandler = () => {
     navigate(ROUTES.PoseidonLobby);
@@ -190,6 +193,15 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
     const moveListener = wsClient.addListener(moveEvent, moveAction);
     listeners.push(moveListener);
 
+
+    const infoAction = async function (data: any) {
+      setUsername(data.username);
+      setBalancePlayer(data.balance);
+    }
+
+    const infoListener = wsClient.addListener(infoEvent, infoAction);
+    listeners.push(infoListener);
+
     setListenerReady(true);
 
     return () => {
@@ -205,6 +217,10 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
 
     wsClient.sendMessage(lobbyRoomsEvent, { codename: "three-pictures" });
   }, [wsClient ? true : false, listenerReady]);
+
+  useEffect(function gameInit() {
+    wsClient?.sendMessage(infoEvent, { });
+  }, [])
 
   const insets = useSafeAreaInsets();
 
@@ -235,7 +251,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
             <Image
               source={require("../../../../assets/images/others/home.png")}
             />
-            <CustomHeader title="Rockies07" status="userLobby"></CustomHeader>
+            <CustomHeader title={username} status="userLobby" balance={balancePlayer}></CustomHeader>
             <View style={ThreePic.ThreePicImageContainer}>
               <View style={ThreePic.ThreePicImageWrapper}>
                 <ImageBackground

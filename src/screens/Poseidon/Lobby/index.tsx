@@ -57,6 +57,8 @@ const games: GameSelect[] = [
   }
 ]
 
+const infoEvent = "info";
+
 export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
 
@@ -73,6 +75,8 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   const lobbyGamesEvent = "lobby/games";
   const messageStr = JSON.stringify({ event: lobbyGamesEvent });
   const [connecting, setConnecting] = useState(true);
+  const [username, setUsername] = useState("");
+  const [balancePlayer, setBalancePlayer] = useState(0);
 
   // connect
   useEffect(function cb() {
@@ -80,6 +84,7 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
       setConnecting(false);
       console.log("connected");
       wsClient?.sendMessage(lobbyGamesEvent, { event: lobbyGamesEvent });
+      wsClient?.sendMessage(infoEvent, {});
     }, () => {
       console.log("disconnected");
       navigate(ROUTES.PoseidonLogin);
@@ -95,8 +100,16 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
       setAvailableGames(data);
     }
 
+    const infoAction = async function (data: any) {
+      setUsername(data.username);
+      setBalancePlayer(data.balance);
+    }
+
     const lobbyListenerId = wsClient.addListener(lobbyGamesEvent, connectCB);
     listeners.push(lobbyListenerId);
+
+    const infoListener = wsClient.addListener(infoEvent, infoAction);
+    listeners.push(infoListener);
 
     return () => {
       listeners.map(lst => {
@@ -160,7 +173,7 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
           }
           <View style={{...styleSafeArea}}>
             <Image source={require('../../../assets/images/others/home.png')} />
-            <CustomHeader title="Rockies07" status="userLobby"></CustomHeader>
+            <CustomHeader title={username} status="userLobby" balance={balancePlayer}></CustomHeader>
             <View style={LobbyStyle.lobbyImageContainer}>
               <View style={LobbyStyle.lobbyImageWrapper}>
                 <ImageBackground source={require('../../../assets/images/others/background-revision.png')} style={LobbyStyle.lobbyImageBackground}></ImageBackground>
@@ -177,11 +190,11 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
                   </View> */}
 
                   {/* test only */}
-                  <View style={LobbyStyle.lobbyGameSkpWrapper}>
+                  {/* <View style={LobbyStyle.lobbyGameSkpWrapper}>
                     <TouchableOpacity onPress={skpGameRoom}>
                       <Image source={require('../../../assets/images/others/skp-image.png')} style={LobbyStyle.lobbyGameSkp} />
                     </TouchableOpacity>
-                  </View>
+                  </View> */}
                   {
                     games.map(g => {
                       if (codenames.includes(g.codename)) {
