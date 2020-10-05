@@ -17,17 +17,15 @@ export const StatementInfo = () => {
   const [report, setReport] = useState<any>();
   const [username, setUsername] = useState("");
   const [balancePlayer, setBalancePlayer] = useState(0);
-  const changeWeek = () => {
-    if(modalReport) {
-      setModalReport(false)
-    } else {
-      setModalReport(true)
-    }
-    if(weekTab == 0) {
-      setWeekTab(-1)
-    } else {
-      setWeekTab(0)
-    }
+
+  const thisWeek = () => {
+    setWeekTab(0)
+    setModalReport(true)
+  }
+
+  const lastWeek = () => {
+    setModalReport(false)
+    setWeekTab(-1)
   }
   const lobbyEvent = "lobby/statement"
 
@@ -85,12 +83,12 @@ export const StatementInfo = () => {
       <View style={styles.statementBody}>
         <View style={styles.statementBoxContainer}>
           <View style={styles.statementBoxWrapper}>
-            <TouchableOpacity style={styles.statementBoxContent} onPress={changeWeek}>
+            <TouchableOpacity style={styles.statementBoxContent} onPress={thisWeek}>
               <LinearGradient colors={[modalReport ? "#3C0000" : "#6E0000", "#400000"]} style={styles.statementBoxContentGradient}>
                 <Text style={styles.statementBoxContentTitleText}>This Week</Text>
               </LinearGradient>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.statementBoxContent} onPress={changeWeek}>
+            <TouchableOpacity style={styles.statementBoxContent} onPress={lastWeek}>
               <LinearGradient colors={[modalReport ? "#6E0000" : '#3C0000', "#400000"]} style={styles.statementBoxContentGradient}>
                 <Text style={styles.statementBoxContentTitleText}>Last Week</Text>
               </LinearGradient>

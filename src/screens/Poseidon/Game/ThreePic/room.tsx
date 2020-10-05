@@ -19,6 +19,7 @@ import ThreePic from "../../../../styles/ThreePicStyle";
 import { CustomheaderLogo } from "../../../../components/HeaderLogo";
 import { WSContext } from "../../../../../routes/wsContext";
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatementInfo } from '../../../../components/Statement'
 
 interface Room {
   _id: string;
@@ -126,6 +127,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
   const [availableRooms, setAvailableRooms] = useState<Room[]>([]);
   const [username, setUsername] = useState("");
   const [balancePlayer, setBalancePlayer] = useState(0);
+  const [modalStatement, setModalStatement] = useState(false)
 
   const lobbyHandler = () => {
     navigate(ROUTES.PoseidonLobby);
@@ -236,6 +238,10 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
     }
   },[insets])
 
+  const closeOpenStatement = () => {
+    setModalStatement(!modalStatement)
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <StatusBar barStyle="light-content" />
@@ -247,6 +253,9 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
         ></CustomheaderLogo>
         <ScrollView>
           <StatusBar hidden />
+          {
+            modalStatement ? <StatementInfo></StatementInfo> : <></>
+          }
           <View style={{...styleSafeArea}}>
             <Image
               source={require("../../../../assets/images/others/home.png")}
@@ -272,6 +281,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
         <BottomNavigation
           home={() => navigate(ROUTES.PoseidonLobby)}
           setting={() => navigate(ROUTES.PoseidonAccount)}
+          liveScore={() => closeOpenStatement()}
           status={"room"}
           balance={0}
         ></BottomNavigation>
