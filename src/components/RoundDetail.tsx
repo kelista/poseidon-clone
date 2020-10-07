@@ -18,19 +18,18 @@ const windowWidth = Dimensions.get("window").width;
 const scale = windowWidth / 375;
 
 export const RoundDetail = (props: any) => {
-	const wsClient = useContext(WSContext);
-
-  const [pageHistory, setPageHistory] = useState(1);
+  const { pageHistory, setPageHistory } = props
+  const wsClient = useContext(WSContext);
 
   const balance = 1000;
   const [sliderValue, setsliderValue] = useState(0);
   const setSliderMethod = (sliderValue: number) => {
-    setsliderValue(sliderValue);
-	};
+    setPageHistory(sliderValue);
+  };
 
   const [history, setHistory] = useState<any>();
 
-	const historyEvent = "game/history"
+  const historyEvent = "game/history";
 
   useEffect(
     function cb() {
@@ -38,7 +37,7 @@ export const RoundDetail = (props: any) => {
       const listeners: string[] = [];
 
       const historyAction = async function (data: any) {
-				console.log(data)
+        console.log(data);
         setHistory(data);
       };
 
@@ -52,20 +51,47 @@ export const RoundDetail = (props: any) => {
       };
     },
     [wsClient ? true : false]
-	);
-	
-  useEffect(function gameInit() {
-    wsClient?.sendMessage(historyEvent, { page: pageHistory });
-  }, [pageHistory])
-	
+  );
+
+  useEffect(
+    function gameInit() {
+      wsClient?.sendMessage(historyEvent, { page: pageHistory });
+    },
+    [pageHistory]
+  );
+
+  const backBtn = () => {
+    if (pageHistory > 1) {
+      setPageHistory(pageHistory - 1);
+    }
+  };
+
+  const backLastBtn = () => {
+    setPageHistory(1);
+  };
+
+  const forwardBtn = () => {
+    if (pageHistory < history.totalRound) {
+      setPageHistory(pageHistory + 1);
+    }
+  };
+
+  const forwardLastBtn = () => {
+    if (history.totalRound > 0) {
+      setPageHistory(history.totalRound);
+    }
+  };
+
   const insets = useSafeAreaInsets();
 
-  const pagingArea:any = useMemo(() => {
-    const windowHeight = Dimensions.get('window').height;
+  const pagingArea: any = useMemo(() => {
+    const windowHeight = Dimensions.get("window").height;
     return {
-      width: "100%", position: "absolute", bottom: 85 + insets.bottom + insets.top
-    }
-  },[insets])
+      width: "100%",
+      position: "absolute",
+      bottom: 85 + insets.bottom + insets.top,
+    };
+  }, [insets]);
 
   return (
     <View style={styles.RoundDetailContainer}>
@@ -79,17 +105,16 @@ export const RoundDetail = (props: any) => {
         >
           <Text style={styles.RoundDetailHeaderText}>
             Round: #
-						{ history ?
-						history.roundId.length > 27
-              ? history.roundId.substring(0, 27) + "..."
-							: history.roundId
-							: ""
-						}
+            {history
+              ? history.roundId.length > 27
+                ? history.roundId.substring(0, 27) + "..."
+                : history.roundId
+              : ""}
           </Text>
         </LinearGradient>
         <View>
           {history ? (
-            history.reports.map((d:any,index:number) => {
+            history.reports.map((d: any, index: number) => {
               return (
                 <View style={styles.RoundDetailList} key={index}>
                   <View style={styles.RoundDetailListRowOne}>
@@ -98,7 +123,7 @@ export const RoundDetail = (props: any) => {
                         source={require("../assets/images/others/player1.png")}
                         style={styles.RoundDetailUserIcon}
                       />
-                      <View style={{ alignItems: "center", width: 29 }}>
+                      <View style={{ alignItems: "center", width: '100%' }}>
                         <Text style={styles.RoundDetailListRowOneText}>
                           {d.username}
                         </Text>
@@ -175,12 +200,12 @@ export const RoundDetail = (props: any) => {
             <></>
           )}
         </View>
-        <View style={{...pagingArea }}>
+        <View style={{ ...pagingArea }}>
           <View style={{ width: "100%", paddingLeft: 10, paddingRight: 10 }}>
             <Slider
               style={styles.RoundDetailSlider}
               step={1}
-              minimumValue={pageHistory}
+              minimumValue={1}
               maximumValue={history ? history.totalRound : 1}
               minimumTrackTintColor="#FFFFFF"
               maximumTrackTintColor="#8E8E8E"
@@ -192,13 +217,17 @@ export const RoundDetail = (props: any) => {
           </View>
           <View style={styles.RoundDetailPaging}>
             <View style={{ position: "relative", width: "100%" }}>
-              <TouchableOpacity style={styles.RoundDetailPagingButtonBackward}>
+              <TouchableOpacity
+                style={styles.RoundDetailPagingButtonBackward}
+                onPress={backLastBtn}
+              >
                 <Image
                   source={require("../assets/images/others/button-backward.png")}
                   style={styles.RoundDetailPagingButtonBackwardImage}
                 />
               </TouchableOpacity>
-							<TouchableOpacity onPress={() => setPageHistory(pageHistory + 1)}
+              <TouchableOpacity
+                onPress={backBtn}
                 style={styles.RoundDetailPagingButtonBack}
               >
                 <Image
@@ -206,15 +235,19 @@ export const RoundDetail = (props: any) => {
                   style={styles.RoundDetailPagingButtonBackwardImage}
                 />
               </TouchableOpacity>
-              
+
               <View style={{ width: "100%", alignItems: "center" }}>
-								<Text style={styles.RoundDetailPagingText}>{pageHistory} / {history ? 
-									history.totalRound != 0 ? 
-									history.totalRound : 1
-									: 1
-								}</Text>
+                <Text style={styles.RoundDetailPagingText}>
+                  {pageHistory} /{" "}
+                  {history
+                    ? history.totalRound != 0
+                      ? history.totalRound
+                      : 1
+                    : 1}
+                </Text>
               </View>
               <TouchableOpacity
+                onPress={forwardLastBtn}
                 style={styles.RoundDetailPagingButtonBackwardReverse}
               >
                 <Image
@@ -222,7 +255,8 @@ export const RoundDetail = (props: any) => {
                   style={styles.RoundDetailPagingButtonBackwardImage}
                 />
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setPageHistory(pageHistory + 1)}
+              <TouchableOpacity
+                onPress={forwardBtn}
                 style={styles.RoundDetailPagingButtonBackReverse}
               >
                 <Image
@@ -289,16 +323,15 @@ const styles = StyleSheet.create({
   RoundDetailList: {
     height: 41,
     marginTop: scale < 0.9 ? 8 : 12,
-    paddingLeft: 30,
+    paddingLeft: 20,
     paddingRight: 24,
     display: "flex",
     flexDirection: "row",
   },
   RoundDetailListRowOne: {
-    flex: 0.31,
-    alignItems: "center",
+    flex: 0.4,
+    alignItems: "flex-start",
     transform: [{ scaleX: scale }, { scaleY: scale }],
-    // backgroundColor: 'red'
   },
   RoundDetailListRowTwo: {
     flex: 0.268,
@@ -311,9 +344,9 @@ const styles = StyleSheet.create({
     transform: [{ scaleX: scale }, { scaleY: scale }],
   },
   RoundDetailListRowOneWrapper: {
-    width: "100%",
+    width: 60,
     height: "100%",
-    alignItems: "flex-start",
+    alignItems: "center",
   },
   RoundDetailListRowOneText: {
     fontSize: 8,
@@ -357,7 +390,7 @@ const styles = StyleSheet.create({
     left: 0,
     width: 18,
     height: 18,
-    backgroundColor: "#FAE88C",
+    zIndex: 5,
     borderRadius: 18,
     transform: [{ translateY: -4.5 }],
   },
@@ -370,7 +403,7 @@ const styles = StyleSheet.create({
     left: 25,
     width: 18,
     height: 18,
-    backgroundColor: "#FAE88C",
+    zIndex: 5,
     borderRadius: 18,
     transform: [{ translateY: -4.5 }],
   },

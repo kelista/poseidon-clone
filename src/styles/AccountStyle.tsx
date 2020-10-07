@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -66,7 +66,9 @@ export default StyleSheet.create({
     fontSize: 16,
     color: '#FFFFFF',
     right: 11,
-    position: 'absolute'
+    position: 'absolute',
+    top: Platform.OS == 'ios' ? '50%' : 0,
+    transform: [{translateY: Platform.OS == 'ios' ? -9 : 0}]
   },
   accountMenuContainer: {
     width: '100%',
@@ -90,12 +92,14 @@ export default StyleSheet.create({
     borderLeftColor: "#2D2D2D",
   },
   accountMenu: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#2D2D2D",
+  },
+  accountButton: {
     flexDirection: 'row',
     width: '100%',
     marginTop: 15,
     height: 30.5,
-    borderBottomWidth: 1,
-    borderBottomColor: "#2D2D2D",
   },
   accountMenuImage: {
     width: 16,
@@ -112,6 +116,7 @@ export default StyleSheet.create({
     height: 6.5,
   },
   accountMenuText: {
+    paddingTop: Platform.OS == "ios" ? 3 : 0,
     lineHeight: 14,
     color: '#E6E6E6',
     fontSize: 14,

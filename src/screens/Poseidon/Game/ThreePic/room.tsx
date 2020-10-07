@@ -221,8 +221,12 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
   }, [wsClient ? true : false, listenerReady]);
 
   useEffect(function gameInit() {
-    wsClient?.sendMessage(infoEvent, { });
+    updateInfo()
   }, [])
+
+  const updateInfo = () => {
+    wsClient?.sendMessage(infoEvent, { });
+  }
 
   const insets = useSafeAreaInsets();
 
@@ -260,7 +264,7 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
             <Image
               source={require("../../../../assets/images/others/home.png")}
             />
-            <CustomHeader title={username} status="userLobby" balance={balancePlayer}></CustomHeader>
+            <CustomHeader title={username} status="userLobby" balance={balancePlayer} updateInfo={updateInfo}></CustomHeader>
             <View style={ThreePic.ThreePicImageContainer}>
               <View style={ThreePic.ThreePicImageWrapper}>
                 <ImageBackground

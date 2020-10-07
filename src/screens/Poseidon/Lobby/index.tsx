@@ -84,12 +84,16 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
       setConnecting(false);
       console.log("connected");
       wsClient?.sendMessage(lobbyGamesEvent, { event: lobbyGamesEvent });
-      wsClient?.sendMessage(infoEvent, {});
+      updateInfo()
     }, () => {
       console.log("disconnected");
       navigate(ROUTES.PoseidonLogin);
     });
   }, [ss.token?.value]);
+
+  const updateInfo = () => {
+    wsClient?.sendMessage(infoEvent, {});
+  }
 
   // listen connect
   useEffect(function cb() {
@@ -137,10 +141,15 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
     navigate(ROUTES.PoseidonThreePicRoom);
   };
 
-  const hold = () => {
-    // navigate(ROUTES.RootGame1);
-    wsClient?.sendMessage("thanks", { message: "terimakasih udah kasih lobby/rooms" });
+  const goToHome = () => {
+    setModalStatement(false)
+    navigate(ROUTES.PoseidonLobby)
   };
+
+  const goToSetting = () => {
+    setModalStatement(false)
+    navigate(ROUTES.PoseidonAccount)
+  }
 
   const closeOpenStatement = () => {
     setModalStatement(!modalStatement)
@@ -173,7 +182,7 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
           }
           <View style={{...styleSafeArea}}>
             <Image source={require('../../../assets/images/others/home.png')} />
-            <CustomHeader title={username} status="userLobby" balance={balancePlayer}></CustomHeader>
+            <CustomHeader title={username} status="userLobby" balance={balancePlayer} updateInfo={updateInfo}></CustomHeader>
             <View style={LobbyStyle.lobbyImageContainer}>
               <View style={LobbyStyle.lobbyImageWrapper}>
                 <ImageBackground source={require('../../../assets/images/others/background-revision.png')} style={LobbyStyle.lobbyImageBackground}></ImageBackground>
@@ -212,7 +221,11 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
             </View>
           </View>
         </ScrollView>
-        <BottomNavigation home={() => navigate(ROUTES.PoseidonLobby)} setting={() => navigate(ROUTES.PoseidonAccount)} status={'room'} liveScore={() => closeOpenStatement()}>
+        <BottomNavigation 
+          home={() => goToHome()} 
+          setting={goToSetting} 
+          status={'room'} 
+          liveScore={() => closeOpenStatement()}>
         </BottomNavigation>
       </View>
     </SafeAreaView>

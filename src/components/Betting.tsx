@@ -22,7 +22,7 @@ export const BettingWindow = (props: any) => {
 		setModalBetting,
 		maxBet,
 		minBet,
-		midBet
+    midBet
 	} = props
   const [betValue, setBetValue] = useState(0);
 	const [checked, setChecked] = useState(false);
@@ -39,7 +39,7 @@ export const BettingWindow = (props: any) => {
   };
 
   const chipOne = () => {
-		if(betValue >= maxBet) {
+		if((betValue + minBet) > maxBet) {
 			setBetValue(minBet);
 		} else {
 			setBetValue((betValue: number) => betValue + minBet);
@@ -47,7 +47,7 @@ export const BettingWindow = (props: any) => {
   };
 
   const chipTwo = () => {
-		if(betValue >= maxBet) {
+		if((betValue + midBet) > maxBet) {
 			setBetValue(midBet);
 		} else {
 			setBetValue((betValue: number) => betValue + midBet);
@@ -65,9 +65,9 @@ export const BettingWindow = (props: any) => {
 	const submit = () => {
 		Promise.all([
 			AsyncStorage.setItem("last-bet", String(betValue))
-		]);
-		sendBet(betValue)
-		setModalBetting(false)
+    ]);
+    setModalBetting(false)
+    sendBet(betValue)
 	}
 
 	const lastBet = () => {

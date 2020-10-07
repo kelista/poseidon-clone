@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions } from "react-native";
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 
 export default StyleSheet.create({
   loginContainer: {
@@ -9,25 +9,25 @@ export default StyleSheet.create({
     width: windowWidth,
     height: windowHeight,
     paddingTop: 42,
-    backgroundColor: '#000000'
+    backgroundColor: "#000000",
   },
   loginContainerFocus: {
     flex: 1,
     width: windowWidth,
     height: windowHeight,
     paddingTop: 42,
-    backgroundColor: '#000000',
-    marginBottom: 100
+    backgroundColor: "#000000",
+    marginBottom: 100,
   },
   loginBoxWrapper: {
     flex: 1,
-    alignItems: 'center',
-    marginTop: 220
+    alignItems: "center",
+    marginTop: 220,
   },
   loginBox: {
     width: 258,
     height: 38,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     borderRadius: 4,
     marginTop: 10,
   },
@@ -35,25 +35,25 @@ export default StyleSheet.create({
     // zIndex: 10,
     height: 260,
     marginTop: -50,
-    alignItems: 'center',
+    alignItems: "center",
   },
   loginImage: {
     width: 508,
     height: 262,
   },
   loginRedCircle: {
-    position: 'absolute',
+    position: "absolute",
     zIndex: 9,
     width: 262,
     height: 262,
     borderRadius: 262,
-    backgroundColor: '#840000'
+    backgroundColor: "#840000",
   },
   loginInput: {
     paddingLeft: 20,
     lineHeight: 23,
     fontSize: 17,
-    height: '100%',
-    color: '#000000',
+    height: "100%",
+    color: "#000000",
   },
 });

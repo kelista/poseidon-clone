@@ -1,70 +1,108 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, StatusBar, AsyncStorage, Keyboard } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import React, { useEffect, useState, useContext, useRef, useMemo } from "react";
 import {
-  NavigationScreenComponent,
-} from "react-navigation";
-import LoginStyle from "../../../styles/LoginStyle"
-import { CustomButton } from "../../../components/Button"
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Image,
+  StatusBar,
+  AsyncStorage,
+  Keyboard,
+  Dimensions,
+} from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { NavigationScreenComponent } from "react-navigation";
+import LoginStyle from "../../../styles/LoginStyle";
+import { CustomButton } from "../../../components/Button";
 import { ROUTES } from "../../../../routes";
-import { initBacksound, playBacksound } from '../../../services/sound_manager'
+import { initBacksound, playBacksound } from "../../../services/sound_manager";
 import Constants from "expo-constants";
-import base from '../../../styles/base';
-import axios from 'axios';
+import base from "../../../styles/base";
+import axios from "axios";
 import { SSContext } from "../../../../routes/simpleStoreContext";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
-  const host = 'http://35.197.156.255:5000'
-  const path = host + "/login"
-  const [username, setUsername] = useState("rabbit")
-  const [password, setPassword] = useState("rabbit")
-  const [bottomPage, setBottomPage] = useState(false)
+  const host = "http://35.197.156.255:5000";
+  const path = host + "/login";
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [bottomPage, setBottomPage] = useState(false);
 
   const store = useContext(SSContext);
 
-  const scrollView = useRef(null)
+  const scrollView = useRef<any>(null);
 
   const lobbyHandler = () => {
-    axios.post(path, { username, password })
+    axios
+      .post(path, { username: username.toLowerCase(), password })
       .then((response) => {
         store.token.setValue(response.data.token);
-        Promise.all([
-          AsyncStorage.setItem("token", response.data.token)
-        ])
-          .then(() => {
+        Promise.all([AsyncStorage.setItem("token", response.data.token)]).then(
+          () => {
             navigate(ROUTES.PoseidonLobby);
-          })
+          }
+        );
       })
       .catch(() => {
-        alert("Username / Password wrong")
-      })
+        alert("Username / Password wrong");
+      });
   };
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', keyboardDidShow)
-    Keyboard.addListener('keyboardDidHide', keyboardDidHide)
-  }, [])
+    Keyboard.addListener("keyboardDidShow", keyboardDidShow);
+    Keyboard.addListener("keyboardDidHide", keyboardDidHide);
+  }, []);
 
   const keyboardDidShow = () => {
-    setBottomPage(true)
-  }
+    setBottomPage(true);
+  };
 
   const keyboardDidHide = () => {
-    setBottomPage(false)
-  }
+    setBottomPage(false);
+  };
+
+  const insets = useSafeAreaInsets();
+
+  const loginContainer: any = useMemo(() => {
+    const windowWidth = Dimensions.get("window").width;
+    const windowHeight = Dimensions.get("window").height;
+    return {
+      flex: 1,
+      height: windowHeight - (insets.bottom + insets.top),
+      width: windowWidth,
+      paddingTop: 42,
+      backgroundColor: "#000000",
+    };
+  }, [insets]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
       <StatusBar barStyle="light-content" />
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <StatusBar hidden />
-        <ScrollView ref={scrollView}>
-          <View style={bottomPage ? LoginStyle.loginContainerFocus : LoginStyle.loginContainer}>
+        <ScrollView
+          ref={scrollView}
+          onContentSizeChange={() =>
+            scrollView?.current?.scrollToEnd({ animated: true })
+          }
+        >
+          <View
+            style={
+              bottomPage
+                ? LoginStyle.loginContainerFocus
+                : { ...loginContainer }
+            }
+          >
             <View style={LoginStyle.loginImageWrapper}>
               <View style={LoginStyle.loginImage}>
-                <Image source={require('../../../assets/images/others/logo.png')} />
+                <Image
+                  source={require("../../../assets/images/others/logo.png")}
+                />
               </View>
             </View>
             <View style={LoginStyle.loginBoxWrapper}>
@@ -74,7 +112,7 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
                   placeholderTextColor="#AEAEAE"
                   style={LoginStyle.loginInput}
                   value={username}
-                  onChangeText={e => setUsername(e)}
+                  onChangeText={(e) => setUsername(e)}
                 ></TextInput>
               </View>
               <View style={LoginStyle.loginBox}>
@@ -84,10 +122,14 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
                   placeholderTextColor="#AEAEAE"
                   style={LoginStyle.loginInput}
                   value={password}
-                  onChangeText={e => setPassword(e)}
+                  onChangeText={(e) => setPassword(e)}
                 ></TextInput>
               </View>
-              <CustomButton title="Sign In" click={() => lobbyHandler()} type="login"></CustomButton>
+              <CustomButton
+                title="Sign In"
+                click={() => lobbyHandler()}
+                type="login"
+              ></CustomButton>
             </View>
           </View>
         </ScrollView>
@@ -99,6 +141,6 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
 const style = StyleSheet.create({
   welcome: {
     fontSize: 20,
-    textAlign: 'center'
+    textAlign: "center",
   },
 });

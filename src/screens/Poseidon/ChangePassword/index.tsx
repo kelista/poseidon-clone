@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Image, StatusBar, TextInput } from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import {
@@ -12,13 +12,19 @@ import { CustomheaderLogo } from "../../../components/HeaderLogo"
 import { BottomNavigation } from "../../../components/BottomNavigation"
 import { ROUTES } from "../../../../routes";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatementInfo } from '../../../components/Statement'
 
 export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
+  const [modalStatement, setModalStatement] = useState(false)
 
   const accountHandler = () => {
     // stopBacksound()
     navigate(ROUTES.PoseidonAccount);
+  }
+
+  const closeOpenStatement = () => {
+    setModalStatement(!modalStatement)
   }
 
   return (
@@ -29,6 +35,9 @@ export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) =
         <CustomheaderLogo name="Change Password" lobby={() => accountHandler()}></CustomheaderLogo>
         <ScrollView>
           <StatusBar hidden />
+          {
+            modalStatement ? <StatementInfo></StatementInfo> : <></>
+          }
           <View style={ChangePassStyle.container}>
             <View style={ChangePassStyle.box}>
               <TextInput placeholder="Current Password" placeholderTextColor="#AEAEAE" style={ChangePassStyle.input}></TextInput>
@@ -44,7 +53,8 @@ export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) =
         </ScrollView>
         <BottomNavigation 
           home={() => navigate(ROUTES.PoseidonLobby)} 
-          setting={() => navigate(ROUTES.PoseidonAccount)}>
+          setting={() => navigate(ROUTES.PoseidonAccount)}
+          liveScore={() => closeOpenStatement()}>
         </BottomNavigation>
       </View>
     </SafeAreaView>

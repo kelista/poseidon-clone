@@ -3,8 +3,10 @@
   "displayName": "Poseidon",
   "expo": {
     "name": "poseidon",
-    "slug": "poseidon",
-    "version": "1.0.15",
+    "slug": "poseidon", 
+    "orientation": "portrait",
+    "version": "1.0.22",
+    "icon": "./src/assets/images/logo.png",
     "ios": {
       "bundleIdentifier": "com.node8.poseidon"
     },

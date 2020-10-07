@@ -67,6 +67,10 @@ export default StyleSheet.create({
     width: 32,
     height: 32
   },
+  autoBet: {
+    width: 53,
+    height: 25
+  },
   infoButton: {
     position: 'absolute',
     zIndex: 1,
@@ -363,7 +367,7 @@ export default StyleSheet.create({
   ThreePicTimerDiv: {
     position: 'absolute',
     zIndex: 5,
-    top: '29%',
+    top: '27%',
     left: '50%',
     transform: [
       {translateX: -50}

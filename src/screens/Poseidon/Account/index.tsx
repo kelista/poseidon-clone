@@ -1,22 +1,28 @@
-import React, { useEffect, useState, useContext  } from 'react';
-import { StyleSheet, Text, View, Image, StatusBar, Platform } from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import {BSContext} from "../../../../routes/bsContext";
+import React, { useEffect, useState, useContext } from "react";
 import {
-  NavigationScreenComponent,
-} from "react-navigation";
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  StatusBar,
+  Platform,
+} from "react-native";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import { BSContext } from "../../../../routes/bsContext";
+import { NavigationScreenComponent } from "react-navigation";
 import { ROUTES } from "../../../../routes";
-import { WebSocketClient } from "../../../services/websocket"
-import { playBacksound, stopBacksound } from '../../../services/sound_manager'
-import AccountStyle from "../../../styles/AccountStyle"
+import { WebSocketClient } from "../../../services/websocket";
+import { playBacksound, stopBacksound } from "../../../services/sound_manager";
+import AccountStyle from "../../../styles/AccountStyle";
 
-import { CustomButton } from "../../../components/Button"
-import { CustomheaderLogo } from "../../../components/HeaderLogo"
-import { BottomNavigation } from "../../../components/BottomNavigation"
+import { CustomButton } from "../../../components/Button";
+import { CustomheaderLogo } from "../../../components/HeaderLogo";
+import { BottomNavigation } from "../../../components/BottomNavigation";
 import { WSContext } from "../../../../routes/wsContext";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatementInfo } from "../../../components/Statement";
 
-import Svg, { Path } from 'react-native-svg';
+import Svg, { Path } from "react-native-svg";
 
 const infoEvent = "info";
 
@@ -25,6 +31,9 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const [toggle, setToggle] = useState(true);
   const [username, setUsername] = useState("");
   const [balancePlayer, setBalancePlayer] = useState(0);
+  const [idPlayer, setIdPlayer] = useState("");
+  const [modalStatement, setModalStatement] = useState(false);
+
   const wsClient = useContext(WSContext);
 
   const bs = useContext(BSContext);
@@ -32,10 +41,20 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const lobbyHandler = () => {
     // stopBacksound()
     navigate(ROUTES.PoseidonLobby);
-  }
-  
+  };
+
   const logoutHandler = () => {
     navigate(ROUTES.PoseidonLogin);
+  };
+
+  const goToSetting = () => {
+    setModalStatement(false);
+    navigate(ROUTES.PoseidonAccount);
+  };
+
+  const goToHome = () => {
+    setModalStatement(false);
+    navigate(ROUTES.PoseidonLobby);
   };
 
   useEffect(
@@ -46,7 +65,8 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
       const infoAction = async function (data: any) {
         setUsername(data.username);
         setBalancePlayer(data.balance);
-      }
+        setIdPlayer(data.meb_id);
+      };
 
       const infoListener = wsClient.addListener(infoEvent, infoAction);
       listeners.push(infoListener);
@@ -61,122 +81,200 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   );
 
   const toggleClick = () => {
-    if(toggle) {
+    if (toggle) {
       bs?.pause().then(() => {
-        setToggle(!toggle) // ini apa
+        setToggle(!toggle); // ini apa
       });
     } else {
       bs?.start().then(() => {
-        setToggle(!toggle)
+        setToggle(!toggle);
       });
     }
-  }
+  };
+
+  const closeOpenStatement = () => {
+    setModalStatement(!modalStatement);
+  };
 
   useEffect(() => {
-    console.log(bs?.getStatus())
-    if(bs?.getStatus() == "play") {
-      setToggle(true)
+    console.log(bs?.getStatus());
+    if (bs?.getStatus() == "play") {
+      setToggle(true);
     } else {
-      setToggle(false)
+      setToggle(false);
     }
-  }, [])
+  }, []);
 
   useEffect(function gameInit() {
-    wsClient?.sendMessage(infoEvent, { });
-  }, [])
+    wsClient?.sendMessage(infoEvent, {});
+  }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
       <StatusBar barStyle="light-content" />
-      <View style={{flex: 1}}>
-        <CustomheaderLogo name="account" lobby={() => lobbyHandler()}></CustomheaderLogo>
+      <View style={{ flex: 1 }}>
+        <CustomheaderLogo
+          name="account"
+          lobby={() => lobbyHandler()}
+        ></CustomheaderLogo>
         <ScrollView>
           <StatusBar hidden />
+          {modalStatement ? <StatementInfo></StatementInfo> : <></>}
           <View style={AccountStyle.accountContainer}>
             <View style={AccountStyle.accountImageContainer}>
               <View style={AccountStyle.accountImageWrapper}>
-                <Image source={require('../../../assets/images/others/Sample.png')} style={AccountStyle.accountImage}/>
+                <Image
+                  source={require("../../../assets/images/others/Sample.png")}
+                  style={AccountStyle.accountImage}
+                />
               </View>
-              <View style={AccountStyle.accountPencilWrapper} >
+              <View style={AccountStyle.accountPencilWrapper}>
                 <TouchableOpacity style={AccountStyle.accountPencilClick}>
-                  <Image source={require('../../../assets/images/others/pencil-update.png')} style={AccountStyle.accountPencilImage}/>
-                  <Text style={AccountStyle.accountPencilText}>Update Photo</Text>
+                  <Image
+                    source={require("../../../assets/images/others/pencil-update.png")}
+                    style={AccountStyle.accountPencilImage}
+                  />
+                  <Text style={AccountStyle.accountPencilText}>
+                    Update Photo
+                  </Text>
                 </TouchableOpacity>
               </View>
             </View>
             <View style={AccountStyle.accountUser}>
               <Text style={AccountStyle.accountUserName}>{username}</Text>
-              <Text style={AccountStyle.accountUserId}>ID: S100127</Text>
+              <Text style={AccountStyle.accountUserId}>ID: {idPlayer}</Text>
               <View style={AccountStyle.accountUserBalance}>
-                <Image source={require('../../../assets/images/others/balance-image.png')}/>
-                <Text style={AccountStyle.accountUserBalanceText}>{balancePlayer}</Text>
+                <Image
+                  source={require("../../../assets/images/others/balance-image.png")}
+                />
+                <Text style={AccountStyle.accountUserBalanceText}>
+                  {balancePlayer}
+                </Text>
               </View>
             </View>
             <View style={AccountStyle.accountMenuContainer}>
               <View style={AccountStyle.accountMenuWrapper}>
-                <TouchableOpacity style={AccountStyle.accountMenu} onPress={() => navigate(ROUTES.PoseidonChangePass)}>
-                  <Image source={require('../../../assets/images/others/lock-menu.png')} style={AccountStyle.accountMenuImage_Lock}/>
-                  <Text style={AccountStyle.accountMenuText}>Change Password</Text>
-                  <Svg width={6.502} height={10.53} viewBox="0 0 6.502 10.53" style={AccountStyle.accountMenuArrow}>
-                    <Path
-                      data-name="Icon material-expand-more"
-                      d="M0 1.237l4.015 4.028-4.019 4.028 1.241 1.237 5.265-5.265L1.237 0z"
-                      fill="#e6e6e6"
+                <View style={AccountStyle.accountMenu}>
+                  <TouchableOpacity
+                    style={AccountStyle.accountButton}
+                    // onPress={() => navigate(ROUTES.PoseidonChangePass)}
+                  >
+                    <Image
+                      source={require("../../../assets/images/others/lock-menu.png")}
+                      style={AccountStyle.accountMenuImage_Lock}
                     />
-                  </Svg>
-                </TouchableOpacity>
-                <View style={AccountStyle.accountMenu} >
-                  <Image source={require('../../../assets/images/others/sound-menu.png')} style={AccountStyle.accountMenuImage} />
-                  <Text style={AccountStyle.accountMenuText}>BGM / Sounds</Text>
-                  <View style={AccountStyle.accountMenuToogle}>
-                    <TouchableOpacity onPress={toggleClick}>
-                      {
-                        toggle ? 
-                        <View style={AccountStyle.accountMenuToogleOn}></View>
-                        :
-                        <View style={AccountStyle.accountMenuToogleOff}></View>
-                      }
-                    </TouchableOpacity>
+                    <Text style={AccountStyle.accountMenuText}>
+                      Change Password
+                    </Text>
+                    <Svg
+                      width={6.502}
+                      height={10.53}
+                      viewBox="0 0 6.502 10.53"
+                      style={AccountStyle.accountMenuArrow}
+                    >
+                      <Path
+                        data-name="Icon material-expand-more"
+                        d="M0 1.237l4.015 4.028-4.019 4.028 1.241 1.237 5.265-5.265L1.237 0z"
+                        fill="#e6e6e6"
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <View style={AccountStyle.accountMenu}>
+                  <View style={AccountStyle.accountButton}>
+                    <Image
+                      source={require("../../../assets/images/others/sound-menu.png")}
+                      style={AccountStyle.accountMenuImage}
+                    />
+                    <Text style={AccountStyle.accountMenuText}>
+                      BGM / Sounds
+                    </Text>
+                    <View style={AccountStyle.accountMenuToogle}>
+                      <TouchableOpacity onPress={toggleClick}>
+                        {toggle ? (
+                          <View style={AccountStyle.accountMenuToogleOn}></View>
+                        ) : (
+                          <View
+                            style={AccountStyle.accountMenuToogleOff}
+                          ></View>
+                        )}
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
-                <TouchableOpacity style={AccountStyle.accountMenu}>
-                  <Image source={require('../../../assets/images/others/term-menu.png')} style={AccountStyle.accountMenuImage} />
-                  <Text style={AccountStyle.accountMenuText}>Terms and Conditions</Text>
-                  <Svg width={6.502} height={10.53} viewBox="0 0 6.502 10.53" style={AccountStyle.accountMenuArrow}>
-                    <Path
-                      data-name="Icon material-expand-more"
-                      d="M0 1.237l4.015 4.028-4.019 4.028 1.241 1.237 5.265-5.265L1.237 0z"
-                      fill="#e6e6e6"
+                <View style={AccountStyle.accountMenu}>
+                  <TouchableOpacity
+                    style={AccountStyle.accountButton}
+                    onPress={() => navigate(ROUTES.PoseidonTnc)}
+                  >
+                    <Image
+                      source={require("../../../assets/images/others/term-menu.png")}
+                      style={AccountStyle.accountMenuImage}
                     />
-                  </Svg>
-                </TouchableOpacity>
-                <TouchableOpacity style={AccountStyle.accountMenu}>
-                  <Image source={require('../../../assets/images/others/term-menu.png')} style={AccountStyle.accountMenuImage} />
-                  <Text style={AccountStyle.accountMenuText}>Privacy Policy</Text>
-                  <Svg width={6.502} height={10.53} viewBox="0 0 6.502 10.53" style={AccountStyle.accountMenuArrow}>
-                    <Path
-                      data-name="Icon material-expand-more"
-                      d="M0 1.237l4.015 4.028-4.019 4.028 1.241 1.237 5.265-5.265L1.237 0z"
-                      fill="#e6e6e6"
+                    <Text style={AccountStyle.accountMenuText}>
+                      Terms and Conditions
+                    </Text>
+                    <Svg
+                      width={6.502}
+                      height={10.53}
+                      viewBox="0 0 6.502 10.53"
+                      style={AccountStyle.accountMenuArrow}
+                    >
+                      <Path
+                        data-name="Icon material-expand-more"
+                        d="M0 1.237l4.015 4.028-4.019 4.028 1.241 1.237 5.265-5.265L1.237 0z"
+                        fill="#e6e6e6"
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
+                <View style={AccountStyle.accountMenu}>
+                  <TouchableOpacity
+                    style={AccountStyle.accountButton}
+                    onPress={() => navigate(ROUTES.PoseidonPrivacy)}
+                  >
+                    <Image
+                      source={require("../../../assets/images/others/term-menu.png")}
+                      style={AccountStyle.accountMenuImage}
                     />
-                  </Svg>
-                </TouchableOpacity>
+                    <Text style={AccountStyle.accountMenuText}>
+                      Privacy Policy
+                    </Text>
+                    <Svg
+                      width={6.502}
+                      height={10.53}
+                      viewBox="0 0 6.502 10.53"
+                      style={AccountStyle.accountMenuArrow}
+                    >
+                      <Path
+                        data-name="Icon material-expand-more"
+                        d="M0 1.237l4.015 4.028-4.019 4.028 1.241 1.237 5.265-5.265L1.237 0z"
+                        fill="#e6e6e6"
+                      />
+                    </Svg>
+                  </TouchableOpacity>
+                </View>
                 <View style={AccountStyle.accountVersion}>
                   <Text style={AccountStyle.accountVersionText}> Ver. 1.1</Text>
                 </View>
               </View>
             </View>
             <View style={AccountStyle.accountLogout}>
-              <CustomButton title="Logout" click={() => logoutHandler()} type="else"></CustomButton>
+              <CustomButton
+                title="Logout"
+                click={() => logoutHandler()}
+                type="else"
+              ></CustomButton>
             </View>
           </View>
         </ScrollView>
-        <BottomNavigation 
-          home={() => navigate(ROUTES.PoseidonLobby)} 
-          setting={() => navigate(ROUTES.PoseidonAccount)} 
-          status={'account'}>
+        <BottomNavigation
+          home={goToHome}
+          setting={goToSetting}
+          status={"account"}
           balance={0}
-        </BottomNavigation>
+          liveScore={() => closeOpenStatement()}
+        ></BottomNavigation>
       </View>
     </SafeAreaView>
   );
