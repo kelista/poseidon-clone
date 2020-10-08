@@ -2,11 +2,11 @@
   "name": "Poseidon",
   "displayName": "Poseidon",
   "expo": {
-    "name": "poseidon",
+    "name": "Poseidon",
     "slug": "poseidon", 
     "orientation": "portrait",
-    "version": "1.0.22",
     "icon": "./src/assets/images/logo.png",
+    "version": "1.0.24",    
     "ios": {
       "bundleIdentifier": "com.node8.poseidon"
     },

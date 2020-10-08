@@ -312,6 +312,7 @@ const styles = StyleSheet.create({
   RoundDetailUserIcon: {
     width: 29,
     height: 29,
+    marginTop: -3
   },
   RoundDetailSlider: {
     width: "100%",
@@ -352,6 +353,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     lineHeight: 9,
     color: "#FAE88C",
+    paddingTop: 3
   },
   RoundDetailListRowThreeWrapper: {
     width: "100%",

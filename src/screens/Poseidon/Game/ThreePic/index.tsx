@@ -94,7 +94,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [modalLive, setModalLive] = useState(false);
   const [modalCard, setModalCard] = useState(true);
   const [modalWaiting, setModalWaiting] = useState(true);
-  const [firstTime, setFirstTime] = useState(false);
+  const [statLastBet, setStatLastBet] = useState(false);
   const [pageHistory, setPageHistory] = useState(1);
   const [bankerLimit, setBankerLimit] = useState(0);
   const [seatNumberNow, setSeatNumberNow] = useState(0);
@@ -128,7 +128,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const windowWidth = Dimensions.get("window").width;
 
   const autoBetAction = () => {
-    if(buyInStat && phase === "bet" && banker !== username) {
+    if(buyInStat) {
       if(autoBet) {
         setAutoBet(false)
       } else {
@@ -251,20 +251,25 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     ) {
       if(autoBet) {
         AsyncStorage.getItem("last-bet").then(d => {
+          console.log("d :",d)
           if(Number(d) > 0) {
             setModalBetting(false);
-            if(phase === 'bet') {
-              setTimeout(() => {
-                sendBet(Number(d))
-              }, 4000);
+            if(phase === 'bet' && !statLastBet && time == 1) {
+              sendBet(Number(d))
             }
-          } 
+          } else {
+            if(phase === 'bet' && !statLastBet) {
+              setModalBetting(true);
+              setModalLive(false);
+            }
+          }
         })
-      } else {
+      } else if(!statLastBet) {
         setModalBetting(true);
         setModalLive(false);
       }
     } else if (phase === "result") {
+      setStatLastBet(false)
       setModalBetting(false);
     } else if (phase === "fresh") {
       // setBankerPool(0);
@@ -272,7 +277,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     } else {
       setModalBetting(false);
     }
-  }, [phase, banker, username, autoBet, buyInStat]);
+  }, [phase, banker, username, autoBet, buyInStat, statLastBet, time]);
 
   // listen connect
   useEffect(
@@ -385,6 +390,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
 
   const closeOpenBetting = () => {
     setModalBetting(!modalBetting)
+    setStatLastBet(true)
   };
 
   const closeOpenRoundDetail = () => {
@@ -411,7 +417,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   };
 
   const sendBet = (amount: number) => {
+    console.log("amount :", amount)
     wsClient?.sendMessage(gameBetEvent, { amount });
+    setStatLastBet(true)
   };
 
   useEffect(function gameInit() {
@@ -446,10 +454,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     return {
       position: 'absolute',
       zIndex: 1,
-      bottom: 76 + insets.top + insets.bottom,
+      bottom: 65 + insets.top + insets.bottom,
       right: 30,
-      width: 32,
-      height: 32,
+      width: 34,
+      height: 34,
       alignItems: 'center',
       justifyContent: 'center'
     };
@@ -729,115 +737,66 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          {player1?.cards ? (
-                            <View
-                              style={{
-                                alignItems: "center",
-                                zIndex: 5,
-                                marginTop: 95,
-                                height: 25.05,
-                              }}
-                            >
-                              <View style={{ flexDirection: "row" }}>
-                                <View
-                                  style={{
-                                    width: 17,
-                                    height: 21,
-                                    marginTop: 2.2,
-                                    transform: [{ rotate: "-15deg" }],
-                                  }}
-                                >
-                                  {/* <Image source={require('../../../../assets/images/card/small/card_jack.png')}/> */}
+                          <View
+                            style={{
+                              alignItems: "center",
+                              zIndex: 5,
+                              marginTop: 95,
+                              height: 25.05,
+                            }}
+                          >
+                            <View style={{ flexDirection: "row" }}>
+                              <View
+                                style={{
+                                  width: 17,
+                                  height: 21,
+                                  marginTop: 2.2,
+                                  transform: [{ rotate: "-15deg" }],
+                                }}
+                              >
+                                {/* <Image source={require('../../../../assets/images/card/small/card_jack.png')}/> */}
+                                {player1?.cards ? 
                                   <Image
                                     source={images[player1?.cards[0]]}
                                     style={ThreePic.cardImage}
                                   />
-                                </View>
-                                <View
-                                  style={{
-                                    width: 17,
-                                    height: 21,
-                                    marginLeft: -1,
-                                  }}
-                                >
-                                  {/* <Image source={require('../../../../assets/images/card/small/card_queen.png')}/> */}
+                                  :
                                   <Image
-                                    source={images[player1?.cards[1]]}
+                                    source={images[BackCard]}
                                     style={ThreePic.cardImage}
-                                  ></Image>
-                                </View>
-                                <View
-                                  style={{
-                                    width: 17,
-                                    height: 21,
-                                    marginLeft: -1,
-                                    marginTop: 2.2,
-                                    transform: [{ rotate: "15deg" }],
-                                  }}
-                                >
-                                  {/* <Image source={require('../../../../assets/images/card/small/card_king.png')}/> */}
-                                  <Image
-                                    source={images[player1?.cards[2]]}
-                                    style={ThreePic.cardImage}
-                                  ></Image>
-                                </View>
+                                  />
+                                }
+                              </View>
+                              <View
+                                style={{
+                                  width: 17,
+                                  height: 21,
+                                  marginLeft: -1,
+                                }}
+                              >
+                                {/* <Image source={require('../../../../assets/images/card/small/card_queen.png')}/> */}
+                                <Image
+                                  source={images[player1?.cards[1]]}
+                                  style={ThreePic.cardImage}
+                                ></Image>
+                              </View>
+                              <View
+                                style={{
+                                  width: 17,
+                                  height: 21,
+                                  marginLeft: -1,
+                                  marginTop: 2.2,
+                                  transform: [{ rotate: "15deg" }],
+                                }}
+                              >
+                                {/* <Image source={require('../../../../assets/images/card/small/card_king.png')}/> */}
+                                <Image
+                                  source={images[player1?.cards[2]]}
+                                  style={ThreePic.cardImage}
+                                ></Image>
                               </View>
                             </View>
-                          ) : (
-                            <View
-                              style={{
-                                alignItems: "center",
-                                zIndex: 5,
-                                marginTop: 95,
-                                height: 25.05,
-                              }}
-                            >
-                              <View style={{ flexDirection: "row" }}>
-                                <View
-                                  style={{
-                                    width: 17,
-                                    height: 21,
-                                    marginTop: 2.2,
-                                    transform: [{ rotate: "-15deg" }],
-                                  }}
-                                >
-                                  {/* <Image source={require('../../../../assets/images/card/small/card_jack.png')}/> */}
-                                  <Image
-                                    source={images[BackCard]}
-                                    style={ThreePic.cardImage}
-                                  />
-                                </View>
-                                <View
-                                  style={{
-                                    width: 17,
-                                    height: 21,
-                                    marginLeft: -1,
-                                  }}
-                                >
-                                  {/* <Image source={require('../../../../assets/images/card/small/card_queen.png')}/> */}
-                                  <Image
-                                    source={images[BackCard]}
-                                    style={ThreePic.cardImage}
-                                  />
-                                </View>
-                                <View
-                                  style={{
-                                    width: 17,
-                                    height: 21,
-                                    marginLeft: -1,
-                                    marginTop: 2.2,
-                                    transform: [{ rotate: "15deg" }],
-                                  }}
-                                >
-                                  {/* <Image source={require('../../../../assets/images/card/small/card_king.png')}/> */}
-                                  <Image
-                                    source={images[BackCard]}
-                                    style={ThreePic.cardImage}
-                                  />
-                                </View>
-                              </View>
-                            </View>
-                          )}
+                          </View>
                           {player1?.result ? (
                             <View
                               style={[
@@ -2138,25 +2097,27 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                 </TouchableOpacity>
               </View>
             </View>
-            <View style={{...constAutoBet}}>
-              <View style={ThreePic.relative}>
-                {/* <TouchableOpacity style={[ThreePic.absCenter, ThreePic.alertBtn]}> */}
-                <TouchableOpacity style={{}} onPress={autoBetAction}>
-                  {
-                    autoBet ? 
-                    <Image
-                      source={require("../../../../assets/images/others/auto-enabled.png")}
-                      style={ThreePic.autoBet}
-                    />
-                    :
-                    <Image
-                      source={require("../../../../assets/images/others/auto-disabled.png")}
-                      style={ThreePic.autoBet}
-                    />
-                  }
-                </TouchableOpacity>
+            {
+              <View style={{...constAutoBet}}>
+                <View style={ThreePic.relative}>
+                  {/* <TouchableOpacity style={[ThreePic.absCenter, ThreePic.alertBtn]}> */}
+                  <TouchableOpacity style={{}} onPress={autoBetAction}>
+                    {
+                      autoBet? 
+                      <Image
+                        source={require("../../../../assets/images/others/auto-enabled.png")}
+                        style={ThreePic.autoBet}
+                      />
+                      :
+                      <Image
+                        source={require("../../../../assets/images/others/auto-disabled.png")}
+                        style={ThreePic.autoBet}
+                      />
+                    }
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
+            }
           </View>
         </ScrollView>
         <BottomNavigation

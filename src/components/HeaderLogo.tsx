@@ -27,7 +27,7 @@ export const CustomheaderLogo = ({lobby, name }: {lobby: Function, name: String 
               <Text style={styles.temporaryText}>Banker SKP</Text>
               :
               name == 'threepic' ?
-              <Text style={styles.temporaryText}>Three Pictures</Text>
+              <Text style={styles.temporaryText}>3 Pictures</Text>
               :
               <Image source={require('../assets/images/others/logo-header.png')}/>
               

@@ -64,8 +64,8 @@ export default StyleSheet.create({
     position: 'relative'
   },
   alertButton: {
-    width: 32,
-    height: 32
+    width: 34,
+    height: 34
   },
   autoBet: {
     width: 53,
@@ -76,8 +76,8 @@ export default StyleSheet.create({
     zIndex: 1,
     top: 19,
     right: 30,
-    width: 32,
-    height: 32,
+    width: 34,
+    height: 34,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -125,7 +125,7 @@ export default StyleSheet.create({
   },
   amountResultPlayer1Banker: {
     top: 18,
-    right: -85
+    right: -70
   },
   coin: {
     width: 8,
