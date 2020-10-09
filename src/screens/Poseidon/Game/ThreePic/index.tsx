@@ -95,6 +95,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [modalCard, setModalCard] = useState(true);
   const [modalWaiting, setModalWaiting] = useState(true);
   const [statLastBet, setStatLastBet] = useState(false);
+  const [lastBet, setLastBet] = useState(0);
   const [pageHistory, setPageHistory] = useState(1);
   const [bankerLimit, setBankerLimit] = useState(0);
   const [seatNumberNow, setSeatNumberNow] = useState(0);
@@ -251,7 +252,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     ) {
       if(autoBet) {
         AsyncStorage.getItem("last-bet").then(d => {
-          console.log("d :",d)
           if(Number(d) > 0) {
             setModalBetting(false);
             if(phase === 'bet' && !statLastBet && time == 1) {
@@ -278,6 +278,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       setModalBetting(false);
     }
   }, [phase, banker, username, autoBet, buyInStat, statLastBet, time]);
+
+  useEffect(() => {
+    console.log("last bet :", lastBet)
+  }, [lastBet])
 
   // listen connect
   useEffect(
@@ -418,8 +422,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
 
   const sendBet = (amount: number) => {
     console.log("amount :", amount)
-    wsClient?.sendMessage(gameBetEvent, { amount });
-    setStatLastBet(true)
+    if(amount > 0) {
+      wsClient?.sendMessage(gameBetEvent, { amount });
+      setStatLastBet(true)
+      setLastBet(amount)
+    }
   };
 
   useEffect(function gameInit() {
@@ -2098,12 +2105,13 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
               </View>
             </View>
             {
+              buyInStat && lastBet > 0?
               <View style={{...constAutoBet}}>
                 <View style={ThreePic.relative}>
                   {/* <TouchableOpacity style={[ThreePic.absCenter, ThreePic.alertBtn]}> */}
                   <TouchableOpacity style={{}} onPress={autoBetAction}>
                     {
-                      autoBet? 
+                      autoBet ? 
                       <Image
                         source={require("../../../../assets/images/others/auto-enabled.png")}
                         style={ThreePic.autoBet}
@@ -2117,6 +2125,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                   </TouchableOpacity>
                 </View>
               </View>
+              :
+              <></>
             }
           </View>
         </ScrollView>
