@@ -12,7 +12,7 @@ class Timer {
     this.isCounting = true;
     this.time = time;
     this.interval = setInterval(() => {
-      if (this.time <= 0) {
+      if (this.time < 0) {
         this.isCounting = false;
         console.log("stopped");
         clearInterval(this.interval);
