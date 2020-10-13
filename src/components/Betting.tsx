@@ -22,7 +22,8 @@ export const BettingWindow = (props: any) => {
 		setModalBetting,
 		maxBet,
 		minBet,
-    midBet
+    midBet,
+    
 	} = props
   const [betValue, setBetValue] = useState(0);
 	const [checked, setChecked] = useState(false);

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  ScrollView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Slider from "@react-native-community/slider";
@@ -37,6 +38,7 @@ export const RoundDetail = (props: any) => {
       const listeners: string[] = [];
 
       const historyAction = async function (data: any) {
+        console.log(data)
         setHistory(data);
       };
 
@@ -92,6 +94,21 @@ export const RoundDetail = (props: any) => {
     };
   }, [insets]);
 
+  const styleResult: any = useMemo(() => {
+    const windowHeight = Dimensions.get("window").height;
+    return {  
+      flex: 1,
+      // height: windowHeight - (insets.bottom + insets.top) - 106 - 53,
+    };
+  }, [insets]);
+
+  const styleResultContainer: any = useMemo(() => {
+    const windowHeight = Dimensions.get("window").height;
+    return {  
+      height: windowHeight - (insets.bottom + insets.top) - 106 - 133 - 29 - 25,
+    };
+  }, [insets]);
+
   return (
     <View style={styles.RoundDetailContainer}>
       <View style={styles.RoundBodyWrapper}>
@@ -112,92 +129,90 @@ export const RoundDetail = (props: any) => {
           </Text>
         </LinearGradient>
         <View>
-          {history ? (
-            history.reports.map((d: any, index: number) => {
-              return (
-                <View style={styles.RoundDetailList} key={index}>
-                  <View style={styles.RoundDetailListRowOne}>
-                    <View style={styles.RoundDetailListRowOneWrapper}>
-                      <Image
-                        source={require("../assets/images/others/player1.png")}
-                        style={styles.RoundDetailUserIcon}
-                      />
-                      <View style={{ alignItems: "center", width: '100%' }}>
-                        <Text style={styles.RoundDetailListRowOneText}>
-                          {d.username}
-                        </Text>
+          <View style={{...styleResultContainer}}>
+            <ScrollView>
+              <View style={{...styleResult}}>
+                {history ? (
+                  history.reports.map((d: any, index: number) => {
+                    return (
+                      <View style={styles.RoundDetailList} key={index}>
+                        <View style={styles.RoundDetailListRowOne}>
+                          <View style={styles.RoundDetailListRowOneWrapper}>
+                            <Image
+                              source={require("../assets/images/others/player1.png")}
+                              style={styles.RoundDetailUserIcon}
+                            />
+                            <View style={{ alignItems: "center", width: '100%' }}>
+                              <Text style={styles.RoundDetailListRowOneText}>
+                                {d.username}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                        <View style={styles.RoundDetailListRowTwo}>
+                          <View style={{ flexDirection: "row" }}>
+                            <View style={{ flexDirection: 'column' }}>
+                              <View style={{ width: 17,height: 21,marginTop: 2.2,transform: [{ rotate: "-15deg" }]}}>
+                                <Image
+                                  source={images[d.cards[0]]}
+                                  style={ThreePic.cardImage}
+                                />
+                              </View>
+                              <View style={{width: 17,height: 21,marginLeft: -1, transform: [{ rotate: "-15deg" }]}}>
+                                <Image
+                                  source={images[d.cards[2]]}
+                                  style={ThreePic.cardImage}
+                                />
+                              </View>
+                            </View>
+                            <View style={{ flexDirection: 'column' }}>
+                              <View style={{width: 17,height: 21,marginLeft: -1, marginTop: 2.2,transform: [{ rotate: "15deg" }]}}>
+                                <Image
+                                  source={images[d.cards[1]]}
+                                  style={ThreePic.cardImage}
+                                />
+                              </View>
+                              <View style={{width: 17,height: 21,marginLeft: -1, marginTop: 2.2,transform: [{ rotate: "15deg" }]}}>
+                                <Image
+                                  source={images[d.cards[3]]}
+                                  style={ThreePic.cardImage}
+                                />
+                              </View>
+                            </View>
+                          </View>
+                          <View style={{ paddingTop: 5.6 }}>
+                            <View style={{flexDirection: 'column'}}>
+                              <Text style={{ fontSize: 8, lineHeight: 9, color: "#FFFFFF" }}>
+                                {d.point[0]}
+                              </Text>
+                              <Text style={{ fontSize: 8, lineHeight: 9, color: "#FFFFFF" }}>
+                                {d.point[1]}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                        <View style={styles.RoundDetailListRowThree}>
+                          <View style={styles.RoundDetailListRowThreeWrapper}>
+                            <Text
+                              style={
+                                d.amount < 0
+                                  ? styles.RoundDetailListRowThreeTextRed
+                                  : styles.RoundDetailListRowThreeText
+                              }
+                            >
+                              {d.amount > 0 ? "+" + d.amount : d.amount}
+                            </Text>
+                          </View>
+                        </View>
                       </View>
-                    </View>
-                  </View>
-                  <View style={styles.RoundDetailListRowTwo}>
-                    <View style={{ flexDirection: "row" }}>
-                      <View
-                        style={{
-                          width: 17,
-                          height: 21,
-                          marginTop: 2.2,
-                          transform: [{ rotate: "-15deg" }],
-                        }}
-                      >
-                        <Image
-                          source={images[d.cards[0]]}
-                          style={styles.RoundDetailCardImage}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          width: 17,
-                          height: 21,
-                          marginLeft: -1,
-                        }}
-                      >
-                        <Image
-                          source={images[d.cards[1]]}
-                          style={styles.RoundDetailCardImage}
-                        />
-                      </View>
-                      <View
-                        style={{
-                          width: 17,
-                          height: 21,
-                          marginLeft: -1,
-                          marginTop: 2.2,
-                          transform: [{ rotate: "15deg" }],
-                        }}
-                      >
-                        <Image
-                          source={images[d.cards[2]]}
-                          style={styles.RoundDetailCardImage}
-                        />
-                      </View>
-                    </View>
-                    <View style={{ paddingTop: 5.6 }}>
-                      <Text
-                        style={{ fontSize: 8, lineHeight: 9, color: "#FFFFFF" }}
-                      >
-                        {d.point}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={styles.RoundDetailListRowThree}>
-                    <View style={styles.RoundDetailListRowThreeWrapper}>
-                      <Text
-                        style={
-                          d.amount < 0
-                            ? styles.RoundDetailListRowThreeTextRed
-                            : styles.RoundDetailListRowThreeText
-                        }
-                      >
-                        {d.amount > 0 ? "+" + d.amount : d.amount}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              );
-            })
-          ) : (
-            <></>
-          )}
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+              </View>
+            </ScrollView>
+          </View>
         </View>
         <View style={{ ...pagingArea }}>
           <View style={{ width: "100%", paddingLeft: 10, paddingRight: 10 }}>
@@ -321,7 +336,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'green'
   },
   RoundDetailList: {
-    height: 41,
+    height: 70,
     marginTop: scale < 0.9 ? 8 : 12,
     paddingLeft: 20,
     paddingRight: 24,

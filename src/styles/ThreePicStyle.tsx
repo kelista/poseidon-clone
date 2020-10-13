@@ -39,8 +39,8 @@ export default StyleSheet.create({
     transform: [{ translateX: 50.1+14 }]
   },
   cardImage: {
-    width: 17,
-    height: 21
+    width: 20,
+    height: 24
   },
   absCenter: {
     top: 0,
@@ -74,7 +74,7 @@ export default StyleSheet.create({
   infoButton: {
     position: 'absolute',
     zIndex: 1,
-    top: 19,
+    top: 14,
     right: 30,
     width: 34,
     height: 34,
@@ -196,6 +196,41 @@ export default StyleSheet.create({
   },
   ThreePicRoomRightPadding: {
       paddingRight: 50
+  },
+  ThreePicCardPoint: {
+    fontSize: 8, 
+    lineHeight: 9, 
+    color: "#FFFFFF",
+    // backgroundColor: 'green',
+    // width: '100%',
+    textAlign: 'center'
+  },
+  ThreePicCardPointDiv: {
+    // backgroundColor: 'blue',
+    alignItems: 'center', 
+    height: 10, 
+    marginTop: 6.5, 
+    width: 58
+  },
+  ThreePicCardPointDivSkp: {
+    // backgroundColor: 'blue',
+    alignItems: 'center', 
+    height: 10, 
+    marginTop: 6.5, 
+    width: 42
+  },
+  ThreePicTransparentModal: {
+    position: 'absolute',
+    width: windowWidth,
+    height: windowHeight,
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    zIndex: 9
+  },
+  ThreePicTransparentModalButton: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: "rgba(0, 0, 0, 0)",
+    zIndex: 10
   },
 
   //Game
@@ -375,6 +410,9 @@ export default StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 100,
+  },
+  SkpTimer: {
+    top: '29%',
   },
   ThreePicGamePinWrapper: { 
     position: 'relative',

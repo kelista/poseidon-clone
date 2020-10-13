@@ -199,11 +199,11 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
                   </View> */}
 
                   {/* test only */}
-                  {/* <View style={LobbyStyle.lobbyGameSkpWrapper}>
+                  <View style={LobbyStyle.lobbyGameSkpWrapper}>
                     <TouchableOpacity onPress={skpGameRoom}>
                       <Image source={require('../../../assets/images/others/skp-image.png')} style={LobbyStyle.lobbyGameSkp} />
                     </TouchableOpacity>
-                  </View> */}
+                  </View>
                   {
                     games.map(g => {
                       if (codenames.includes(g.codename)) {

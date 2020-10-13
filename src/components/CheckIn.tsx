@@ -21,7 +21,8 @@ export const CheckInWindow = (props: any) => {
     setBalancePlayerGame,
     bankerPool,
     minBet,
-    maxBet
+    maxBet,
+    game
 	} = props; 
 	const [sliderValue, setsliderValue] = useState(0);
 	
@@ -53,10 +54,21 @@ export const CheckInWindow = (props: any) => {
           <Text style={styles.checkInTitleText}>Poseidon Club</Text>
         </View>
         <View style={styles.checkInBody}>
-          <Image
-            source={require("../assets/images/others/threepic-checkin.png")}
-            style={styles.checkInImage}
-          />
+          {
+            game == 'threepic' ?
+            <Image
+              source={require("../assets/images/others/threepic-checkin.png")}
+              style={styles.checkInImage}
+            /> 
+            :
+            game == 'skp' ?
+            <Image
+              source={require("../assets/images/others/skp-gamelogo.png")}
+              style={styles.checkInImage}
+            />
+            :
+            <></>
+          }
           <View style={styles.checkInBodyWrapper}>
             <Text style={styles.checkInBodyText}>Banker: {bankerPool}</Text>
             <Text style={styles.checkInBodyText}>Min: {minBet}</Text>
@@ -172,6 +184,8 @@ const styles = StyleSheet.create({
   },
   checkInImage: {
     marginTop: 12.5,
+    width: 118,
+    height: 80,
   },
   checkInBodyWrapper: {
     alignItems: "center",
