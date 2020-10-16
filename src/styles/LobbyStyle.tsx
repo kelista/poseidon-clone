@@ -11,18 +11,26 @@ export default StyleSheet.create({
     backgroundColor: '#000000'
   },
   lobbyImageContainer: {
-    height: 508, 
+    height: 440, 
     width: '100%',
-    paddingBottom: 10
   },
   lobbyImageWrapper: {
-    height: 460, 
+    height: 390, 
     width: '100%',
   },
   lobbyImageBackground: {
     position: 'absolute', 
     height: '100%', 
     width: '100%'
+  },
+  lobbyHome: {
+    height: 190, 
+    position: 'relative'
+  },
+  lobbyHomeImg: {
+    position: 'absolute', 
+    top: -10, 
+    left: 0
   },
   lobbyGameWrapper: {
     // height: Platform.OS === 'ios' ? windowHeight - 391.1 : windowHeight - 373.1,
@@ -33,9 +41,8 @@ export default StyleSheet.create({
     // backgroundColor: 'blue'
   },
   lobbyGameSkpWrapper: {
-    marginTop: 4,
     width: '95.65%',
-    height: '46.72%',
+    height: '49%',
     // backgroundColor: 'green'
   },
   lobbyGameSkp: {
@@ -45,7 +52,7 @@ export default StyleSheet.create({
   },
   lobbyGameThreePicWrapper: {
     width: '98.65%',
-    height: '48%',
+    height: '50%',
     // backgroundColor: 'yellow'
   },
   lobbyGameThreePic: {

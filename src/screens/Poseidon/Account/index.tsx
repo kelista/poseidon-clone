@@ -57,6 +57,10 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
     navigate(ROUTES.PoseidonLobby);
   };
 
+  const separatorBalance = (chip: number) => {
+    return chip.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   useEffect(
     function cb() {
       if (!wsClient) return;
@@ -148,7 +152,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
                   source={require("../../../assets/images/others/balance-image.png")}
                 />
                 <Text style={AccountStyle.accountUserBalanceText}>
-                  {balancePlayer}
+                  {separatorBalance(balancePlayer)}
                 </Text>
               </View>
             </View>

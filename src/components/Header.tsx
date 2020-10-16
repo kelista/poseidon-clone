@@ -3,6 +3,9 @@ import { StyleSheet, Text, View, TouchableOpacity, Image, Platform } from 'react
 import { LinearGradient } from 'expo-linear-gradient';
 
 export const CustomHeader = ({ title, status, balance, updateInfo }: { title: string, balance: number, status: string, updateInfo: Function }) => {
+  const separatorBalance = (chip: number) => {
+    return chip.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
   return (
     <View style={{}}>
       <LinearGradient colors={['#6E0000', '#400000']} locations={[0, 1]} style={styles.loginButton}>
@@ -29,7 +32,7 @@ export const CustomHeader = ({ title, status, balance, updateInfo }: { title: st
             status == "userLobby" ?
             <TouchableOpacity style={styles.userBalance} onPress={updateInfo}>
               <Image source={require('../assets/images/others/balance-image.png')} />
-              <Text style={styles.userBalanceText}>{balance}</Text>
+              <Text style={styles.userBalanceText}>{separatorBalance(balance)}</Text>
             </TouchableOpacity>
             :
             <></>
@@ -86,7 +89,6 @@ const styles = StyleSheet.create({
     paddingLeft: 24,
   },
   headerBase: {
-    // fontFamily: 'helvetica',
     color: '#FAE087',
     fontWeight: 'bold',
     textShadowColor: 'rgba(0, 0, 0, 0.57)',

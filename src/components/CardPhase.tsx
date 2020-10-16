@@ -27,7 +27,7 @@ const gamePhaseEvent = "game/phase";
 const setupEvent = "game/setup";
 
 export const CardWindow = (props:any, { close }: { close: Function }) => {
-  const { username, closeOpenCardPhase } = props
+  const { username, closeOpenCardPhase, autoBet } = props
   const wsClient = useContext(WSContext);
   
   const [time, isCounting, startTimer] = useTimer();
@@ -43,16 +43,26 @@ export const CardWindow = (props:any, { close }: { close: Function }) => {
   const [lastCard, setLastCard] = useState("");
   const [checked, setChecked] = useState(false); 
   const [resultCheck, setResultCheck] = useState(false); 
+  const [statAuto, setStatAuto] = useState(false); 
   const [phase, setPhase] = useState<string>("fresh");
-  const [statLastBet, setStatLastBet] = useState(false);
+  const [statLastSend, setStatLastSend] = useState(false);
 	
 	useEffect(() => {
     setResultCard([0, 0, 0, 0]);
-    setStatLastBet(false)
+    setStatLastSend(false)
     setResultCheck(false)
+    setStatAuto(false)
     // setDeckCard(["KC", "QS", "JD", "9H"]);
     // setbaseDeckCard(["KC", "QS", "JD", "9H"])
   }, []);
+
+  useEffect(() => {
+    if(autoBet) {
+      closeOpenCardPhase(true)
+    } else {
+      closeOpenCardPhase(false)
+    }
+  }, [autoBet])
 
   useEffect(() => {
     setTempDeckCard(deckCard)
@@ -81,23 +91,28 @@ export const CardWindow = (props:any, { close }: { close: Function }) => {
     }
   }, []);
 
-  const sendCards = useCallback((deckCard: any[]) => {
+  const sendCards = useCallback((cardsParam: any[]) => {
     // ws send here
-    if(!statLastBet) {
-      if(deckCard.length > 0) {
-        wsClient?.sendMessage(setupEvent, {cards: deckCard});
-        closeOpenCardPhase(false)
-        setStatLastBet(true)
+    if(!statLastSend) {
+      if(cardsParam.length > 0) {
+        wsClient?.sendMessage(setupEvent, {cards: cardsParam});
+        setStatAuto(true)
+        setTimeout(() => {
+          closeOpenCardPhase(false)
+        }, 1000);
+        setStatLastSend(true)
       } else {
         if(resultCheck) {
           wsClient?.sendMessage(setupEvent, {cards: resultCard});
-          closeOpenCardPhase(false)
-          setStatLastBet(true)
+          setStatAuto(true)
+          setTimeout(() => {
+            closeOpenCardPhase(false)
+          }, 1000);
+          setStatLastSend(true)
         }
       }
     }
-
-  }, [statLastBet, resultCheck]);
+  }, [statLastSend, resultCheck]);
 
   const tipsCards = useCallback(() => {
     setResultCard(recomendationCard)
@@ -172,21 +187,27 @@ export const CardWindow = (props:any, { close }: { close: Function }) => {
 
   useEffect(() => {
 		if(phase === "setup" && time == 1) {
-      const array: any[] = []
-      resultCard.map((d:any) => {
-        if(d != 0) {
+      if(autoBet && !statAuto) {
+        setResultCard(recomendationCard)
+        setDeckCard([])
+        wsClient?.sendMessage(setupEvent, {cards: resultCard});
+        setStatAuto(true)
+      } else {
+        const array: any[] = []
+        resultCard.map((d:any) => {
+          if(d != 0) {
+            array.push(d)
+          }
+        })
+        deckCard.map((d:any) => {
           array.push(d)
+        })
+        if(!statLastSend) {
+          sendCards(array)
         }
-      })
-      deckCard.map((d:any) => {
-        array.push(d)
-      })
-      console.log("array :", array)
-      if(!statLastBet) {
-        sendCards(array)
       }
     }
-  }, [phase, time, resultCard, deckCard, statLastBet]);
+  }, [phase, time, resultCard, autoBet, statAuto, deckCard, statLastSend, recomendationCard ]);
 
   useEffect(() => {
 		if(lastCard != "") {
@@ -195,7 +216,7 @@ export const CardWindow = (props:any, { close }: { close: Function }) => {
   }, [lastCard]);
 
   return (
-    <View style={styles.cardContainer}>
+    <View style={{...styles.cardContainer, display: !autoBet ? 'block' : 'none'}}>
       <View style={styles.cardContent}>
         <View style={styles.cardBodyScalling}>
           <View style={styles.cardCountdown}>

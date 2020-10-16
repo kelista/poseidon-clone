@@ -28,6 +28,7 @@ import { BettingWindow } from "../../../../components/Betting";
 import { RoundDetail } from "../../../../components/RoundDetail";
 import { WaitingInfo } from "../../../../components/Waiting";
 import { LiveScore } from "../../../../components/LiveScore";
+import { ThreePicGameRules } from "../../../../components/ThreePicGameRules";
 import { CardWindow } from "../../../../components/CardPhase";
 import ThreePic from "../../../../styles/ThreePicStyle";
 import { CustomheaderLogo } from "../../../../components/HeaderLogo";
@@ -36,6 +37,7 @@ import { images } from "../../../../services/imageServices";
 import { BSContext } from "../../../../../routes/bsContext";
 import { SSContext } from "../../../../../routes/simpleStoreContext";
 import { useTimer } from "../../../../services/timer";
+import { EmojiWindow } from "../../../../components/Emoji";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -69,6 +71,7 @@ const buyInEvent = "game/sign";
 const gameInfoEvent = "game/info";
 const gamePhaseEvent = "game/phase";
 const gameBetEvent = "game/bet";
+const emojiEvent = "messaging/emoji"
 const liveScoreEvent = "game/livescore";
 
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
@@ -90,6 +93,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [sitStatus, setSitStatus] = useState("");
   const [amount, setAmount] = useState(0);
   const [modalBetting, setModalBetting] = useState(false);
+  const [modalRules, setModalRules] = useState(false);
   const [autoBet, setAutoBet] = useState(false);
   const [modalRound, setModalRound] = useState(false);
   const [modalLive, setModalLive] = useState(false);
@@ -101,6 +105,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [bankerLimit, setBankerLimit] = useState(0);
   const [seatNumberNow, setSeatNumberNow] = useState(0);
   const [arrayResult, setArrayResult] = useState<any[]>([]);
+  const [arrayResult1, setArrayResult1] = useState<any[]>([]);
   const [roundDetailPage, setRoundDetailPage] = useState(1);
   const [roundDetailCount, setRoundDetailCount] = useState(0);
 
@@ -132,6 +137,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [player7C, setPlayer7C] = useState<any[]>([]);
   const [player8C, setPlayer8C] = useState<any[]>([]);
 
+  const [emoji, setEmoji] = useState("");
+  const [emojiData, setEmojiData] = useState(null);
+  const [statOpenEmoji, setStatOpenEmoji] = useState(true);
+  const [emojiModal, setEmojiModal] = useState(false);
+
+  const [emojiPlayer1, setEmojiPlayer1] = useState("");
+  const [emojiPlayer2, setEmojiPlayer2] = useState("");
+  const [emojiPlayer3, setEmojiPlayer3] = useState("");
+  const [emojiPlayer4, setEmojiPlayer4] = useState("");
+  const [emojiPlayer5, setEmojiPlayer5] = useState("");
+  const [emojiPlayer6, setEmojiPlayer6] = useState("");
+  const [emojiPlayer7, setEmojiPlayer7] = useState("");
+  const [emojiPlayer8, setEmojiPlayer8] = useState("");
+
   const [result, setResult] = useState(null);
   const [info, setInfo] = useState(null);
   const [phase, setPhase] = useState<string>("fresh");
@@ -160,6 +179,57 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       }
     }
   }
+
+  const openEmoji = useCallback(() => {
+    if(statOpenEmoji && buyInStat) {
+      setEmojiModal(true)
+    }
+  }, [statOpenEmoji, buyInStat])
+
+  const closeEmoji = useCallback(() => {
+    setEmojiModal(false)
+  }, [])
+
+  const emojiAction = useCallback(async function (data: any) {
+    setEmojiData(data)
+  }, [])
+
+  const setEmojiPerPlayer = useCallback((player: any, data:any) => {
+    player(data)
+    closeEmoji()
+    setTimeout(() => {
+      player("")
+      setEmojiData(null)
+    }, 3000);
+  }, [])
+
+  useEffect(() => {
+    if(emojiData) {
+      if(emojiData?.sender == player1?.username) {
+        setEmojiPerPlayer(setEmojiPlayer1, emojiData?.emoji)
+      } else if(emojiData?.sender == player2?.username) {
+        setEmojiPerPlayer(setEmojiPlayer2, emojiData?.emoji)
+      } else if(emojiData?.sender == player3?.username) {
+        setEmojiPerPlayer(setEmojiPlayer3, emojiData?.emoji)
+      } else if(emojiData?.sender == player4?.username) {
+        setEmojiPerPlayer(setEmojiPlayer4, emojiData?.emoji)
+      } else if(emojiData?.sender == player5?.username) {
+        setEmojiPerPlayer(setEmojiPlayer5, emojiData?.emoji)
+      } else if(emojiData?.sender == player6?.username) {
+        setEmojiPerPlayer(setEmojiPlayer6, emojiData?.emoji)
+      } else if(emojiData?.sender == player7?.username) {
+        setEmojiPerPlayer(setEmojiPlayer7, emojiData?.emoji)
+      } else if(emojiData?.sender == player8?.username) {
+        setEmojiPerPlayer(setEmojiPlayer8, emojiData?.emoji)
+      }
+    }
+  }, [player1, player2, player3, player4, player5, player6, player7, player8, emojiData])
+
+  useEffect(() => {
+    if(emoji != "") {
+      wsClient?.sendMessage(emojiEvent, {emoji});
+    }
+  }, [emoji])
 
   const gameInfoAction = useCallback(async function (data: any) {
     setInfo(data.players);
@@ -297,48 +367,97 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   }, []);
 
   useEffect(() => {
-    var pengali = 0
-    var settimeout = 500
+    var bankerSeat = 0
     if(arrayResult) {
-      arrayResult.sort((a,b) => {
-        if(a.username != banker && b.username != banker) {
-          return 0
-        } else if(a.username != banker && b.username == banker) {
-          return -1
-        } else if(a.username == banker && b.username != banker) {
-          return 1
+      // arrayResult.sort((a,b) => {
+      //   if(a.username != banker && b.username != banker) {
+      //     return 0
+      //   } else if(a.username != banker && b.username == banker) {
+      //     return -1
+      //   } else if(a.username == banker && b.username != banker) {
+      //     return 1
+      //   }
+      // })
+      arrayResult.forEach((d:any, index:number) => {
+        if(d.username == banker) {
+          bankerSeat = index
         }
       })
-      arrayResult.forEach((d:any, index: number) => {
-        pengali = index * settimeout
-        if(banker == d.username) {
-          pengali = index * settimeout * 1.2
+      var indexNow = 0
+      var array = []
+      for(var i = bankerSeat+1; i < arrayResult.length+1 + bankerSeat; i++) {
+        indexNow = i
+        if(indexNow > arrayResult.length-1) {
+          indexNow = i - arrayResult.length
         }
-        setTimeout(() => {
-          if(d.seatNumber == 1) {
-            setPlayer1C({cards: d.cards, result: d.result, disp: d.disp})
-          } else if(d.seatNumber == 2) {
-            setPlayer2C({cards: d.cards, result: d.result, disp: d.disp})
-          } else if(d.seatNumber == 3) {
-            setPlayer3C({cards: d.cards, result: d.result, disp: d.disp})
-          } else if(d.seatNumber == 4) {
-            setPlayer4C({cards: d.cards, result: d.result, disp: d.disp})
-          } else if(d.seatNumber == 5) {
-            setPlayer5C({cards: d.cards, result: d.result, disp: d.disp})
-          } else if(d.seatNumber == 6) {
-            setPlayer6C({cards: d.cards, result: d.result, disp: d.disp})
-          } else if(d.seatNumber == 7) {
-            setPlayer7C({cards: d.cards, result: d.result, disp: d.disp})
-          } else if(d.seatNumber == 8) {
-            setPlayer8C({cards: d.cards, result: d.result, disp: d.disp})
-          }
-        }, pengali)
-      })
+        array.push(arrayResult[indexNow])
+      }
+      setArrayResult1(array)
     }
   }, [arrayResult, banker])
 
   useEffect(() => {
-    if (
+    var pengali = 0
+    var arrayLength = 0
+    var pengaliResult = 0
+    var settimeout = 500
+    if(arrayResult1) {
+      arrayLength = arrayResult1.length
+      arrayResult1.forEach((d:any, index: number) => {
+        pengali = index * settimeout
+        setTimeout(() => {
+          if(d.seatNumber == 1) {
+            setPlayer1C({cards: d.cards, disp: d.disp})
+          } else if(d.seatNumber == 2) {
+            setPlayer2C({cards: d.cards, disp: d.disp})
+          } else if(d.seatNumber == 3) {
+            setPlayer3C({cards: d.cards, disp: d.disp})
+          } else if(d.seatNumber == 4) {
+            setPlayer4C({cards: d.cards, disp: d.disp})
+          } else if(d.seatNumber == 5) {
+            setPlayer5C({cards: d.cards, disp: d.disp})
+          } else if(d.seatNumber == 6) {
+            setPlayer6C({cards: d.cards, disp: d.disp})
+          } else if(d.seatNumber == 7) {
+            setPlayer7C({cards: d.cards, disp: d.disp})
+          } else if(d.seatNumber == 8) {
+            setPlayer8C({cards: d.cards, disp: d.disp})
+          }
+        }, pengali)
+  
+        pengaliResult = settimeout * arrayLength 
+  
+        setTimeout(() => {
+          if(d.seatNumber == 1) {
+            setPlayer1C({cards: d.cards, disp: d.disp, result: d.result})
+          } else if(d.seatNumber == 2) {
+            setPlayer2C({cards: d.cards, disp: d.disp, result: d.result})
+          } else if(d.seatNumber == 3) {
+            setPlayer3C({cards: d.cards, disp: d.disp, result: d.result})
+          } else if(d.seatNumber == 4) {
+            setPlayer4C({cards: d.cards, disp: d.disp, result: d.result})
+          } else if(d.seatNumber == 5) {
+            setPlayer5C({cards: d.cards, disp: d.disp, result: d.result})
+          } else if(d.seatNumber == 6) {
+            setPlayer6C({cards: d.cards, disp: d.disp, result: d.result})
+          } else if(d.seatNumber == 7) {
+            setPlayer7C({cards: d.cards, disp: d.disp, result: d.result})
+          } else if(d.seatNumber == 8) {
+            setPlayer8C({cards: d.cards, disp: d.disp, result: d.result})
+          }
+        }, pengaliResult);
+      })
+    }
+  }, [arrayResult1])
+
+  useEffect(() => {
+    if(
+      phase === "bet" &&
+      banker === username &&
+      balancePlayerGame != 0 &&
+      buyInStat) {
+      setModalBetting(false);
+    } else if (
       phase === "bet" &&
       banker !== username &&
       balancePlayerGame != 0 &&
@@ -354,13 +473,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
           } else {
             if(phase === 'bet' && !statLastBet) {
               setModalBetting(true);
-              setModalLive(false);
             }
           }
         })
       } else if(!statLastBet) {
         setModalBetting(true);
-        setModalLive(false);
       }
     }
   }, [phase, banker, username, autoBet, buyInStat, statLastBet, time]);
@@ -425,6 +542,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       );
       listeners.push(timerListener);
 
+      const emojiListener = wsClient.addListener(
+        emojiEvent,
+        emojiAction
+      );
+      listeners.push(emojiListener);
+
       // const timerListener = wsClient.addListener("game/phase", async (data: EventDataPhase) => {
       //   if(data.time){
       //     startTimer(data.time);
@@ -477,6 +600,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
 
   const closeOpenCheckIn = () => {
     setModalCheckIn(!modalCheckIn);
+  };
+
+  const closeOpenRules = () => {
+    setModalRules(!modalRules);
   };
 
   const closeOpenBetting = () => {
@@ -628,7 +755,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
             <View style={ThreePic.infoButton}>
               <View style={ThreePic.relative}>
                 {/* <TouchableOpacity style={[ThreePic.absCenter, ThreePic.alertBtn]}> */}
-                <TouchableOpacity style={{}}>
+                <TouchableOpacity style={{}} onPress={() => closeOpenRules()}>
                   <Image
                     source={require("../../../../assets/images/others/alert-btn.png")}
                     style={ThreePic.alertButton}
@@ -669,6 +796,18 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
             ) : (
               <></>
             )}
+            {
+              modalRules ?
+              <ThreePicGameRules close={() => closeOpenRules()}></ThreePicGameRules>
+              :
+              <></>
+            }
+            {
+              emojiModal ?
+              <EmojiWindow setEmoji={setEmoji}></EmojiWindow>
+              :
+              <></>
+            }
             {modalBetting ? (
               <BettingWindow
                 close={() => closeOpenBetting()}
@@ -830,6 +969,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View style={[ThreePic.ThreePicGamePin1, ThreePic.SitTable]}>
+                        {
+                          emojiPlayer1 != ""?
+                          <Image source={images[emojiPlayer1]} style={ThreePic.EmojiPlayer}/>
+                          :
+                          <></>
+                        }
                         <View style={ThreePic.relative}>
                           {banker == player1?.username ? (
                             <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
@@ -916,6 +1061,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View style={[ThreePic.ThreePicGamePin2, ThreePic.SitTable]}>
+                        {
+                          emojiPlayer2 != ""?
+                          <Image source={images[emojiPlayer2]} style={ThreePic.EmojiPlayer}/>
+                          :
+                          <></>
+                        }
                         <View style={ThreePic.relative}>
                           {banker == player2?.username ? (
                             <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
@@ -1015,6 +1166,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       <View
                         style={[ThreePic.ThreePicGamePin3, ThreePic.SitTable]}
                       >
+                        {
+                          emojiPlayer3 != ""?
+                          <Image source={images[emojiPlayer3]} style={ThreePic.EmojiPlayer}/>
+                          :
+                          <></>
+                        }
                         <View style={ThreePic.relative}>
                           {banker == player3?.username ? (
                             <Image
@@ -1156,6 +1313,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       <View
                         style={[ThreePic.ThreePicGamePin4, ThreePic.SitTable]}
                       >
+                        {
+                          emojiPlayer4 != ""?
+                          <Image source={images[emojiPlayer4]} style={ThreePic.EmojiPlayer}/>
+                          :
+                          <></>
+                        }
                         <View style={ThreePic.relative}>
                           {banker == player4?.username ? (
                             <Image
@@ -1300,6 +1463,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ThreePic.SitTableBtm,
                         ]}
                       >
+                        {
+                          emojiPlayer5 != ""?
+                          <Image source={images[emojiPlayer5]} style={ThreePic.EmojiPlayer}/>
+                          :
+                          <></>
+                        }
                         <View style={ThreePic.relative}>
                           {banker == player5?.username ? (
                             <Image
@@ -1314,7 +1483,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                               alignItems: "flex-end",
                               zIndex: 5,
                               height: 25.05,
-                              marginTop: banker == player6?.username ? -70.5 : -45.5,
+                              marginTop: banker == player5?.username ? -70.5 : -45.5,
                               transform: [{ translateX: -14 }],
                             }}
                           >
@@ -1440,6 +1609,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       <View
                         style={[ThreePic.ThreePicGamePin6, ThreePic.SitTable]}
                       >
+                        {
+                          emojiPlayer6 != ""?
+                          <Image source={images[emojiPlayer6]} style={ThreePic.EmojiPlayer}/>
+                          :
+                          <></>
+                        }
                         <View style={ThreePic.relative}>
                           {banker == player6?.username ? (
                             <Image
@@ -1580,6 +1755,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       <View
                         style={[ThreePic.ThreePicGamePin7, ThreePic.SitTable]}
                       >
+                        {
+                          emojiPlayer7 != ""?
+                          <Image source={images[emojiPlayer7]} style={ThreePic.EmojiPlayer}/>
+                          :
+                          <></>
+                        }
                         <View style={ThreePic.relative}>
                           {banker == player7?.username ? (
                             <Image
@@ -1720,6 +1901,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       <View
                         style={[ThreePic.ThreePicGamePin8, ThreePic.SitTable]}
                       >
+                        {
+                          emojiPlayer8 != ""?
+                          <Image source={images[emojiPlayer8]} style={ThreePic.EmojiPlayer}/>
+                          :
+                          <></>
+                        }
                         <View style={ThreePic.relative}>
                           {banker == player8?.username ? (
                             <Image
@@ -1855,7 +2042,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
             <View style={{...constEmojiButton}}>
               <View style={ThreePic.relative}>
                 {/* <TouchableOpacity style={[ThreePic.absCenter, ThreePic.alertBtn]}> */}
-                <TouchableOpacity style={{}}>
+                <TouchableOpacity style={{}} onPress={() => openEmoji()}>
                   <Image
                     source={require("../../../../assets/images/others/emoticon-btn.png")}
                     style={ThreePic.alertButton}

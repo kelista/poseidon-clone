@@ -133,15 +133,19 @@ export const BettingWindow = (props: any) => {
               >
                 <Image
                   source={require("../assets/images/others/red-chip.png")}
+                  style={styles.bettingImg}
                 />
+                <Text style={styles.bettingText}>{minBet}</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              <TouchableOpacity 
                 style={styles.bettingCoinButton}
                 onPress={chipTwo}
               >
                 <Image
                   source={require("../assets/images/others/blue-chip.png")}
+                  style={styles.bettingImg}
                 />
+                <Text style={styles.bettingText}>{midBet}</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.bettingCoinButton}
@@ -149,7 +153,9 @@ export const BettingWindow = (props: any) => {
               >
                 <Image
                   source={require("../assets/images/others/green-chip.png")}
+                  style={styles.bettingImg}
                 />
+                <Text style={styles.bettingText}>{maxBet}</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.bettingLastContainer}>
@@ -312,10 +318,30 @@ const styles = StyleSheet.create({
   },
   bettingCoinWrapper: {
     flexDirection: "row",
+    height: 79
   },
   bettingCoinButton: {
     flex: 0.333,
     alignItems: "center",
+    justifyContent: "center",
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+  },
+  bettingText: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 29,
+    zIndex: 2
+  },
+  bettingImg: {
+    position: 'absolute', 
+    top: '50%', 
+    left: '50%', 
+    transform: [
+      { translateX: -39 },
+      { translateY: -39.5 }
+    ]
   },
   bettingLastContainer: {
     flexDirection: "row",

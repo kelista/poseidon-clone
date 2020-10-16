@@ -26,6 +26,10 @@ export const StatementInfo = () => {
   const [balancePlayer, setBalancePlayer] = useState(0);
   const [idPlayer, setIdPlayer] = useState("");
 
+  const separatorBalance = (chip: number) => {
+    return chip.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
   const thisWeek = () => {
     setWeekTab(0);
     setModalReport(true);
@@ -97,7 +101,7 @@ export const StatementInfo = () => {
             <Image
               source={require("../assets/images/others/balance-image.png")}
             />
-            <Text style={styles.statementUserBalanceText}>{balancePlayer}</Text>
+            <Text style={styles.statementUserBalanceText}>{separatorBalance(balancePlayer)}</Text>
           </TouchableOpacity>
         </View>
       </View>

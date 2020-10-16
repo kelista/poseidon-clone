@@ -462,6 +462,17 @@ export default StyleSheet.create({
     justifyContent: 'center',
     flex: 1
   },
+  EmojiPlayer: {
+    width: 120, 
+    height: 120, 
+    position: 'absolute', 
+    top: -25, 
+    left: '50%', 
+    zIndex: 5,
+    transform: [{
+      translateX: -60
+    }],
+  },
   ThreePicGamePin1: {
     position: 'absolute', 
     width: 77, 
@@ -472,7 +483,7 @@ export default StyleSheet.create({
     transform: [{ translateX: -38.5 }],
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 0
+    marginTop: 0,
   },
   ThreePicGamePin8: {
     position: 'absolute', 

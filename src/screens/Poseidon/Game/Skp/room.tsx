@@ -20,6 +20,7 @@ import { CustomheaderLogo } from "../../../../components/HeaderLogo";
 import { WSContext } from "../../../../../routes/wsContext";
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatementInfo } from '../../../../components/Statement'
+import LobbyStyle from "../../../../styles/LobbyStyle"
 
 interface Room {
   _id: string;
@@ -261,9 +262,9 @@ export const PoseidonSkpRoom: NavigationScreenComponent<any, any> = (
             modalStatement ? <StatementInfo></StatementInfo> : <></>
           }
           <View style={{...styleSafeArea}}>
-            <Image
-              source={require("../../../../assets/images/others/home.png")}
-            />
+            <View style={LobbyStyle.lobbyHome}>
+              <Image source={require('../../../../assets/images/others/home.png')} style={LobbyStyle.lobbyHomeImg}/>
+            </View>
             <CustomHeader title={username} status="userLobby" balance={balancePlayer} updateInfo={updateInfo}></CustomHeader>
             <View style={ThreePic.ThreePicImageContainer}>
               <View style={ThreePic.ThreePicImageWrapper}>

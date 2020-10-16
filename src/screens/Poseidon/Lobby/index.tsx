@@ -181,7 +181,9 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
             modalStatement ? <StatementInfo></StatementInfo> : <></>
           }
           <View style={{...styleSafeArea}}>
-            <Image source={require('../../../assets/images/others/home.png')} />
+            <View style={LobbyStyle.lobbyHome}>
+              <Image source={require('../../../assets/images/others/home.png')} style={LobbyStyle.lobbyHomeImg}/>
+            </View>
             <CustomHeader title={username} status="userLobby" balance={balancePlayer} updateInfo={updateInfo}></CustomHeader>
             <View style={LobbyStyle.lobbyImageContainer}>
               <View style={LobbyStyle.lobbyImageWrapper}>
@@ -217,6 +219,9 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
                     })
                   }
                 </View>
+              </View>
+              <View style={{ width: '100%', height: 53}}>
+
               </View>
             </View>
           </View>
