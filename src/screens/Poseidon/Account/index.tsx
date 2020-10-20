@@ -47,6 +47,10 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
     navigate(ROUTES.PoseidonLogin);
   };
 
+  const updateProfileHandler = () => {
+    // navigate(ROUTES.PoseidonProfile);
+  };
+
   const goToSetting = () => {
     setModalStatement(false);
     navigate(ROUTES.PoseidonAccount);
@@ -133,7 +137,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
                 />
               </View>
               <View style={AccountStyle.accountPencilWrapper}>
-                <TouchableOpacity style={AccountStyle.accountPencilClick}>
+                <TouchableOpacity style={AccountStyle.accountPencilClick} onPress={() => updateProfileHandler()}>
                   <Image
                     source={require("../../../assets/images/others/pencil-update.png")}
                     style={AccountStyle.accountPencilImage}
@@ -161,7 +165,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
                 <View style={AccountStyle.accountMenu}>
                   <TouchableOpacity
                     style={AccountStyle.accountButton}
-                    // onPress={() => navigate(ROUTES.PoseidonChangePass)}
+                    onPress={() => navigate(ROUTES.PoseidonChangePass)}
                   >
                     <Image
                       source={require("../../../assets/images/others/lock-menu.png")}

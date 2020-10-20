@@ -58,7 +58,7 @@ export const CheckInWindow = (props: any) => {
             game == 'threepic' ?
             <Image
               source={require("../assets/images/others/threepic-checkin.png")}
-              style={styles.checkInImage}
+              style={styles.checkInImage3Pic}
             /> 
             :
             game == 'skp' ?
@@ -185,6 +185,11 @@ const styles = StyleSheet.create({
   checkInImage: {
     marginTop: 12.5,
     width: 118,
+    height: 80,
+  },
+  checkInImage3Pic: {
+    marginTop: 12.5,
+    width: 140,
     height: 80,
   },
   checkInBodyWrapper: {

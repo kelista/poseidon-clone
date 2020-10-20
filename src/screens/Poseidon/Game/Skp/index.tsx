@@ -29,7 +29,7 @@ import { RoundDetail } from "../../../../components/RoundDetailSkp";
 import { WaitingInfo } from "../../../../components/Waiting";
 import { LiveScore } from "../../../../components/LiveScore";
 import { SkpGameRules } from "../../../../components/SkpGameRules";
-import { CardWindow } from "../../../../components/CardPhase";
+import { CardWindow } from "../../../../components/CardPhaseNew";
 import { EmojiWindow } from "../../../../components/Emoji";
 import ThreePic from "../../../../styles/ThreePicStyle";
 import { CustomheaderLogo } from "../../../../components/HeaderLogo";
@@ -38,6 +38,7 @@ import { images } from "../../../../services/imageServices";
 import { BSContext } from "../../../../../routes/bsContext";
 import { SSContext } from "../../../../../routes/simpleStoreContext";
 import { useTimer } from "../../../../services/timer";
+import { useKeepAwake } from 'expo-keep-awake';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -77,6 +78,7 @@ const emojiEvent = "messaging/emoji"
 export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
   props
 ) => {
+  useKeepAwake();
   const { navigate } = props.navigation;
 
   const [time, isCounting, startTimer] = useTimer();
@@ -403,6 +405,10 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
   useEffect(() => {
     if(emoji != "") {
       wsClient?.sendMessage(emojiEvent, {emoji});
+      setStatOpenEmoji(false)
+      setTimeout(() => {
+        setStatOpenEmoji(true)
+      }, 3000);
     }
   }, [emoji])
 
@@ -633,6 +639,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
   const outsideClick = () => {
     setModalRound(false)
     setModalLive(false)
+    setEmojiModal(false)
   }
 
   const closeOpenCheckIn = () => {
@@ -655,11 +662,15 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
   const closeOpenRoundDetail = () => {
     setModalRound(!modalRound);
     setModalLive(false);
+    setEmojiModal(false)
+    setModalRules(false);
   };
 
   const closeOpenLiveScore = () => {
     setModalLive(!modalLive);
     setModalRound(false);
+    setEmojiModal(false)
+    setModalRules(false);
   };
 
   const closeOpenWaiting = () => {
@@ -806,7 +817,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
               </View>
             </View>
             {
-              modalLive || modalRound ? 
+              modalLive || modalRound || emojiModal ? 
               <View style={ThreePic.ThreePicTransparentModal}>
                 <TouchableOpacity style={ThreePic.ThreePicTransparentModalButton} onPress={() => outsideClick()}>
                 </TouchableOpacity>
@@ -840,7 +851,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
             )}
             {
               modalCardPhase ?
-              <CardWindow username = {username} autoBet={autoBet} closeOpenCardPhase={closeOpenCardPhase}></CardWindow>
+              <CardWindow username = {username} closeOpenCardPhase={closeOpenCardPhase}></CardWindow>
               :
               <></>
             }
@@ -1036,14 +1047,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player1C?.cards ? 
-                                    <Image source={images[player1C?.cards[0]]}style={ThreePic.cardImage}/>
+                                    <Image source={images[player1C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player1C?.cards ? 
-                                    <Image source={images[player1C?.cards[2]]} style={ThreePic.cardImage}/>
+                                    <Image source={images[player1C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1052,14 +1063,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player1C?.cards ? 
-                                    <Image  source={images[player1C?.cards[1]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player1C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player1C?.cards ? 
-                                    <Image  source={images[player1C?.cards[3]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player1C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1136,14 +1147,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player2C?.cards ? 
-                                    <Image source={images[player2C?.cards[0]]}style={ThreePic.cardImage}/>
+                                    <Image source={images[player2C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player2C?.cards ? 
-                                    <Image source={images[player2C?.cards[2]]} style={ThreePic.cardImage}/>
+                                    <Image source={images[player2C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1152,14 +1163,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player2C?.cards ? 
-                                    <Image  source={images[player2C?.cards[1]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player2C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player2C?.cards ? 
-                                    <Image  source={images[player2C?.cards[3]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player2C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1258,14 +1269,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player3C?.cards ? 
-                                    <Image source={images[player3C?.cards[0]]}style={ThreePic.cardImage}/>
+                                    <Image source={images[player3C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player3C?.cards ? 
-                                    <Image source={images[player3C?.cards[2]]} style={ThreePic.cardImage}/>
+                                    <Image source={images[player3C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1274,14 +1285,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player3C?.cards ? 
-                                    <Image  source={images[player3C?.cards[1]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player3C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player3C?.cards ? 
-                                    <Image  source={images[player3C?.cards[3]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player3C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1381,14 +1392,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player4C?.cards ? 
-                                    <Image source={images[player4C?.cards[0]]}style={ThreePic.cardImage}/>
+                                    <Image source={images[player4C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player4C?.cards ? 
-                                    <Image source={images[player4C?.cards[2]]} style={ThreePic.cardImage}/>
+                                    <Image source={images[player4C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1397,14 +1408,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player4C?.cards ? 
-                                    <Image  source={images[player4C?.cards[1]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player4C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player4C?.cards ? 
-                                    <Image  source={images[player4C?.cards[3]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player4C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1508,14 +1519,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player5C?.cards ? 
-                                    <Image source={images[player5C?.cards[0]]}style={ThreePic.cardImage}/>
+                                    <Image source={images[player5C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player5C?.cards ? 
-                                    <Image source={images[player5C?.cards[2]]} style={ThreePic.cardImage}/>
+                                    <Image source={images[player5C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1524,14 +1535,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player5C?.cards ? 
-                                    <Image  source={images[player5C?.cards[1]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player5C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player5C?.cards ? 
-                                    <Image  source={images[player5C?.cards[3]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player5C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1638,14 +1649,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player6C?.cards ? 
-                                    <Image source={images[player6C?.cards[0]]}style={ThreePic.cardImage}/>
+                                    <Image source={images[player6C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player6C?.cards ? 
-                                    <Image source={images[player6C?.cards[2]]} style={ThreePic.cardImage}/>
+                                    <Image source={images[player6C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1654,14 +1665,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player6C?.cards ? 
-                                    <Image  source={images[player6C?.cards[1]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player6C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player6C?.cards ? 
-                                    <Image  source={images[player6C?.cards[3]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player6C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1768,14 +1779,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player7C?.cards ? 
-                                    <Image source={images[player7C?.cards[0]]}style={ThreePic.cardImage}/>
+                                    <Image source={images[player7C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player7C?.cards ? 
-                                    <Image source={images[player7C?.cards[2]]} style={ThreePic.cardImage}/>
+                                    <Image source={images[player7C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1784,14 +1795,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player7C?.cards ? 
-                                    <Image  source={images[player7C?.cards[1]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player7C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player7C?.cards ? 
-                                    <Image  source={images[player7C?.cards[3]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player7C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1899,14 +1910,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player8C?.cards ? 
-                                    <Image source={images[player8C?.cards[0]]}style={ThreePic.cardImage}/>
+                                    <Image source={images[player8C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player8C?.cards ? 
-                                    <Image source={images[player8C?.cards[2]]} style={ThreePic.cardImage}/>
+                                    <Image source={images[player8C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1915,14 +1926,14 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player8C?.cards ? 
-                                    <Image  source={images[player8C?.cards[1]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player8C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player8C?.cards ? 
-                                    <Image  source={images[player8C?.cards[3]]} style={ThreePic.cardImage}/>
+                                    <Image  source={images[player8C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }

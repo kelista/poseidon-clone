@@ -10,12 +10,12 @@ export default StyleSheet.create({
     minHeight: windowHeight - 53,
     backgroundColor: '#000000'
   },
-  lobbyImageContainer: {
-    height: 440, 
-    width: '100%',
-  },
+  // lobbyImageContainer: {
+  //   height: 520, 
+  //   width: '100%',
+  // },
   lobbyImageWrapper: {
-    height: 390, 
+    height: '100%', 
     width: '100%',
   },
   lobbyImageBackground: {

@@ -9,6 +9,7 @@ import { AsyncStorage } from "react-native";
 import { PoseidonLogin } from "../src/screens/Poseidon/Login";
 import { PoseidonLobby } from "../src/screens/Poseidon/Lobby";
 import { PoseidonAccount } from "../src/screens/Poseidon/Account";
+import { PoseidonProfile } from "../src/screens/Poseidon/UpdateProfile";
 import { PoseidonChangePass } from "../src/screens/Poseidon/ChangePassword";
 import { PoseidonSkpRoom } from "../src/screens/Poseidon/Game/Skp/room";
 import { PoseidonThreePicRoom } from "../src/screens/Poseidon/Game/ThreePic/room";
@@ -31,6 +32,9 @@ const MainStack = createStackNavigator(
     },
     [ROUTES.PoseidonAccount]: {
       screen: PoseidonAccount,
+    },
+    [ROUTES.PoseidonProfile]: {
+      screen: PoseidonProfile,
     },
     [ROUTES.PoseidonChangePass]: {
       screen: PoseidonChangePass,
@@ -83,7 +87,7 @@ const Wrapped = function () {
   useEffect(() => {
     Backsound.Factory(
       "mainsound",
-      require("../src/assets/music/Lobby.mp3")
+      require("../src/assets/music/Games2.mp3")
     ).then((newBacksound) => {
       setBs(newBacksound);
     });

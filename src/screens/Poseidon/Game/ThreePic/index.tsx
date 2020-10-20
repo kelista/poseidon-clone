@@ -37,6 +37,7 @@ import { images } from "../../../../services/imageServices";
 import { BSContext } from "../../../../../routes/bsContext";
 import { SSContext } from "../../../../../routes/simpleStoreContext";
 import { useTimer } from "../../../../services/timer";
+import { useKeepAwake } from 'expo-keep-awake';
 import { EmojiWindow } from "../../../../components/Emoji";
 import {
   SafeAreaView,
@@ -77,6 +78,7 @@ const liveScoreEvent = "game/livescore";
 export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   props
 ) => {
+  useKeepAwake();
   const { navigate } = props.navigation;
 
   const [time, isCounting, startTimer] = useTimer();
@@ -228,6 +230,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   useEffect(() => {
     if(emoji != "") {
       wsClient?.sendMessage(emojiEvent, {emoji});
+      setStatOpenEmoji(false)
+      setTimeout(() => {
+        setStatOpenEmoji(true)
+      }, 3000);
     }
   }, [emoji])
 
@@ -596,6 +602,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const outsideClick = () => {
     setModalRound(false)
     setModalLive(false)
+    setEmojiModal(false)
   }
 
   const closeOpenCheckIn = () => {
@@ -614,11 +621,15 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const closeOpenRoundDetail = () => {
     setModalRound(!modalRound);
     setModalLive(false);
+    setEmojiModal(false)
+    setModalRules(false);
   };
 
   const closeOpenLiveScore = () => {
     setModalLive(!modalLive);
     setModalRound(false);
+    setEmojiModal(false)
+    setModalRules(false);
   };
 
   const closeOpenWaiting = () => {
@@ -764,7 +775,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
               </View>
             </View>
             {
-              modalLive || modalRound ? 
+              modalLive || modalRound || emojiModal ? 
               <View style={ThreePic.ThreePicTransparentModal}>
                 <TouchableOpacity style={ThreePic.ThreePicTransparentModalButton} onPress={() => outsideClick()}>
                 </TouchableOpacity>
@@ -983,7 +994,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           )}
                           <View style={{ alignItems: "center", zIndex: 5, marginTop: 95, height: 25.05,}}>
                             <View style={{ flexDirection: "row" }}>
-                              <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
+                              <View style={{ width: 17, height: 21, marginTop: 4.2, transform: [{ rotate: "-15deg" }]}}>
                                 {/* <Image source={require('../../../../assets/images/card/small/card_jack.png')}/> */}
                                 {player1C?.cards ? 
                                   <Image source={images[player1C?.cards[0]]} style={ThreePic.cardImage}/>
@@ -991,7 +1002,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                   <></>
                                 }
                               </View>
-                              <View style={{ width: 17, height: 21, marginLeft: 2, }}>
+                              <View style={{ width: 17, height: 21, marginLeft: 6, }}>
                                 {/* <Image source={require('../../../../assets/images/card/small/card_queen.png')}/> */}
                                 {player1C?.cards ? 
                                   <Image source={images[player1C?.cards[1]]} style={ThreePic.cardImage}/>
@@ -999,7 +1010,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                   <></>
                                 }
                               </View>
-                              <View style={{ width: 17, height: 21, marginLeft: 2, marginTop: 2.2, transform: [{ rotate: "15deg" }] }}>
+                              <View style={{ width: 17, height: 21, marginLeft: 6, marginTop: 2.2, transform: [{ rotate: "15deg" }] }}>
                                 {/* <Image source={require('../../../../assets/images/card/small/card_king.png')}/> */}
                                 {player1C?.cards ? 
                                   <Image
@@ -1011,7 +1022,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }
                               </View>
                             </View>
-                            <View style={ThreePic.ThreePicCardPointDiv}>
+                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 3}]}]}>
                               {
                                 player1C?.disp? 
                                 <Text style={ThreePic.ThreePicCardPoint}>{player1C?.disp}</Text>
@@ -1075,21 +1086,21 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           )}
                           <View style={{alignItems: "flex-start",zIndex: 5, height: 25.05, marginTop: 42,transform: [{ translateX: -50.1 - 14 }]}}>
                             <View style={{ flexDirection: "row" }}>
-                              <View style={{width: 17,height: 21,marginTop: 2.2,transform: [{ rotate: "-15deg" }]}}>
+                              <View style={{width: 17,height: 21,marginTop: 4.2,transform: [{ rotate: "-15deg" }]}}>
                                 {player2C?.cards ? 
                                   <Image source={images[player2C?.cards[0]]}style={ThreePic.cardImage}/>
                                   :
                                   <></>
                                 }
                               </View>
-                              <View style={{width: 17,height: 21,marginLeft: 2,}}>
+                              <View style={{width: 17,height: 21,marginLeft: 6,}}>
                                 {player2C?.cards ? 
                                   <Image source={images[player2C?.cards[1]]} style={ThreePic.cardImage}/>
                                   :
                                   <></>
                                 }
                               </View>
-                              <View style={{ width: 17,height: 21, marginLeft: 2, marginTop: 2.2,transform: [{ rotate: "15deg" }],}}>
+                              <View style={{ width: 17,height: 21, marginLeft: 6, marginTop: 2.2,transform: [{ rotate: "15deg" }],}}>
                                 {player2C?.cards ? 
                                   <Image  source={images[player2C?.cards[2]]} style={ThreePic.cardImage}/>
                                   :
@@ -1097,7 +1108,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }
                               </View>
                             </View>
-                            <View style={ThreePic.ThreePicCardPointDiv}>
+                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 6}]}]}>
                               { 
                                 player2C?.disp? 
                                 <Text style={ThreePic.ThreePicCardPoint}>{player2C?.disp}</Text>
@@ -1195,7 +1206,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginTop: 2.2,
+                                  marginTop: 4.2,
                                   transform: [{ rotate: "-15deg" }],
                                 }}
                               >
@@ -1212,7 +1223,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                 }}
                               >
                                 {player3C?.cards ? 
@@ -1228,7 +1239,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                   marginTop: 2.2,
                                   transform: [{ rotate: "15deg" }],
                                 }}
@@ -1243,7 +1254,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }
                               </View>
                             </View>
-                            <View style={ThreePic.ThreePicCardPointDiv}>
+                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 6}]}]}>
                               { 
                                 player3C?.disp? 
                                 <Text style={ThreePic.ThreePicCardPoint}>{player3C?.disp}</Text>
@@ -1342,7 +1353,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginTop: 2.2,
+                                  marginTop: 4.2,
                                   transform: [{ rotate: "-15deg" }],
                                 }}
                               >
@@ -1359,7 +1370,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                 }}
                               >
                                 {player4C?.cards ? 
@@ -1375,7 +1386,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                   marginTop: 2.2,
                                   transform: [{ rotate: "15deg" }],
                                 }}
@@ -1390,7 +1401,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }
                               </View>
                             </View>
-                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 3}]}]}>
+                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 2}]}]}>
                               {  
                                 player4C?.disp? 
                                 <Text style={ThreePic.ThreePicCardPoint}>{player4C?.disp}</Text>
@@ -1492,7 +1503,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginTop: 2.2,
+                                  marginTop: 4.2,
                                   transform: [{ rotate: "-15deg" }],
                                 }}
                               >
@@ -1509,7 +1520,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                 }}
                               >
                                 {player5C?.cards ? 
@@ -1525,7 +1536,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                   marginTop: 2.2,
                                   transform: [{ rotate: "15deg" }],
                                 }}
@@ -1540,7 +1551,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }
                               </View>
                             </View>
-                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 3}]}]}>
+                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 2}]}]}>
                               { 
                                 player5C?.disp? 
                                 <Text style={ThreePic.ThreePicCardPoint}>{player5C?.disp}</Text>
@@ -1638,7 +1649,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginTop: 2.2,
+                                  marginTop: 4.2,
                                   transform: [{ rotate: "-15deg" }],
                                 }}
                               >
@@ -1655,7 +1666,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                 }}
                               >
                                 {player6C?.cards ? 
@@ -1671,7 +1682,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                   marginTop: 2.2,
                                   transform: [{ rotate: "15deg" }],
                                 }}
@@ -1686,7 +1697,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }
                               </View>
                             </View>
-                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 3}]}]}>
+                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 2}]}]}>
                               { 
                                 player6C?.disp? 
                                 <Text style={ThreePic.ThreePicCardPoint}>{player6C?.disp}</Text>
@@ -1784,7 +1795,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginTop: 2.2,
+                                  marginTop: 4.2,
                                   transform: [{ rotate: "-15deg" }],
                                 }}
                               >
@@ -1801,7 +1812,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                 }}
                               >
                                 {player7C?.cards ? 
@@ -1817,7 +1828,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                   marginTop: 2.2,
                                   transform: [{ rotate: "15deg" }],
                                 }}
@@ -1832,7 +1843,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }
                               </View>
                             </View>
-                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 3}]}]}>
+                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 2}]}]}>
                               { 
                                 player7C?.disp? 
                                 <Text style={ThreePic.ThreePicCardPoint}>{player7C?.disp}</Text>
@@ -1930,7 +1941,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginTop: 2.2,
+                                  marginTop: 4.2,
                                   transform: [{ rotate: "-15deg" }],
                                 }}
                               >
@@ -1947,7 +1958,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                 }}
                               >
                                 {player8C?.cards ? 
@@ -1963,7 +1974,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 style={{
                                   width: 17,
                                   height: 21,
-                                  marginLeft: 2,
+                                  marginLeft: 6,
                                   marginTop: 2.2,
                                   transform: [{ rotate: "15deg" }],
                                 }}
@@ -1978,7 +1989,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }
                               </View>
                             </View>
-                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 3}]}]}>
+                            <View style={[ThreePic.ThreePicCardPointDiv, {transform: [{ translateX: 2}]}]}>
                               { 
                                 player8C?.disp? 
                                 <Text style={ThreePic.ThreePicCardPoint}>{player8C?.disp}</Text>

@@ -11,10 +11,29 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import Svg, { Circle, Rect, Path } from "react-native-svg";
 import Slider from "@react-native-community/slider";
+import {
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 const windowWidth = Dimensions.get("window").width;
 
 export const EmojiWindow = (props: any) => {
+  const insets = useSafeAreaInsets();
+  const emojiContainer: any = useMemo(() => {
+    return {  
+      position: "absolute",
+      height: 157,
+      width: 215,
+      zIndex: 999,
+      bottom: insets.bottom + insets.top + 73,
+      right: 30,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: 'black',
+      borderRadius: 6,
+      padding: 10
+    };
+  }, [insets]);
   const { setEmoji } = props
   return (
     // <View style={styles.emojiContainer}>
@@ -63,7 +82,7 @@ export const EmojiWindow = (props: any) => {
     //   </View>
     // </View>
 
-    <View style={styles.emojiContainer}>
+    <View style={emojiContainer}>
       <View style={styles.rowEmoji}>
         <TouchableOpacity style={styles.rowContentTest} onPress={() => setEmoji("gif-emoji1-1")}>
           <Image source={require("../assets/images/emoticon/Image1/emoji1-1.png")}/>
@@ -81,19 +100,6 @@ export const EmojiWindow = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-  emojiContainer: {
-    position: "absolute",
-    height: 157,
-    width: 215,
-    zIndex: 999,
-    bottom: 150,
-    right: 30,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: 'black',
-    borderRadius: 6,
-    padding: 10
-  },
   rowEmoji: {
     flex: 1,
     flexDirection: 'row'

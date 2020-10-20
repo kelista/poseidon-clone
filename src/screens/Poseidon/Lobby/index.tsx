@@ -167,6 +167,16 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
     }
   },[insets])
 
+  const lobbyImageContainer:any = useMemo(() => {
+    const windowHeight = Dimensions.get('window').height;
+    const windowWidth = Dimensions.get('window').width;
+    return {
+      height: windowHeight - (insets.bottom + insets.top) - 349, 
+      width: '100%',
+      minHeight: 380
+    }
+  },[insets])
+
 
   if (connecting) return (<Text>Connecting</Text>)
 
@@ -185,7 +195,7 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
               <Image source={require('../../../assets/images/others/home.png')} style={LobbyStyle.lobbyHomeImg}/>
             </View>
             <CustomHeader title={username} status="userLobby" balance={balancePlayer} updateInfo={updateInfo}></CustomHeader>
-            <View style={LobbyStyle.lobbyImageContainer}>
+            <View style={lobbyImageContainer}>
               <View style={LobbyStyle.lobbyImageWrapper}>
                 <ImageBackground source={require('../../../assets/images/others/background-revision.png')} style={LobbyStyle.lobbyImageBackground}></ImageBackground>
                 <View style={LobbyStyle.lobbyGameWrapper}>

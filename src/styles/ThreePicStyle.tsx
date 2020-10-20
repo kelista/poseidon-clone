@@ -39,6 +39,10 @@ export default StyleSheet.create({
     transform: [{ translateX: 50.1+14 }]
   },
   cardImage: {
+    width: 24,
+    height: 28
+  },
+  cardImageSkp: {
     width: 20,
     height: 24
   },
@@ -198,8 +202,8 @@ export default StyleSheet.create({
       paddingRight: 50
   },
   ThreePicCardPoint: {
-    fontSize: 8, 
-    lineHeight: 9, 
+    fontSize: 10, 
+    lineHeight: 11, 
     color: "#FFFFFF",
     // backgroundColor: 'green',
     // width: '100%',
@@ -210,7 +214,7 @@ export default StyleSheet.create({
     alignItems: 'center', 
     height: 10, 
     marginTop: 6.5, 
-    width: 58
+    width: 58,
   },
   ThreePicCardPointDivSkp: {
     // backgroundColor: 'blue',

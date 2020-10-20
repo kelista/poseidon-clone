@@ -216,7 +216,7 @@ export const CardWindow = (props:any, { close }: { close: Function }) => {
   }, [lastCard]);
 
   return (
-    <View style={{...styles.cardContainer, display: !autoBet ? 'block' : 'none'}}>
+    <View style={{...styles.cardContainer}}>
       <View style={styles.cardContent}>
         <View style={styles.cardBodyScalling}>
           <View style={styles.cardCountdown}>
