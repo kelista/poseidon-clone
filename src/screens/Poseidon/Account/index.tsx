@@ -48,7 +48,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   };
 
   const updateProfileHandler = () => {
-    // navigate(ROUTES.PoseidonProfile);
+    navigate(ROUTES.PoseidonProfile);
   };
 
   const goToSetting = () => {
