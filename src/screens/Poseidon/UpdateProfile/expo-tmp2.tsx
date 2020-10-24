@@ -28,6 +28,27 @@ export const PoseidonProfile: NavigationScreenComponent<any, any> = (props) => {
     setModalStatement(!modalStatement)
   }
 
+  const renderSelectedComponent = (number:any) => {
+    return (
+      <View style={styles.countBadge}>
+        <Text style={styles.countBadgeText}>{number}</Text>
+      </View>
+    )
+  }
+
+  const imagesCallback = (callback:any) => {
+    callback.then((photos:any) => {
+      console.log(photos);
+    }).catch()
+  };
+
+  const updateHandler = (count:any, onSubmit:any) => {
+    // this.props.navigation.setParams({
+    //   headerTitle: "{{count}} selected",
+    //   headerRight: onSubmit,
+    // });
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }}>
       <StatusBar barStyle="light-content" />
@@ -39,9 +60,14 @@ export const PoseidonProfile: NavigationScreenComponent<any, any> = (props) => {
           {
             modalStatement ? <StatementInfo></StatementInfo> : <></>
           }
-          <View style={PhotoStyle.container}>
-          <ImageBrowser>
-          </ImageBrowser>
+          <View style={[styles.flex, styles.container]}>
+            <ImageBrowser
+              max={4}
+              renderSelectedComponent={renderSelectedComponent}  
+              callback={imagesCallback}
+              onChange={updateHandler}
+            >
+            </ImageBrowser>
           </View>
         </ScrollView>
         <BottomNavigation 
@@ -59,7 +85,6 @@ const styles = StyleSheet.create({
     flex: 1
   },
   container: {
-    paddingTop: 25,
     position: 'relative'
   },
   emptyStay:{

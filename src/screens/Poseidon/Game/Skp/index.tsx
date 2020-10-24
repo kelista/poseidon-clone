@@ -1032,7 +1032,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                         <View style={ThreePic.relative}>
                           {
                             emojiPlayer1 != ""?
-                            <Image source={images[emojiPlayer1]} style={ThreePic.EmojiPlayer}/>
+                            <Image source={images[emojiPlayer1]} style={ThreePic.EmojiPlayer1}/>
                             :
                             <></>
                           }
@@ -1132,7 +1132,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       <View style={[ThreePic.ThreePicGamePin2, ThreePic.SitTable]}>
                         {
                           emojiPlayer2 != ""?
-                          <Image source={images[emojiPlayer2]} style={ThreePic.EmojiPlayer}/>
+                          <Image source={images[emojiPlayer2]} style={ThreePic.EmojiPlayer2}/>
                           :
                           <></>
                         }
@@ -1251,7 +1251,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       >
                         {
                           emojiPlayer3 != ""?
-                          <Image source={images[emojiPlayer3]} style={ThreePic.EmojiPlayer}/>
+                          <Image source={images[emojiPlayer3]} style={ThreePic.EmojiPlayer3}/>
                           :
                           <></>
                         }
@@ -1374,7 +1374,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       >
                         {
                           emojiPlayer4 != ""?
-                          <Image source={images[emojiPlayer4]} style={ThreePic.EmojiPlayer}/>
+                          <Image source={images[emojiPlayer4]} style={ThreePic.EmojiPlayer4}/>
                           :
                           <></>
                         }
@@ -1500,7 +1500,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       >
                         {
                           emojiPlayer5 != ""?
-                          <Image source={images[emojiPlayer5]} style={ThreePic.EmojiPlayer}/>
+                          <Image source={images[emojiPlayer5]} style={ThreePic.EmojiPlayer5}/>
                           :
                           <></>
                         }
@@ -1623,7 +1623,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       >
                         {
                           emojiPlayer6 != ""?
-                          <Image source={images[emojiPlayer6]} style={ThreePic.EmojiPlayer}/>
+                          <Image source={images[emojiPlayer6]} style={ThreePic.EmojiPlayer6}/>
                           :
                           <></>
                         }
@@ -1753,7 +1753,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       >
                         {
                           emojiPlayer7 != ""?
-                          <Image source={images[emojiPlayer7]} style={ThreePic.EmojiPlayer}/>
+                          <Image source={images[emojiPlayer7]} style={ThreePic.EmojiPlayer7}/>
                           :
                           <></>
                         }
@@ -1884,7 +1884,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       >
                         {
                           emojiPlayer8 != ""?
-                          <Image source={images[emojiPlayer8]} style={ThreePic.EmojiPlayer}/>
+                          <Image source={images[emojiPlayer8]} style={ThreePic.EmojiPlayer8}/>
                           :
                           <></>
                         }

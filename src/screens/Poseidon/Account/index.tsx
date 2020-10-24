@@ -21,6 +21,7 @@ import { BottomNavigation } from "../../../components/BottomNavigation";
 import { WSContext } from "../../../../routes/wsContext";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatementInfo } from "../../../components/Statement";
+import * as ImagePicker from 'expo-image-picker';
 
 import Svg, { Path } from "react-native-svg";
 
@@ -33,6 +34,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const [balancePlayer, setBalancePlayer] = useState(0);
   const [idPlayer, setIdPlayer] = useState("");
   const [modalStatement, setModalStatement] = useState(false);
+  const [image, setImage] = useState("");
 
   const wsClient = useContext(WSContext);
 
@@ -47,8 +49,26 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
     navigate(ROUTES.PoseidonLogin);
   };
 
-  const updateProfileHandler = () => {
-    navigate(ROUTES.PoseidonProfile);
+  const updateProfileHandler = async () => {
+    // navigate(ROUTES.PoseidonProfile);
+
+    const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+    if (status !== 'granted') {
+      alert("Sorry, we need permissions to change profile picture");
+    } else {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        aspect: [4, 3],
+        quality: 1
+      });
+  
+      console.log(result)
+  
+      if (!result.cancelled) {
+        setImage(result.uri)
+      }
+    }
   };
 
   const goToSetting = () => {
@@ -131,10 +151,18 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
           <View style={AccountStyle.accountContainer}>
             <View style={AccountStyle.accountImageContainer}>
               <View style={AccountStyle.accountImageWrapper}>
-                <Image
-                  source={require("../../../assets/images/others/Sample.png")}
-                  style={AccountStyle.accountImage}
-                />
+                {
+                  !image ?
+                  <Image
+                    source={require("../../../assets/images/others/Sample.png")}
+                    style={AccountStyle.accountImage}
+                  />
+                  :
+                  <Image
+                    source={{ uri: image }}
+                    style={AccountStyle.accountImage}
+                  />
+                }
               </View>
               <View style={AccountStyle.accountPencilWrapper}>
                 <TouchableOpacity style={AccountStyle.accountPencilClick} onPress={() => updateProfileHandler()}>

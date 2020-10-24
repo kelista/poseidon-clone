@@ -466,13 +466,82 @@ export default StyleSheet.create({
     justifyContent: 'center',
     flex: 1
   },
+  EmojiPlayer1: {
+    width: 120, 
+    height: 120, 
+    position: 'absolute', 
+    top: 65, 
+    left: '50%', 
+    zIndex: 6,
+    transform: [{
+      translateX: -60
+    }],
+  },
+  EmojiPlayer2: {
+    width: 120, 
+    height: 120, 
+    position: 'absolute', 
+    top: 10,
+    left: -90, 
+    zIndex: 6
+  },
+  EmojiPlayer3: {
+    width: 120, 
+    height: 120, 
+    position: 'absolute', 
+    top: -25,
+    left: -90, 
+    zIndex: 6
+  },
+  EmojiPlayer4: {
+    width: 120, 
+    height: 120, 
+    position: 'absolute', 
+    top: -40,
+    left: -95, 
+    zIndex: 6
+  },
+  EmojiPlayer5: {
+    width: 120, 
+    height: 120, 
+    position: 'absolute', 
+    left: '50%', 
+    zIndex: 6,
+    transform: [{
+      translateX: -60
+    }],
+  },
+  EmojiPlayer6: {
+    width: 120, 
+    height: 120, 
+    position: 'absolute', 
+    top: -40,
+    right: -95, 
+    zIndex: 6
+  },
+  EmojiPlayer7: {
+    width: 120, 
+    height: 120, 
+    position: 'absolute', 
+    top: -25,
+    right: -90, 
+    zIndex: 6
+  },
+  EmojiPlayer8: {
+    width: 120, 
+    height: 120, 
+    position: 'absolute', 
+    top: 10,
+    right: -90, 
+    zIndex: 6
+  },
   EmojiPlayer: {
     width: 120, 
     height: 120, 
     position: 'absolute', 
     top: -25, 
     left: '50%', 
-    zIndex: 5,
+    zIndex: 6,
     transform: [{
       translateX: -60
     }],
