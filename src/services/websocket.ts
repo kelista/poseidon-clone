@@ -17,7 +17,6 @@ export class WebSocketClient {
 
   constructor(public readonly url: string) {
     this.listeners = new Map();
-    this.wsc = new WebSocket(url);
     this.connected = false;
   }
 
@@ -51,6 +50,10 @@ export class WebSocketClient {
 
   isConnected() {
     return this.connected;
+  }
+
+  disconnect() {
+    this.wsc.close()
   }
 
   addListener(eventName: string, callback: ListenerCallback) {

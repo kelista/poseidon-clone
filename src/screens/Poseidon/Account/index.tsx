@@ -46,7 +46,7 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   };
 
   const logoutHandler = () => {
-    navigate(ROUTES.PoseidonLogin);
+    wsClient?.disconnect()
   };
 
   const updateProfileHandler = async () => {
