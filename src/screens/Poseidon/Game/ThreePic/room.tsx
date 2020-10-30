@@ -21,6 +21,7 @@ import { WSContext } from "../../../../../routes/wsContext";
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatementInfo } from '../../../../components/Statement'
 import LobbyStyle from "../../../../styles/LobbyStyle"
+import { SliderBox } from "react-native-image-slider-box"; 
 
 interface Room {
   _id: string;
@@ -129,6 +130,13 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
   const [username, setUsername] = useState("");
   const [balancePlayer, setBalancePlayer] = useState(0);
   const [modalStatement, setModalStatement] = useState(false)
+
+  const imagesList = [  
+    require('../../../../assets/images/others/home.png'),
+    require('../../../../assets/images/others/home.png'),
+    require('../../../../assets/images/others/home.png'),
+    require('../../../../assets/images/others/home.png')
+  ]
 
   const lobbyHandler = () => {
     navigate(ROUTES.PoseidonLobby);
@@ -263,7 +271,8 @@ export const PoseidonThreePicRoom: NavigationScreenComponent<any, any> = (
           }
           <View style={{...styleSafeArea}}>
             <View style={LobbyStyle.lobbyHome}>
-              <Image source={require('../../../../assets/images/others/home.png')} style={LobbyStyle.lobbyHomeImg}/>
+              {/* <Image source={require('../../../../assets/images/others/home.png')} style={LobbyStyle.lobbyHomeImg}/> */}
+              <SliderBox images={imagesList} onCurrentImagePressed={index => console.warn(`image ${index} pressed`)} dotColor="#FFEE58" dotStyle={LobbyStyle.lobbyImageDot} autoplay circleLoop/>
             </View>
             <CustomHeader title={username} status="userLobby" balance={balancePlayer} updateInfo={updateInfo}></CustomHeader>
             <View style={ThreePic.ThreePicImageContainer}>

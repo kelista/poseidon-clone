@@ -17,6 +17,8 @@ import { WSContext } from '../../../../routes/wsContext';
 import { SSContext } from '../../../../routes/simpleStoreContext';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { StatementInfo } from '../../../components/Statement'
+import { CustomPromotion } from '../../../components/Promotion';
+import { SliderBox } from "react-native-image-slider-box"; 
 
 interface Game {
   _id: string;
@@ -66,8 +68,16 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
   const bs = useContext(BSContext);
   const ss = useContext(SSContext);
 
+  const imagesList = [
+    require('../../../assets/images/others/home.png'),
+    require('../../../assets/images/others/home.png'),
+    require('../../../assets/images/others/home.png'),
+    require('../../../assets/images/others/home.png')
+  ]
+
   const [availableGames, setAvailableGames] = useState<Game[]>([]);
   const [modalStatement, setModalStatement] = useState(false)
+  const [modalPromotion, setModalPromotion] = useState(true)
 
   // contoh: game Three Pictures => codename nya three-pictures (ini dari backend, jadi tinggal panggil doang)
   const codenames = availableGames.map(g => g.codename);
@@ -93,6 +103,10 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
 
   const updateInfo = () => {
     wsClient?.sendMessage(infoEvent, {});
+  }
+
+  const openCloseModalPromotion = () => {
+    setModalPromotion(!modalPromotion)
   }
 
   // listen connect
@@ -185,6 +199,12 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
       <StatusBar barStyle="light-content" />
       <View style={{flex: 1}}>
         <CustomheaderLogo name="lobby" lobby={() => false}></CustomheaderLogo>
+        {
+          modalPromotion ?
+          <CustomPromotion closePromotion={() => openCloseModalPromotion()}></CustomPromotion>
+          :
+          <></>
+        }
         <ScrollView scrollEnabled={modalStatement ? false : true}>
           <StatusBar hidden />
           {
@@ -192,7 +212,8 @@ export const PoseidonLobby: NavigationScreenComponent<any, any> = (props) => {
           }
           <View style={{...styleSafeArea}}>
             <View style={LobbyStyle.lobbyHome}>
-              <Image source={require('../../../assets/images/others/home.png')} style={LobbyStyle.lobbyHomeImg}/>
+              {/* <Image source={require('../../../assets/images/others/home.png')} style={LobbyStyle.lobbyHomeImg}/> */}
+              <SliderBox images={imagesList} onCurrentImagePressed={index => console.warn(`image ${index} pressed`)} dotColor="#FFEE58" dotStyle={LobbyStyle.lobbyImageDot} autoplay circleLoop/>
             </View>
             <CustomHeader title={username} status="userLobby" balance={balancePlayer} updateInfo={updateInfo}></CustomHeader>
             <View style={lobbyImageContainer}>

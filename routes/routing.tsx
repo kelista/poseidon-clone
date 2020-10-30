@@ -14,6 +14,7 @@ import { PoseidonChangePass } from "../src/screens/Poseidon/ChangePassword";
 import { PoseidonSkpRoom } from "../src/screens/Poseidon/Game/Skp/room";
 import { PoseidonThreePicRoom } from "../src/screens/Poseidon/Game/ThreePic/room";
 import { PoseidonThreePicGame } from "../src/screens/Poseidon/Game/ThreePic/index";
+import { PoseidonThreePicGame2 } from "../src/screens/Poseidon/Game/ThreePic/index2test";
 import { PoseidonSkpGame } from "../src/screens/Poseidon/Game/Skp/index";
 import { PoseidonTnc } from "../src/screens/Poseidon/Policy/tnc";
 import { PoseidonPrivacy } from "../src/screens/Poseidon/Policy/privacy";
@@ -47,6 +48,9 @@ const MainStack = createStackNavigator(
     },
     [ROUTES.PoseidonThreePicGame]: {
       screen: PoseidonThreePicGame,
+    },
+    [ROUTES.PoseidonThreePicGame2]: {
+      screen: PoseidonThreePicGame2,
     },
     [ROUTES.PoseidonSkpGame]: {
       screen: PoseidonSkpGame,
@@ -87,7 +91,8 @@ const Wrapped = function () {
   useEffect(() => {
     Backsound.Factory(
       "mainsound",
-      require("../src/assets/music/Games2.mp3")
+      require("../src/assets/music/Games2.mp3"),
+      true
     ).then((newBacksound) => {
       setBs(newBacksound);
     });

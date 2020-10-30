@@ -47,7 +47,6 @@ export const StatementInfo = () => {
       const listeners: string[] = [];
 
       const lobbyAction = async function (data: any) {
-        console.log(data);
         setReport(data);
       };
 

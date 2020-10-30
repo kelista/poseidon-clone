@@ -220,7 +220,7 @@ export default StyleSheet.create({
     // backgroundColor: 'blue',
     alignItems: 'center', 
     height: 10, 
-    marginTop: 6.5, 
+    marginTop: 10, 
     width: 42
   },
   ThreePicTransparentModal: {

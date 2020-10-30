@@ -39,7 +39,6 @@ import { SSContext } from "../../../../../routes/simpleStoreContext";
 import { useTimer } from "../../../../services/timer";
 import { useKeepAwake } from 'expo-keep-awake';
 import { EmojiWindow } from "../../../../components/Emoji";
-import { Backsound } from "../../../../services/soundServices";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -75,9 +74,8 @@ const gamePhaseEvent = "game/phase";
 const gameBetEvent = "game/bet";
 const emojiEvent = "messaging/emoji"
 const liveScoreEvent = "game/livescore";
-const unsignEvent = "game/unsign";
 
-export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
+export const PoseidonThreePicGame2: NavigationScreenComponent<any, any> = (
   props
 ) => {
   useKeepAwake();
@@ -158,46 +156,20 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [result, setResult] = useState(null);
   const [info, setInfo] = useState(null);
   const [phase, setPhase] = useState<string>("fresh");
-  
-  const [standUpStat, setStandUpStat] = useState(false);
-  const [seatNumberZero, setSeatNumberZero] = useState(0);
-  const [playerInGame, setPlayerInGame] = useState(false);
-  const [dataPrepare, setDataPrepare] = useState<any[]>([]);
-
-  // Animated
-  const card1 = new Animated.Value(0)
-  const card2 = new Animated.Value(0)
-  const card3 = new Animated.Value(0)
-  const card4 = new Animated.Value(0)
-  const card5 = new Animated.Value(0)
-  const card6 = new Animated.Value(0)
-  const card7 = new Animated.Value(0)
-  const card8 = new Animated.Value(0)
-
-  const onLoadCard = useCallback((data: any) => {
-    Animated.timing(data, {
-      toValue: 1,
-      duration: 250,
-      useNativeDriver: true,
-    }).start();
-  }, [])
-
-  const animationCard = useCallback((card: any) => {
-    playCardSound()
-    onLoadCard(card)
-  }, [])
-
-  const playCardSound = useCallback(() => {
-    Backsound.Factory(
-      "fadeInCard",
-      require("../../../../assets/music/card_result.mp3"),
-      false
-    ).then((newBacksound:any) => {
-      newBacksound.start()
-    });
-  }, [])
 
   // const [time, isCounting, startTimer] = useTimer();
+
+  // Animated Section
+
+  const card1 = new Animated.Value(0)
+
+  const onLoadCard = (data: any) => {
+    Animated.timing(data, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }
 
   const windowWidth = Dimensions.get("window").width;
 
@@ -222,24 +194,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     }
   }
 
-  const standUp = useCallback(() => {
-    if(phase === 'result') {
-      setStandUpStat(true)
-      wsClient?.sendMessage(unsignEvent, {});
-    }
-  }, [phase])
-
-  useEffect(() => {
-    if(standUpStat && seatNumberZero == 0) {
-      setStandUpStat(false)
-      setBuyInStat(false)
-      setLastBet(0)
-      setUserBet(0)
-      setBalancePlayerGame(0)
-      setAutoBet(false)
-    }
-  }, [seatNumberZero, standUpStat])
-
   const openEmoji = useCallback(() => {
     if(statOpenEmoji && buyInStat) {
       setEmojiModal(true)
@@ -263,7 +217,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     }, 3000);
   }, [])
 
-  // Emoji - check data sended from websocket
   useEffect(() => {
     if(emojiData) {
       if(emojiData?.sender == player1?.username) {
@@ -296,26 +249,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     }
   }, [emoji])
 
-  useEffect(() => {
-    if(dataPrepare) {
-      const result = dataPrepare?.find((d: any) => d.username == username);
-      if(result) {
-        if(result.seatNumber == 0) {
-          setPlayerInGame(false)
-        } else {
-          setPlayerInGame(true)
-        }
-      }
-    }
-  }, [dataPrepare, username])
-
   const gameInfoAction = useCallback(async function (data: any) {
     setInfo(data.players);
     let banker = data.banker;
-
-    if (data.phase === "prepare") {
-      setDataPrepare(data.players)
-    }
 
     setBanker(banker);
     const playerStates = [
@@ -330,11 +266,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     ];
 
     playerStates.forEach((p, index) => {
-      const playerStandUp = data.players.find((d: any) => d.seatNumber === 0);
-      if (playerStandUp) {
-        setSeatNumberZero(playerStandUp.seatNumber)
-      }
-      
       const player = data.players.find((d: any) => d.seatNumber === index + 1);
       if (player) {
         player.cards = [];
@@ -351,7 +282,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
         p(undefined);
       }
     });
-  }, [username]);
+  }, []);
 
   const metaAction = useCallback(async function (data: any) {
     setMinBet(data.min);
@@ -453,10 +384,18 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     }
   }, []);
 
-  // Result - open card from right of the banker
   useEffect(() => {
     var bankerSeat = 0
     if(arrayResult) {
+      // arrayResult.sort((a,b) => {
+      //   if(a.username != banker && b.username != banker) {
+      //     return 0
+      //   } else if(a.username != banker && b.username == banker) {
+      //     return -1
+      //   } else if(a.username == banker && b.username != banker) {
+      //     return 1
+      //   }
+      // })
       arrayResult.forEach((d:any, index:number) => {
         if(d.username == banker) {
           bankerSeat = index
@@ -486,7 +425,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
         pengali = index * settimeout
         setTimeout(() => {
           if(d.seatNumber == 1) {
+            console.log(d.cards)
             setPlayer1C({cards: d.cards, disp: d.disp})
+            onLoadCard(card1)
           } else if(d.seatNumber == 2) {
             setPlayer2C({cards: d.cards, disp: d.disp})
           } else if(d.seatNumber == 3) {
@@ -529,7 +470,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     }
   }, [arrayResult1])
 
-  // Bet - phase bet + auto action
   useEffect(() => {
     if(
       phase === "bet" &&
@@ -551,16 +491,16 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
               sendBet(Number(d))
             }
           } else {
-            if(phase === 'bet' && !statLastBet && playerInGame) {
+            if(phase === 'bet' && !statLastBet) {
               setModalBetting(true);
             }
           }
         })
-      } else if(!statLastBet && playerInGame) {
+      } else if(!statLastBet) {
         setModalBetting(true);
       }
     }
-  }, [phase, banker, username, autoBet, buyInStat, statLastBet, time, playerInGame]);
+  }, [phase, banker, username, autoBet, buyInStat, statLastBet, time]);
 
   // listen connect
   useEffect(
@@ -760,13 +700,13 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       position: 'absolute',
       zIndex: 1,
       bottom: 65 + insets.top + insets.bottom,
-      right: phase == 'result' ? 30 + 34 + 10 : 30,
+      right: 30 + 34 + 10,
       width: 34,
       height: 34,
       alignItems: 'center',
       justifyContent: 'center'
     };
-  }, [insets, phase]);
+  }, [insets]);
 
   const constAutoBet: any = useMemo(() => {
     return {
@@ -840,7 +780,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
             <View style={ThreePic.infoButton}>
               <View style={ThreePic.relative}>
                 {/* <TouchableOpacity style={[ThreePic.absCenter, ThreePic.alertBtn]}> */}
-                <TouchableOpacity style={{}} onPress={() => closeOpenRules()}>
+                <TouchableOpacity style={{}} onPress={() => onLoadCard(card1)}>
                   <Image
                     source={require("../../../../assets/images/others/alert-btn.png")}
                     style={ThreePic.alertButton}
@@ -1066,31 +1006,19 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          <View style={{ alignItems: "center", zIndex: 5, marginTop: 95, height: 25.05,}}>
+                          <Animated.View style={{alignItems: "center", zIndex: 5, marginTop: 95, height: 25.05, opacity: card1, transform: [
+                            {
+                              scale: card1.interpolate({
+                                inputRange: [0, 1],
+                                outputRange: [0.85, 1],
+                              })
+                            }]
+                          }}>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{ width: 17, height: 21, marginTop: 4.2, transform: [{ rotate: "-15deg" }]}}>
                                 {/* <Image source={require('../../../../assets/images/card/small/card_jack.png')}/> */}
                                 {player1C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => animationCard(card1)}
-                                    source={images[player1C?.cards[0]]}
-                                    style={[
-                                      {
-                                        opacity: card1,
-                                        transform: [
-                                          {
-                                            scale: card1.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
-                                  />
-                                  // <Image source={images[player1C?.cards[0]]} style={ThreePic.cardImage}/>
+                                  <Image source={images[player1C?.cards[0]]} style={ThreePic.cardImage}/>
                                   :
                                   <></>
                                 }
@@ -1098,26 +1026,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                               <View style={{ width: 17, height: 21, marginLeft: 6, }}>
                                 {/* <Image source={require('../../../../assets/images/card/small/card_queen.png')}/> */}
                                 {player1C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card1)}
-                                    source={images[player1C?.cards[1]]}
-                                    style={[
-                                      {
-                                        opacity: card1,
-                                        transform: [
-                                          {
-                                            scale: card1.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
-                                  />
-                                  // <Image source={images[player1C?.cards[1]]} style={ThreePic.cardImage}/>
+                                  <Image source={images[player1C?.cards[1]]} style={ThreePic.cardImage}/>
                                   :
                                   <></>
                                 }
@@ -1125,29 +1034,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                               <View style={{ width: 17, height: 21, marginLeft: 6, marginTop: 2.2, transform: [{ rotate: "15deg" }] }}>
                                 {/* <Image source={require('../../../../assets/images/card/small/card_king.png')}/> */}
                                 {player1C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card1)}
+                                  <Image
                                     source={images[player1C?.cards[2]]}
-                                    style={[
-                                      {
-                                        opacity: card1,
-                                        transform: [
-                                          {
-                                            scale: card1.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player1C?.cards[2]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -1161,7 +1051,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 <></>
                               }
                             </View>
-                          </View>
+                          </Animated.View>
+                          
                           {player1C?.result? (
                             <View style={[ThreePic.amountResultPlayer1,banker == player1?.username ? ThreePic.amountResultPlayer1Banker: {}]}>
                               <View style={ThreePic.amountDiv}>
@@ -1219,78 +1110,21 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             <View style={{ flexDirection: "row" }}>
                               <View style={{width: 17,height: 21,marginTop: 4.2,transform: [{ rotate: "-15deg" }]}}>
                                 {player2C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => animationCard(card2)}
-                                    source={images[player2C?.cards[0]]}
-                                    style={[
-                                      {
-                                        opacity: card2,
-                                        transform: [
-                                          {
-                                            scale: card2.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
-                                  />
-                                  // <Image source={images[player2C?.cards[0]]}style={ThreePic.cardImage}/>
+                                  <Image source={images[player2C?.cards[0]]}style={ThreePic.cardImage}/>
                                   :
                                   <></>
                                 }
                               </View>
                               <View style={{width: 17,height: 21,marginLeft: 6,}}>
                                 {player2C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card2)}
-                                    source={images[player2C?.cards[1]]}
-                                    style={[
-                                      {
-                                        opacity: card2,
-                                        transform: [
-                                          {
-                                            scale: card2.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
-                                  />
-                                  // <Image source={images[player2C?.cards[1]]} style={ThreePic.cardImage}/>
+                                  <Image source={images[player2C?.cards[1]]} style={ThreePic.cardImage}/>
                                   :
                                   <></>
                                 }
                               </View>
                               <View style={{ width: 17,height: 21, marginLeft: 6, marginTop: 2.2,transform: [{ rotate: "15deg" }],}}>
                                 {player2C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card2)}
-                                    source={images[player2C?.cards[2]]}
-                                    style={[
-                                      {
-                                        opacity: card2,
-                                        transform: [
-                                          {
-                                            scale: card2.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
-                                  />
-                                  // <Image  source={images[player2C?.cards[2]]} style={ThreePic.cardImage}/>
+                                  <Image  source={images[player2C?.cards[2]]} style={ThreePic.cardImage}/>
                                   :
                                   <></>
                                 }
@@ -1399,29 +1233,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player3C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => animationCard(card3)}
+                                  <Image
                                     source={images[player3C?.cards[0]]}
-                                    style={[
-                                      {
-                                        opacity: card3,
-                                        transform: [
-                                          {
-                                            scale: card3.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player3C?.cards[0]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -1434,29 +1249,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player3C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card3)}
+                                  <Image
                                     source={images[player3C?.cards[1]]}
-                                    style={[
-                                      {
-                                        opacity: card3,
-                                        transform: [
-                                          {
-                                            scale: card3.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player3C?.cards[1]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -1471,29 +1267,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player3C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card3)}
+                                  <Image
                                     source={images[player3C?.cards[2]]}
-                                    style={[
-                                      {
-                                        opacity: card3,
-                                        transform: [
-                                          {
-                                            scale: card3.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player3C?.cards[2]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -1603,29 +1380,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player4C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => animationCard(card4)}
+                                  <Image
                                     source={images[player4C?.cards[0]]}
-                                    style={[
-                                      {
-                                        opacity: card4,
-                                        transform: [
-                                          {
-                                            scale: card4.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player4C?.cards[0]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -1638,29 +1396,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player4C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card4)}
+                                  <Image
                                     source={images[player4C?.cards[1]]}
-                                    style={[
-                                      {
-                                        opacity: card4,
-                                        transform: [
-                                          {
-                                            scale: card4.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player4C?.cards[1]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -1675,29 +1414,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player4C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card4)}
+                                  <Image
                                     source={images[player4C?.cards[2]]}
-                                    style={[
-                                      {
-                                        opacity: card4,
-                                        transform: [
-                                          {
-                                            scale: card4.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player4C?.cards[2]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -1810,29 +1530,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player5C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => animationCard(card5)}
+                                  <Image
                                     source={images[player5C?.cards[0]]}
-                                    style={[
-                                      {
-                                        opacity: card5,
-                                        transform: [
-                                          {
-                                            scale: card5.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player5C?.cards[0]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -1845,29 +1546,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player5C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card5)}
+                                  <Image
                                     source={images[player5C?.cards[1]]}
-                                    style={[
-                                      {
-                                        opacity: card5,
-                                        transform: [
-                                          {
-                                            scale: card5.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player5C?.cards[1]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -1882,29 +1564,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player5C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card5)}
+                                  <Image
                                     source={images[player5C?.cards[2]]}
-                                    style={[
-                                      {
-                                        opacity: card5,
-                                        transform: [
-                                          {
-                                            scale: card5.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player5C?.cards[2]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -2013,29 +1676,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player6C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => animationCard(card6)}
+                                  <Image
                                     source={images[player6C?.cards[0]]}
-                                    style={[
-                                      {
-                                        opacity: card6,
-                                        transform: [
-                                          {
-                                            scale: card6.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player6C?.cards[0]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -2048,24 +1692,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player6C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card6)}
+                                  <Image
                                     source={images[player6C?.cards[1]]}
-                                    style={[
-                                      {
-                                        opacity: card6,
-                                        transform: [
-                                          {
-                                            scale: card6.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
                                   :
                                   <></>
@@ -2081,29 +1710,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player6C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card6)}
+                                  <Image
                                     source={images[player6C?.cards[2]]}
-                                    style={[
-                                      {
-                                        opacity: card6,
-                                        transform: [
-                                          {
-                                            scale: card6.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player6C?.cards[2]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -2212,29 +1822,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player7C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => animationCard(card7)}
+                                  <Image
                                     source={images[player7C?.cards[0]]}
-                                    style={[
-                                      {
-                                        opacity: card7,
-                                        transform: [
-                                          {
-                                            scale: card7.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player7C?.cards[0]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -2247,29 +1838,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player7C?.cards ? 
-                                <Animated.Image
-                                    onLoad={() => onLoadCard(card7)}
+                                  <Image
                                     source={images[player7C?.cards[1]]}
-                                    style={[
-                                      {
-                                        opacity: card7,
-                                        transform: [
-                                          {
-                                            scale: card7.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player7C?.cards[1]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -2284,29 +1856,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player7C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card7)}
+                                  <Image
                                     source={images[player7C?.cards[2]]}
-                                    style={[
-                                      {
-                                        opacity: card7,
-                                        transform: [
-                                          {
-                                            scale: card7.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player7C?.cards[2]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -2415,29 +1968,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player8C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => animationCard(card8)}
+                                  <Image
                                     source={images[player8C?.cards[0]]}
-                                    style={[
-                                      {
-                                        opacity: card8,
-                                        transform: [
-                                          {
-                                            scale: card8.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player8C?.cards[0]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -2450,29 +1984,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player8C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card8)}
+                                  <Image
                                     source={images[player8C?.cards[1]]}
-                                    style={[
-                                      {
-                                        opacity: card8,
-                                        transform: [
-                                          {
-                                            scale: card8.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player8C?.cards[1]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -2487,29 +2002,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                 }}
                               >
                                 {player8C?.cards ? 
-                                  <Animated.Image
-                                    onLoad={() => onLoadCard(card8)}
+                                  <Image
                                     source={images[player8C?.cards[2]]}
-                                    style={[
-                                      {
-                                        opacity: card8,
-                                        transform: [
-                                          {
-                                            scale: card8.interpolate({
-                                              inputRange: [0, 1],
-                                              outputRange: [0.4, 1],
-                                            })
-                                          },
-                                        ],
-                                      },
-                                      ThreePic.cardImage
-                                      // this.props.style,
-                                    ]}
+                                    style={ThreePic.cardImage}
                                   />
-                                  // <Image
-                                  //   source={images[player8C?.cards[2]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -2579,18 +2075,13 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
             <View style={{...constEmojiButton}}>
               <View style={ThreePic.relative}>
                 <View style={{flexDirection: 'row'}}>
-                  {
-                    phase == 'result' ?
-                    <TouchableOpacity style={{}} onPress={() => standUp()}>
-                      <Image
-                        source={require("../../../../assets/images/others/standup.png")}
-                        style={[ThreePic.alertButton, {marginRight: 10}]}
-                      />
-                    </TouchableOpacity>
-                    :
-                    <></>
-                  }
                   <TouchableOpacity style={{}} onPress={() => openEmoji()}>
+                    <Image
+                      source={require("../../../../assets/images/others/standup.png")}
+                      style={[ThreePic.alertButton, {marginRight: 10}]}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{}} onPress={() => standUp()}>
                     <Image
                       source={require("../../../../assets/images/others/emoticon-btn.png")}
                       style={ThreePic.alertButton}

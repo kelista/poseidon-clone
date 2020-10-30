@@ -18,6 +18,14 @@ export default StyleSheet.create({
     height: '100%', 
     width: '100%',
   },
+  lobbyImageDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 15,
+    marginHorizontal: 0,
+    padding: 0,
+    margin: 0
+  },
   lobbyImageBackground: {
     position: 'absolute', 
     height: '100%', 

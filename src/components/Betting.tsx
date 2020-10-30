@@ -11,8 +11,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import Svg, { Circle, Rect, Path } from "react-native-svg";
 import Slider from "@react-native-community/slider";
-
-const windowWidth = Dimensions.get("window").width;
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const BettingWindow = (props: any) => {
 	const {
@@ -75,130 +74,156 @@ export const BettingWindow = (props: any) => {
 		AsyncStorage.getItem("last-bet").then(d => {
 			if (d) setBetValue(Number(d));
 		})
-	}
+  }
+  
+  const insets = useSafeAreaInsets();
+
+  const bettingContainer: any = useMemo(() => {
+    const windowHeight = Dimensions.get("window").height;
+    return {  
+      position: "absolute",
+      height: windowHeight - (insets.bottom + insets.top) - 106,
+      width: "100%",
+      zIndex: 1000,
+      justifyContent: "center",
+      alignItems: "center",
+    };
+  }, [insets]);
+
+  const relative: any = useMemo(() => {
+    return {  
+      position: 'relative',
+      width: '100%',
+      height: '100%'
+    };
+  }, [insets]);
 
   return (
-    <View style={styles.bettingContainer}>
-      <View style={styles.bettingContent}>
-        <View style={styles.bettingTitle}>
-          <TouchableOpacity style={styles.bettingClose} onPress={() => close()}>
-            <Svg width={13.426} height={13.423} viewBox="0 0 13.426 13.423">
-              <Path
-                data-name="Icon ionic-ios-close"
-                d="M8.304 6.711l4.8-4.8A1.124 1.124 0 0011.515.327l-4.8 4.8-4.8-4.8A1.124 1.124 0 10.331 1.911l4.8 4.8-4.8 4.8a1.124 1.124 0 001.584 1.584l4.8-4.8 4.8 4.8a1.124 1.124 0 101.584-1.584z"
-                fill="#fae087"
-              />
-            </Svg>
-          </TouchableOpacity>
-          <Text style={styles.bettingTitleText}>Poseidon Club</Text>
-        </View>
-        <View style={styles.bettingBody}>
-          <View style={styles.bettingBoxContainer}>
-            <View style={styles.bettingBoxWrapper}>
-              <LinearGradient
-                colors={["#6E0000", "#400000"]}
-                style={[styles.bettingBoxContent, styles.separatorLeft]}
-              >
-                <Text style={styles.bettingBoxContentTitleText}>Balance</Text>
-              </LinearGradient>
-              <LinearGradient
-                colors={["#6E0000", "#400000"]}
-                style={[styles.bettingBoxContent, styles.separatorRight]}
-              >
-                <Text style={styles.bettingBoxContentTitleText}>Amount</Text>
-              </LinearGradient>
-            </View>
-            <View style={styles.bettingBoxWrapper}>
-              <View
-                style={[styles.bettingBoxContentBalance, styles.separatorLeft]}
-              >
-                <Text style={styles.bettingBoxContentBalanceText}>
-                  {separatorBalance(balanceGame)}
-                </Text>
-              </View>
-              <View
-                style={[styles.bettingBoxContentBalance, styles.separatorRight]}
-              >
-                <Text style={styles.bettingBoxContentBalanceText}>
-                  {separatorBalance(betValue)}
-                </Text>
-              </View>
-            </View>
-          </View>
-          <View style={styles.bettingCoinContainer}>
-            <View style={styles.bettingCoinWrapper}>
-              <TouchableOpacity
-                style={styles.bettingCoinButton}
-                onPress={chipOne}
-              >
-                <Image
-                  source={require("../assets/images/others/red-chip.png")}
-                  style={styles.bettingImg}
-                />
-                <Text style={styles.bettingText}>{minBet}</Text>
+    <View style={bettingContainer}>
+      <View style={relative}>
+        <View style={styles.bettingContent}>
+          <View style={relative}>
+            <View style={styles.bettingTitle}>
+              <TouchableOpacity style={styles.bettingClose} onPress={() => close()}>
+                <Svg width={13.426} height={13.423} viewBox="0 0 13.426 13.423">
+                  <Path
+                    data-name="Icon ionic-ios-close"
+                    d="M8.304 6.711l4.8-4.8A1.124 1.124 0 0011.515.327l-4.8 4.8-4.8-4.8A1.124 1.124 0 10.331 1.911l4.8 4.8-4.8 4.8a1.124 1.124 0 001.584 1.584l4.8-4.8 4.8 4.8a1.124 1.124 0 101.584-1.584z"
+                    fill="#fae087"
+                  />
+                </Svg>
               </TouchableOpacity>
-              <TouchableOpacity 
-                style={styles.bettingCoinButton}
-                onPress={chipTwo}
-              >
-                <Image
-                  source={require("../assets/images/others/blue-chip.png")}
-                  style={styles.bettingImg}
-                />
-                <Text style={styles.bettingText}>{midBet}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.bettingCoinButton}
-                onPress={chipThree}
-              >
-                <Image
-                  source={require("../assets/images/others/green-chip.png")}
-                  style={styles.bettingImg}
-                />
-                <Text style={styles.bettingText}>{maxBet}</Text>
-              </TouchableOpacity>
+              <Text style={styles.bettingTitleText}>Poseidon Club</Text>
             </View>
-            <View style={styles.bettingLastContainer}>
-              <View style={styles.bettingLastWrapper1}>
-                <TouchableOpacity
-                  style={styles.bettingLastButton}
-                  onPress={toogleChecked}
-                >
-                  <View style={styles.bettingLastSquare}>
-                    {checked ? (
-                      <Image
-                        source={require("../assets/images/others/green-checklist.png")}
-                        style={styles.bettingLastChecked}
-                      />
-                    ) : (
-                      <></>
-                    )}
-                  </View>
-                  <Text style={styles.bettingLastText}>Last Bet</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={styles.bettingLastWrapper2}>
-                <TouchableOpacity onPress={resetBet}>
-                  <View style={styles.bettingLastReset}>
-                    <Text style={[styles.bettingLastText, styles.noPadding]}>
-                      Reset
+            <View style={styles.bettingBody}>
+              <View style={styles.bettingBoxContainer}>
+                <View style={styles.bettingBoxWrapper}>
+                  <LinearGradient
+                    colors={["#6E0000", "#400000"]}
+                    style={[styles.bettingBoxContent, styles.separatorLeft]}
+                  >
+                    <Text style={styles.bettingBoxContentTitleText}>Balance</Text>
+                  </LinearGradient>
+                  <LinearGradient
+                    colors={["#6E0000", "#400000"]}
+                    style={[styles.bettingBoxContent, styles.separatorRight]}
+                  >
+                    <Text style={styles.bettingBoxContentTitleText}>Amount</Text>
+                  </LinearGradient>
+                </View>
+                <View style={styles.bettingBoxWrapper}>
+                  <View
+                    style={[styles.bettingBoxContentBalance, styles.separatorLeft]}
+                  >
+                    <Text style={styles.bettingBoxContentBalanceText}>
+                      {separatorBalance(balanceGame)}
                     </Text>
                   </View>
-                </TouchableOpacity>
+                  <View
+                    style={[styles.bettingBoxContentBalance, styles.separatorRight]}
+                  >
+                    <Text style={styles.bettingBoxContentBalanceText}>
+                      {separatorBalance(betValue)}
+                    </Text>
+                  </View>
+                </View>
               </View>
+              <View style={styles.bettingCoinContainer}>
+                <View style={styles.bettingCoinWrapper}>
+                  <TouchableOpacity
+                    style={styles.bettingCoinButton}
+                    onPress={chipOne}
+                  >
+                    <Image
+                      source={require("../assets/images/others/red-chip.png")}
+                      style={styles.bettingImg}
+                    />
+                    <Text style={styles.bettingText}>{minBet}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={styles.bettingCoinButton}
+                    onPress={chipTwo}
+                  >
+                    <Image
+                      source={require("../assets/images/others/blue-chip.png")}
+                      style={styles.bettingImg}
+                    />
+                    <Text style={styles.bettingText}>{midBet}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.bettingCoinButton}
+                    onPress={chipThree}
+                  >
+                    <Image
+                      source={require("../assets/images/others/green-chip.png")}
+                      style={styles.bettingImg}
+                    />
+                    <Text style={styles.bettingText}>{maxBet}</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.bettingLastContainer}>
+                  <View style={styles.bettingLastWrapper1}>
+                    <TouchableOpacity
+                      style={styles.bettingLastButton}
+                      onPress={toogleChecked}
+                    >
+                      <View style={styles.bettingLastSquare}>
+                        {checked ? (
+                          <Image
+                            source={require("../assets/images/others/green-checklist.png")}
+                            style={styles.bettingLastChecked}
+                          />
+                        ) : (
+                          <></>
+                        )}
+                      </View>
+                      <Text style={styles.bettingLastText}>Last Bet</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.bettingLastWrapper2}>
+                    <TouchableOpacity onPress={resetBet}>
+                      <View style={styles.bettingLastReset}>
+                        <Text style={[styles.bettingLastText, styles.noPadding]}>
+                          Reset
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+              <LinearGradient
+                colors={["#E60000", "#730000"]}
+                style={[styles.bettingButtonGradient]}
+              >
+                <TouchableOpacity
+                  style={styles.bettingButton}
+                  onPress={() => submit()}
+                >
+                  <Text style={styles.bettingButtonText}>SUBMIT</Text>
+                </TouchableOpacity>
+              </LinearGradient>
             </View>
           </View>
-          <LinearGradient
-            colors={["#E60000", "#730000"]}
-            style={[styles.bettingButtonGradient]}
-          >
-            <TouchableOpacity
-              style={styles.bettingButton}
-              onPress={() => submit()}
-            >
-              <Text style={styles.bettingButtonText}>SUBMIT</Text>
-            </TouchableOpacity>
-          </LinearGradient>
         </View>
       </View>
     </View>
@@ -206,16 +231,14 @@ export const BettingWindow = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-  bettingContainer: {
-    position: "absolute",
-    height: "100%",
-    width: "100%",
-    zIndex: 1000,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   bettingContent: {
-    position: "relative",
+    position: "absolute",
+    top: '50%',
+    left: '50%',
+    transform: [
+      {translateX: -175},
+      {translateY: -192.5}
+    ],
     width: 350,
     height: 385,
     backgroundColor: "rgba(0, 0, 0, 0.8)",

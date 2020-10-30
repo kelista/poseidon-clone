@@ -52,23 +52,23 @@ export const PoseidonAccount: NavigationScreenComponent<any, any> = (props) => {
   const updateProfileHandler = async () => {
     // navigate(ROUTES.PoseidonProfile);
 
-    const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
-    if (status !== 'granted') {
-      alert("Sorry, we need permissions to change profile picture");
-    } else {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
-        aspect: [4, 3],
-        quality: 1
-      });
+    // const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+    // if (status !== 'granted') {
+    //   alert("Sorry, we need permissions to change profile picture");
+    // } else {
+    //   let result = await ImagePicker.launchImageLibraryAsync({
+    //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //     allowsEditing: false,
+    //     aspect: [4, 3],
+    //     quality: 1
+    //   });
   
-      console.log(result)
+    //   console.log(result)
   
-      if (!result.cancelled) {
-        setImage(result.uri)
-      }
-    }
+    //   if (!result.cancelled) {
+    //     setImage(result.uri)
+    //   }
+    // }
   };
 
   const goToSetting = () => {

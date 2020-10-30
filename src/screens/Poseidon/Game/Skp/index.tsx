@@ -15,7 +15,7 @@ import {
   ImageBackground,
   Dimensions,
   BackHandler,
-  Platform, AsyncStorage
+  Platform, AsyncStorage, Animated
 } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { NavigationScreenComponent } from "react-navigation";
@@ -39,6 +39,7 @@ import { BSContext } from "../../../../../routes/bsContext";
 import { SSContext } from "../../../../../routes/simpleStoreContext";
 import { useTimer } from "../../../../services/timer";
 import { useKeepAwake } from 'expo-keep-awake';
+import { Backsound } from "../../../../services/soundServices";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -74,6 +75,7 @@ const gamePhaseEvent = "game/phase";
 const gameBetEvent = "game/bet";
 const liveScoreEvent = "game/livescore";
 const emojiEvent = "messaging/emoji"
+const unsignEvent = "game/unsign";
 
 export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
   props
@@ -160,7 +162,46 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
   const [info, setInfo] = useState(null);
   const [phase, setPhase] = useState<string>("fresh");
 
+  const [standUpStat, setStandUpStat] = useState(false);
+  const [seatNumberZero, setSeatNumberZero] = useState(0);
+  const [playerInGame, setPlayerInGame] = useState(false);
+
+  const [dataPrepare, setDataPrepare] = useState<any[]>([]);
+
   // const [time, isCounting, startTimer] = useTimer();
+
+  // Animated
+  const card1 = new Animated.Value(0)
+  const card2 = new Animated.Value(0)
+  const card3 = new Animated.Value(0)
+  const card4 = new Animated.Value(0)
+  const card5 = new Animated.Value(0)
+  const card6 = new Animated.Value(0)
+  const card7 = new Animated.Value(0)
+  const card8 = new Animated.Value(0)
+
+  const onLoadCard = useCallback((data: any) => {
+    Animated.timing(data, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }, [])
+
+  const animationCard = useCallback((card: any) => {
+    playCardSound()
+    onLoadCard(card)
+  }, [])
+
+  const playCardSound = useCallback(() => {
+    Backsound.Factory(
+      "fadeInCard",
+      require("../../../../assets/music/card_result.mp3"),
+      false
+    ).then((newBacksound:any) => {
+      newBacksound.start()
+    });
+  }, [])
 
   const windowWidth = Dimensions.get("window").width;
 
@@ -184,6 +225,26 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
       }
     }
   }
+
+  const standUp = useCallback(() => {
+    if(phase === 'result') {
+      setStandUpStat(true)
+      wsClient?.sendMessage(unsignEvent, {});
+    }
+  }, [phase])
+
+  useEffect(() => {
+    if(standUpStat && seatNumberZero == 0) {
+      setStandUpStat(false)
+      setBuyInStat(false)
+      setLastBet(0)
+      setLastBetRound(0)
+      setStatLastBet(false)
+      setUserBet(0)
+      setBalancePlayerGame(0)
+      setAutoBet(false)
+    }
+  }, [seatNumberZero, standUpStat])
 
   const openEmoji = useCallback(() => {
     if(statOpenEmoji && buyInStat) {
@@ -230,9 +291,26 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
     }
   }, [player1, player2, player3, player4, player5, player6, player7, player8, emojiData])
 
+  useEffect(() => {
+    if(dataPrepare) {
+      const result = dataPrepare?.find((d: any) => d.username == username);
+      if(result) {
+        if(result.seatNumber == 0) {
+          setPlayerInGame(false)
+        } else {
+          setPlayerInGame(true)
+        }
+      }
+    }
+  }, [dataPrepare, username])
+
   const gameInfoAction = useCallback(async function (data: any) {
     setInfo(data.players);
     let banker = data.banker;
+
+    if (data.phase === "prepare") {
+      setDataPrepare(data.players)
+    }
 
     setBanker(banker);
     const playerStates = [
@@ -247,6 +325,11 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
     ];
 
     playerStates.forEach((p, index) => {
+      const playerStandUp = data.players.find((d: any) => d.seatNumber === 0);
+      if (playerStandUp) {
+        setSeatNumberZero(playerStandUp.seatNumber)
+      }
+
       const player = data.players.find((d: any) => d.seatNumber === index + 1);
       if (player) {
         player.cards = [];
@@ -263,7 +346,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
         p(undefined);
       }
     });
-  }, []);
+  }, [username]);
 
   const metaAction = useCallback(async function (data: any) {
     setMinBet(data.min);
@@ -488,18 +571,18 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
               sendBet(Number(d))
             }
           } else {
-            if(phase === 'bet' && !statLastBet) {
+            if(phase === 'bet' && !statLastBet && playerInGame) {
               setModalBetting(true);
               setModalCardPhase(false)
             }
           }
         })
-      } else if(!statLastBet) {
+      } else if(!statLastBet && playerInGame) {
         setModalBetting(true);
         setModalCardPhase(false)
       }
     }
-  }, [phase, banker, username, autoBet, buyInStat, statLastBet, time, lastBet]);
+  }, [phase, banker, username, autoBet, buyInStat, statLastBet, time, lastBet, playerInGame]);
 
   useEffect(() => {
     if (phase === "setup" && banker !== username && balancePlayerGame != 0 && buyInStat) {
@@ -728,13 +811,13 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
       position: 'absolute',
       zIndex: 1,
       bottom: 65 + insets.top + insets.bottom,
-      right: 30,
+      right: phase == 'result' ? 30 + 34 + 10 : 30,
       width: 34,
       height: 34,
       alignItems: 'center',
       justifyContent: 'center'
     };
-  }, [insets]);
+  }, [insets, phase]);
 
   const constAutoBet: any = useMemo(() => {
     return {
@@ -851,7 +934,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
             )}
             {
               modalCardPhase ?
-              <CardWindow username = {username} closeOpenCardPhase={closeOpenCardPhase}></CardWindow>
+              <CardWindow username = {username} setModalCardPhase={setModalCardPhase}></CardWindow>
               :
               <></>
             }
@@ -1047,14 +1130,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player1C?.cards ? 
-                                    <Image source={images[player1C?.cards[0]]}style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => animationCard(card1)}
+                                      source={images[player1C?.cards[0]]}
+                                      style={[
+                                        {
+                                          opacity: card1,
+                                          transform: [
+                                            {
+                                              scale: card1.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player1C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player1C?.cards ? 
-                                    <Image source={images[player1C?.cards[2]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card1)}
+                                      source={images[player1C?.cards[2]]}
+                                      style={[
+                                        {
+                                          opacity: card1,
+                                          transform: [
+                                            {
+                                              scale: card1.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player1C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1063,14 +1184,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player1C?.cards ? 
-                                    <Image  source={images[player1C?.cards[1]]} style={ThreePic.cardImageSkp}/>
+                                     <Animated.Image
+                                        onLoad={() => onLoadCard(card1)}
+                                        source={images[player1C?.cards[1]]}
+                                        style={[
+                                          {
+                                            opacity: card1,
+                                            transform: [
+                                              {
+                                                scale: card1.interpolate({
+                                                  inputRange: [0, 1],
+                                                  outputRange: [0.4, 1],
+                                                })
+                                              },
+                                            ],
+                                          },
+                                          ThreePic.cardImage
+                                          // this.props.style,
+                                        ]}
+                                      />
+                                    // <Image source={images[player1C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player1C?.cards ? 
-                                    <Image  source={images[player1C?.cards[3]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card1)}
+                                      source={images[player1C?.cards[3]]}
+                                      style={[
+                                        {
+                                          opacity: card1,
+                                          transform: [
+                                            {
+                                              scale: card1.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player1C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1147,14 +1306,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player2C?.cards ? 
-                                    <Image source={images[player2C?.cards[0]]}style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => animationCard(card2)}
+                                      source={images[player2C?.cards[0]]}
+                                      style={[
+                                        {
+                                          opacity: card2,
+                                          transform: [
+                                            {
+                                              scale: card2.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player2C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player2C?.cards ? 
-                                    <Image source={images[player2C?.cards[2]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card2)}
+                                      source={images[player2C?.cards[2]]}
+                                      style={[
+                                        {
+                                          opacity: card2,
+                                          transform: [
+                                            {
+                                              scale: card2.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player2C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1163,14 +1360,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player2C?.cards ? 
-                                    <Image  source={images[player2C?.cards[1]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card2)}
+                                      source={images[player2C?.cards[1]]}
+                                      style={[
+                                        {
+                                          opacity: card2,
+                                          transform: [
+                                            {
+                                              scale: card2.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player2C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player2C?.cards ? 
-                                    <Image  source={images[player2C?.cards[3]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card2)}
+                                      source={images[player2C?.cards[3]]}
+                                      style={[
+                                        {
+                                          opacity: card2,
+                                          transform: [
+                                            {
+                                              scale: card2.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player2C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1269,14 +1504,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player3C?.cards ? 
-                                    <Image source={images[player3C?.cards[0]]}style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => animationCard(card3)}
+                                      source={images[player3C?.cards[0]]}
+                                      style={[
+                                        {
+                                          opacity: card3,
+                                          transform: [
+                                            {
+                                              scale: card3.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player3C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player3C?.cards ? 
-                                    <Image source={images[player3C?.cards[2]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card3)}
+                                      source={images[player3C?.cards[2]]}
+                                      style={[
+                                        {
+                                          opacity: card3,
+                                          transform: [
+                                            {
+                                              scale: card3.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player3C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1285,14 +1558,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player3C?.cards ? 
-                                    <Image  source={images[player3C?.cards[1]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card3)}
+                                      source={images[player3C?.cards[1]]}
+                                      style={[
+                                        {
+                                          opacity: card3,
+                                          transform: [
+                                            {
+                                              scale: card3.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player3C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player3C?.cards ? 
-                                    <Image  source={images[player3C?.cards[3]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card3)}
+                                      source={images[player3C?.cards[3]]}
+                                      style={[
+                                        {
+                                          opacity: card3,
+                                          transform: [
+                                            {
+                                              scale: card3.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player3C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1392,14 +1703,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player4C?.cards ? 
-                                    <Image source={images[player4C?.cards[0]]}style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => animationCard(card4)}
+                                      source={images[player4C?.cards[0]]}
+                                      style={[
+                                        {
+                                          opacity: card4,
+                                          transform: [
+                                            {
+                                              scale: card4.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player4C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player4C?.cards ? 
-                                    <Image source={images[player4C?.cards[2]]} style={ThreePic.cardImageSkp}/>
+                                  <Animated.Image
+                                    onLoad={() => onLoadCard(card4)}
+                                    source={images[player4C?.cards[2]]}
+                                    style={[
+                                      {
+                                        opacity: card4,
+                                        transform: [
+                                          {
+                                            scale: card4.interpolate({
+                                              inputRange: [0, 1],
+                                              outputRange: [0.4, 1],
+                                            })
+                                          },
+                                        ],
+                                      },
+                                      ThreePic.cardImage
+                                      // this.props.style,
+                                    ]}
+                                  />
+                                    // <Image source={images[player4C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1408,14 +1757,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player4C?.cards ? 
-                                    <Image  source={images[player4C?.cards[1]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card4)}
+                                      source={images[player4C?.cards[1]]}
+                                      style={[
+                                        {
+                                          opacity: card4,
+                                          transform: [
+                                            {
+                                              scale: card4.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player4C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player4C?.cards ? 
-                                    <Image  source={images[player4C?.cards[3]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card4)}
+                                      source={images[player4C?.cards[3]]}
+                                      style={[
+                                        {
+                                          opacity: card4,
+                                          transform: [
+                                            {
+                                              scale: card4.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player4C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1500,7 +1887,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       >
                         {
                           emojiPlayer5 != ""?
-                          <Image source={images[emojiPlayer5]} style={ThreePic.EmojiPlayer5}/>
+                          <Image source={images[emojiPlayer5]} style={{...ThreePic.EmojiPlayer5, top: banker == player5?.username ? -130 : -100}}/>
                           :
                           <></>
                         }
@@ -1514,19 +1901,57 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                             <></>
                           )}
                           <View
-                            style={{alignItems: "flex-end", zIndex: 5,height: 25.05, marginTop: banker != player5?.username ? -42.5 : -45.5, transform: [{translateX: -22}, {translateY: banker != player5?.username ? -30 : -60 }]}}>
+                            style={{alignItems: "flex-end", zIndex: 5,height: 25.05, marginTop: banker != player5?.username ? -46.5 : -49.5, transform: [{translateX: -22}, {translateY: banker != player5?.username ? -30 : -60 }]}}>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player5C?.cards ? 
-                                    <Image source={images[player5C?.cards[0]]}style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => animationCard(card5)}
+                                      source={images[player5C?.cards[0]]}
+                                      style={[
+                                        {
+                                          opacity: card5,
+                                          transform: [
+                                            {
+                                              scale: card5.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player5C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player5C?.cards ? 
-                                    <Image source={images[player5C?.cards[2]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card5)}
+                                      source={images[player5C?.cards[2]]}
+                                      style={[
+                                        {
+                                          opacity: card5,
+                                          transform: [
+                                            {
+                                              scale: card5.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player5C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1535,14 +1960,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player5C?.cards ? 
-                                    <Image  source={images[player5C?.cards[1]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card5)}
+                                      source={images[player5C?.cards[1]]}
+                                      style={[
+                                        {
+                                          opacity: card5,
+                                          transform: [
+                                            {
+                                              scale: card5.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player5C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player5C?.cards ? 
-                                    <Image  source={images[player5C?.cards[3]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card5)}
+                                      source={images[player5C?.cards[3]]}
+                                      style={[
+                                        {
+                                          opacity: card5,
+                                          transform: [
+                                            {
+                                              scale: card5.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player5C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1649,14 +2112,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player6C?.cards ? 
-                                    <Image source={images[player6C?.cards[0]]}style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => animationCard(card6)}
+                                      source={images[player6C?.cards[0]]}
+                                      style={[
+                                        {
+                                          opacity: card6,
+                                          transform: [
+                                            {
+                                              scale: card6.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player6C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player6C?.cards ? 
-                                    <Image source={images[player6C?.cards[2]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card6)}
+                                      source={images[player6C?.cards[2]]}
+                                      style={[
+                                        {
+                                          opacity: card6,
+                                          transform: [
+                                            {
+                                              scale: card6.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player6C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1665,14 +2166,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player6C?.cards ? 
-                                    <Image  source={images[player6C?.cards[1]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card6)}
+                                      source={images[player6C?.cards[1]]}
+                                      style={[
+                                        {
+                                          opacity: card6,
+                                          transform: [
+                                            {
+                                              scale: card6.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player6C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player6C?.cards ? 
-                                    <Image  source={images[player6C?.cards[3]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card6)}
+                                      source={images[player6C?.cards[3]]}
+                                      style={[
+                                        {
+                                          opacity: card6,
+                                          transform: [
+                                            {
+                                              scale: card6.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player6C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1779,14 +2318,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player7C?.cards ? 
-                                    <Image source={images[player7C?.cards[0]]}style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => animationCard(card7)}
+                                      source={images[player7C?.cards[0]]}
+                                      style={[
+                                        {
+                                          opacity: card7,
+                                          transform: [
+                                            {
+                                              scale: card7.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player7C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player7C?.cards ? 
-                                    <Image source={images[player7C?.cards[2]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card7)}
+                                      source={images[player7C?.cards[2]]}
+                                      style={[
+                                        {
+                                          opacity: card7,
+                                          transform: [
+                                            {
+                                              scale: card7.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player7C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1795,14 +2372,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player7C?.cards ? 
-                                    <Image  source={images[player7C?.cards[1]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card7)}
+                                      source={images[player7C?.cards[1]]}
+                                      style={[
+                                        {
+                                          opacity: card7,
+                                          transform: [
+                                            {
+                                              scale: card7.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player7C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player7C?.cards ? 
-                                    <Image  source={images[player7C?.cards[3]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card7)}
+                                      source={images[player7C?.cards[3]]}
+                                      style={[
+                                        {
+                                          opacity: card7,
+                                          transform: [
+                                            {
+                                              scale: card7.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player7C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1910,14 +2525,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
                                   {player8C?.cards ? 
-                                    <Image source={images[player8C?.cards[0]]}style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => animationCard(card8)}
+                                      source={images[player8C?.cards[0]]}
+                                      style={[
+                                        {
+                                          opacity: card8,
+                                          transform: [
+                                            {
+                                              scale: card8.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player8C?.cards[0]]}style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, transform: [{ rotate: "-15deg" }]}}>
                                   {player8C?.cards ? 
-                                    <Image source={images[player8C?.cards[2]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card8)}
+                                      source={images[player8C?.cards[2]]}
+                                      style={[
+                                        {
+                                          opacity: card8,
+                                          transform: [
+                                            {
+                                              scale: card8.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image source={images[player8C?.cards[2]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -1926,14 +2579,52 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                               <View style={{ flexDirection: "column"}}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "15deg" }]}}>
                                   {player8C?.cards ? 
-                                    <Image  source={images[player8C?.cards[1]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card8)}
+                                      source={images[player8C?.cards[1]]}
+                                      style={[
+                                        {
+                                          opacity: card8,
+                                          transform: [
+                                            {
+                                              scale: card8.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player8C?.cards[1]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
                                 </View>
                                 <View style={{ width: 17, height: 21, marginLeft: -1, transform: [{ rotate: "15deg" }]}}>
                                   {player8C?.cards ? 
-                                    <Image  source={images[player8C?.cards[3]]} style={ThreePic.cardImageSkp}/>
+                                    <Animated.Image
+                                      onLoad={() => onLoadCard(card8)}
+                                      source={images[player8C?.cards[3]]}
+                                      style={[
+                                        {
+                                          opacity: card8,
+                                          transform: [
+                                            {
+                                              scale: card8.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0.4, 1],
+                                              })
+                                            },
+                                          ],
+                                        },
+                                        ThreePic.cardImage
+                                        // this.props.style,
+                                      ]}
+                                    />
+                                    // <Image  source={images[player8C?.cards[3]]} style={ThreePic.cardImageSkp}/>
                                     :
                                     <></>
                                   }
@@ -2006,13 +2697,26 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
             </View>
             <View style={{...constEmojiButton}}>
               <View style={ThreePic.relative}>
+                <View style={{flexDirection: 'row'}}>
+                  {
+                    phase == 'result' ?
+                    <TouchableOpacity style={{}} onPress={() => standUp()}>
+                      <Image
+                        source={require("../../../../assets/images/others/standup.png")}
+                        style={[ThreePic.alertButton, {marginRight: 10}]}
+                      />
+                    </TouchableOpacity>
+                    :
+                    <></>
+                  }
+                  <TouchableOpacity style={{}} onPress={() => openEmoji()}>
+                    <Image
+                      source={require("../../../../assets/images/others/emoticon-btn.png")}
+                      style={ThreePic.alertButton}
+                    />
+                  </TouchableOpacity>
+                </View>
                 {/* <TouchableOpacity style={[ThreePic.absCenter, ThreePic.alertBtn]}> */}
-                <TouchableOpacity style={{}} onPress={() => openEmoji()}>
-                  <Image
-                    source={require("../../../../assets/images/others/emoticon-btn.png")}
-                    style={ThreePic.alertButton}
-                  />
-                </TouchableOpacity>
               </View>
             </View>
             {

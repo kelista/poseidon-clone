@@ -21,6 +21,8 @@ export class Backsound {
    */
   public async start() {
     this.setStatus("play")
+    // @ts-ignore
+    await this.audio.setPositionAsync(0)
     await this.audio.playAsync();
   }
 
@@ -45,10 +47,10 @@ export class Backsound {
   /**
    * create and load sound
    */
-  static async Factory( name: string, src: any) {
+  static async Factory( name: string, src: any, loop:boolean) {
     const newSound = new Backsound(name);
     await newSound.audio.loadAsync(src);
-    await newSound.setLoop();
+    await newSound.setLoop(loop);
     return newSound;
   }
 }

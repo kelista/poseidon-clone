@@ -27,7 +27,7 @@ const gamePhaseEvent = "game/phase";
 const setupEvent = "game/setup";
 
 export const CardWindow = (props:any, { close }: { close: Function }) => {
-  const { username, closeOpenCardPhase } = props
+  const { username, setModalCardPhase } = props
   const wsClient = useContext(WSContext);
   
   const [time, isCounting, startTimer] = useTimer();
@@ -54,11 +54,11 @@ export const CardWindow = (props:any, { close }: { close: Function }) => {
     setStatLastSend(false)
     setResultCheck(false)
     // setDeckCard(["KC", "QS", "JD", "9H"]);
-    setbaseDeckCard(["KC", "QS", "JD", "9H"])
-    setDeckCard1("KC")
-    setDeckCard2("QS")
-    setDeckCard3("JD")
-    setDeckCard4("9H")
+    // setbaseDeckCard(["KC", "QS", "JD", "9H"])
+    // setDeckCard1("KC")
+    // setDeckCard2("QS")
+    // setDeckCard3("JD")
+    // setDeckCard4("9H")
   }, [])
 
   useEffect(() => {
@@ -95,14 +95,14 @@ export const CardWindow = (props:any, { close }: { close: Function }) => {
         wsClient?.sendMessage(setupEvent, {cards: cardsParam});
         setStatLastSend(true)
         setTimeout(() => {
-          closeOpenCardPhase(false)
+          setModalCardPhase(false)
         }, 300);
       } else {
         if(resultCheck) {
           wsClient?.sendMessage(setupEvent, {cards: [activeCard1, activeCard2, activeCard3, activeCard4]});
           setStatLastSend(true)
           setTimeout(() => {
-            closeOpenCardPhase(false)
+            setModalCardPhase(false)
           }, 300);
         }
       }
@@ -208,7 +208,6 @@ export const CardWindow = (props:any, { close }: { close: Function }) => {
 
   const setCard1 = useCallback(() => {
     if(activeCard1 !== "" && activeCard !== "") {
-      console.log("if 1")
       baseDeckCard.map((d:any, index:number) => {
         if(d == activeCard1) {
           if(index == 0) {
@@ -234,7 +233,6 @@ export const CardWindow = (props:any, { close }: { close: Function }) => {
       setActiveCard1(activeCard)
       setActiveCard("")
     } else if(activeCard1 !== "") {
-      console.log("if 2")
       baseDeckCard.map((d:any, index:number) => {
         if(d == activeCard1) {
           if(index == 0) {
@@ -250,7 +248,6 @@ export const CardWindow = (props:any, { close }: { close: Function }) => {
       })
       setActiveCard1("")
     } else if(activeCard !== "") {
-      console.log("if 3")
       if(deckCard1 == activeCard) {
         setDeckCard1("")
       } else if(deckCard2 == activeCard) {
