@@ -180,7 +180,7 @@ export const RoundDetail = (props: any) => {
                               </View>
                             </View>
                           </View>
-                          <View style={{ paddingTop: 5.6 }}>
+                          <View style={{ paddingTop: 9 }}>
                             <View style={{flexDirection: 'column'}}>
                               <Text style={{ fontSize: 8, lineHeight: 9, color: "#FFFFFF" }}>
                                 {d.point[0]}

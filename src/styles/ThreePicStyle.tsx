@@ -628,6 +628,54 @@ export default StyleSheet.create({
     justifyContent: 'center', 
     left: '50%', 
     transform: [{ translateX: -38.5 }]
+  },
+  ThreePicCardGroup1: {
+    backgroundColor: 'red',
+    alignItems: "center", zIndex: 5, marginTop: 95, height: 25.05, transform: [{ translateX: -3 }]
+  },
+  ThreePicCardGroup2: {
+    alignItems: "flex-start",zIndex: 5, height: 25.05, marginTop: 42,transform: [{ translateX: -50.1 - 14 }]
+  },
+  ThreePicCardGroup3: {
+    alignItems: "flex-start",
+    zIndex: 5,
+    height: 25.05,
+    marginTop: 9,
+    transform: [{ translateX: -50.1 - 14 }],
+  },
+  ThreePicCardGroup4: {
+    alignItems: "flex-end",
+    zIndex: 5,
+    height: 25.05,
+    marginTop: -8,
+    transform: [{ translateX: -50.1 - 36}],
+  },
+  ThreePicCardGroup5: {
+    alignItems: "flex-end",
+    zIndex: 5,
+    height: 25.05,
+    transform: [{ translateX: -10 }]
+  },
+  ThreePicCardGroup6: {
+    alignItems: "flex-end",
+    zIndex: 5,
+    height: 25.05,
+    marginTop: -8,
+    transform: [{ translateX: +50.1 + 14 }],
+    backgroundColor: 'blue'
+  },
+  ThreePicCardGroup7: {
+    alignItems: "flex-end",
+    zIndex: 5,
+    height: 25.05,
+    marginTop: 9,
+    transform: [{ translateX: 50.1 + 14 }],
+  },
+  ThreePicCardGroup8: {
+    alignItems: "flex-end",
+    zIndex: 5,
+    height: 25.05,
+    marginTop: 42,
+    transform: [{ translateX: 50.1 + 14 }],
   }
-  
 });

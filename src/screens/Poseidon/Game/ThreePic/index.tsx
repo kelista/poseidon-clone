@@ -164,6 +164,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [playerInGame, setPlayerInGame] = useState(false);
   const [dataPrepare, setDataPrepare] = useState<any[]>([]);
 
+  const [arrayStylePin, setArrayStylePin] = useState<any[]>([]);
+  const [arrayStyleCard, setArrayStyleCard] = useState<any[]>([]);
+
+  const [jarakKursi, setJarakKursi] = useState(0)
+  const [swapAnimation, setSwapAnimation] = useState(false)
+
   // Animated
   const card1 = new Animated.Value(0)
   const card2 = new Animated.Value(0)
@@ -174,8 +180,27 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const card7 = new Animated.Value(0)
   const card8 = new Animated.Value(0)
 
+  const swapProfile = new Animated.Value(0)
+
   const onLoadCard = useCallback((data: any) => {
     Animated.timing(data, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }, [])
+
+
+  // const onSwapSeatShrink = useCallback(() => {
+  //   Animated.timing(swapProfile, {
+  //     toValue: 0,
+  //     duration: 250,
+  //     useNativeDriver: true,
+  //   }).start();
+  // }, [])
+  
+  const onSwapSeat = useCallback(() => {
+    Animated.timing(swapProfile, {
       toValue: 1,
       duration: 250,
       useNativeDriver: true,
@@ -226,6 +251,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     if(phase === 'result') {
       setStandUpStat(true)
       wsClient?.sendMessage(unsignEvent, {});
+      setJarakKursi(0)
     }
   }, [phase])
 
@@ -654,7 +680,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     if (!buyInStat) {
       if (balancePlayerGame == 0) {
         setSeatNumberNow(seatNumber);
+        jarakKursiChecker(seatNumber)
         setModalCheckIn(true);
+        setSwapAnimation(true)
+        setTimeout(() => {
+          setSwapAnimation(false)
+        }, 5000)
       } else {
         sendBuyIn(seatNumber);
       }
@@ -825,6 +856,56 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     };
     return style;
   }, [insets]);
+
+  const ThreePicCardGroup5: any = useMemo(() => {
+    const style = {
+      alignItems: "flex-end",
+      zIndex: 5,
+      height: 25.05,
+      marginTop: banker == player5?.username ? -78.5 : -45.5,
+      transform: [{ translateX: -10 }]
+    };
+    return style;
+  }, [banker, player5]);
+
+  // POV style
+  useEffect(() => {
+    setArrayStylePin([
+      ThreePic.ThreePicGamePin1, 
+      ThreePic.ThreePicGamePin2, 
+      ThreePic.ThreePicGamePin3,
+      ThreePic.ThreePicGamePin4,
+      ThreePic.ThreePicGamePin5,
+      ThreePic.ThreePicGamePin6,
+      ThreePic.ThreePicGamePin7,
+      ThreePic.ThreePicGamePin8
+    ])
+
+    setArrayStyleCard([
+      ThreePic.ThreePicCardGroup1, 
+      ThreePic.ThreePicCardGroup2, 
+      ThreePic.ThreePicCardGroup3,
+      ThreePic.ThreePicCardGroup4,
+      ThreePicCardGroup5,
+      ThreePic.ThreePicCardGroup6,
+      ThreePic.ThreePicCardGroup7,
+      ThreePic.ThreePicCardGroup8
+    ])
+  }, [])
+
+  const jarakKursiChecker = useCallback((seatNumber:any) => {
+    setTimeout(() => {
+      if(seatNumber <= 5) {
+        setJarakKursi(5 - seatNumber)
+      } else {
+        setJarakKursi(5 - seatNumber + 8)
+      }
+    }, 2000);
+  }, [])
+
+  useEffect(() => {
+    console.log("jarak kursi :", jarakKursi)
+  }, [jarakKursi])
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
@@ -1045,7 +1126,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                   />
                   <View style={{ ...ThreePicGamePinWrapper }}>
                     {!player1 ? (
-                      <View style={ThreePic.ThreePicGamePin1}>
+                      <View style={arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(1)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -1053,20 +1134,21 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         </TouchableOpacity>
                       </View>
                     ) : (
-                      <View style={[ThreePic.ThreePicGamePin1, ThreePic.SitTable]}>
+                      <View style={[arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)], ThreePic.SitTable]}>
                         {
                           emojiPlayer1 != ""?
                           <Image source={images[emojiPlayer1]} style={ThreePic.EmojiPlayer1}/>
                           :
                           <></>
                         }
-                        <View style={ThreePic.relative}>
+                        <View style={{...ThreePic.relative}}>
                           {banker == player1?.username ? (
                             <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
                           ) : (
                             <></>
                           )}
-                          <View style={{ alignItems: "center", zIndex: 5, marginTop: 95, height: 25.05,}}>
+                          <View style={arrayStyleCard[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
+                            <Text style={{backgroundColor: 'blue', color: 'white'}}>index : {(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)}</Text>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{ width: 17, height: 21, marginTop: 4.2, transform: [{ rotate: "-15deg" }]}}>
                                 {/* <Image source={require('../../../../assets/images/card/small/card_jack.png')}/> */}
@@ -1174,10 +1256,37 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          <Image
+                          {
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onSwapSeat()}
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={[
+                                {
+                                  opacity: swapProfile,
+                                  transform: [
+                                    {
+                                      scale: swapProfile.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [0.4, 1],
+                                      })
+                                    },
+                                  ],
+                                },
+                                ThreePic.player1
+                                // this.props.style,
+                              ]}
+                            />
+                            :
+                            <Image
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={ThreePic.player1}
+                            />
+                          }
+                          {/* <Image
                             source={require("../../../../assets/images/others/player1.png")}
                             style={ThreePic.player1}
-                          />
+                          /> */}
                           <View style={ThreePic.ProfileTable}>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.username}>
@@ -1194,7 +1303,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player2 ? (
-                      <View style={ThreePic.ThreePicGamePin2}>
+                      <View style={arrayStylePin[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(2)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -1202,20 +1311,21 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         </TouchableOpacity>
                       </View>
                     ) : (
-                      <View style={[ThreePic.ThreePicGamePin2, ThreePic.SitTable]}>
+                      <View style={[arrayStylePin[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)], ThreePic.SitTable]}>
                         {
                           emojiPlayer2 != ""?
                           <Image source={images[emojiPlayer2]} style={ThreePic.EmojiPlayer2}/>
                           :
                           <></>
                         }
-                        <View style={ThreePic.relative}>
+                        <View style={{...ThreePic.relative, backgroundColor: 'yellow'}}>
                           {banker == player2?.username ? (
                             <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
                           ) : (
                             <></>
                           )}
-                          <View style={{alignItems: "flex-start",zIndex: 5, height: 25.05, marginTop: 42,transform: [{ translateX: -50.1 - 14 }]}}>
+                          <View style={arrayStyleCard[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}>
+                          <Text style={{backgroundColor: 'blue', color: 'white'}}>index : {(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)}</Text>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{width: 17,height: 21,marginTop: 4.2,transform: [{ rotate: "-15deg" }]}}>
                                 {player2C?.cards ? 
@@ -1354,7 +1464,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player3 ? (
-                      <View style={ThreePic.ThreePicGamePin3}>
+                      <View style={arrayStylePin[(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(3)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -1363,7 +1473,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[ThreePic.ThreePicGamePin3, ThreePic.SitTable]}
+                        style={[arrayStylePin[(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)], ThreePic.SitTable]}
                       >
                         {
                           emojiPlayer3 != ""?
@@ -1371,7 +1481,8 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           :
                           <></>
                         }
-                        <View style={ThreePic.relative}>
+                        <Text style={{ backgroundColor: 'green'}}>Jarak kursi: {jarakKursi}</Text>
+                        <View style={{...ThreePic.relative, backgroundColor: 'yellow'}}>
                           {banker == player3?.username ? (
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
@@ -1381,14 +1492,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             <></>
                           )}
                           <View
-                            style={{
-                              alignItems: "flex-start",
-                              zIndex: 5,
-                              height: 25.05,
-                              marginTop: 9,
-                              transform: [{ translateX: -50.1 - 14 }],
-                            }}
+                            style={arrayStyleCard[(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)]}
                           >
+                             <Text style={{backgroundColor: 'blue', color: 'white'}}>index : {(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)}</Text>
                             <View style={{ flexDirection: "row" }}>
                               <View
                                 style={{
@@ -1557,7 +1663,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player4 ? (
-                      <View style={ThreePic.ThreePicGamePin4}>
+                      <View style={arrayStylePin[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)]}>
                         {/* <TouchableOpacity onPress={() => closeOpenCheckIn()}> */}
                         <TouchableOpacity onPress={() => sitHandler(4)}>
                           <Image
@@ -1567,7 +1673,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[ThreePic.ThreePicGamePin4, ThreePic.SitTable]}
+                        style={[arrayStylePin[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)], ThreePic.SitTable]}
                       >
                         {
                           emojiPlayer4 != ""?
@@ -1575,7 +1681,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           :
                           <></>
                         }
-                        <View style={ThreePic.relative}>
+                        <View style={{...ThreePic.relative, backgroundColor: 'yellow'}}>
                           {banker == player4?.username ? (
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
@@ -1585,14 +1691,9 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             <></>
                           )}
                           <View
-                            style={{
-                              alignItems: "flex-end",
-                              zIndex: 5,
-                              height: 25.05,
-                              marginTop: -8,
-                              transform: [{ translateX: -50.1 - 36}],
-                            }}
+                            style={arrayStyleCard[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)]}
                           >
+                             <Text style={{backgroundColor: 'blue', color: 'white'}}>index : {(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)}</Text>
                             <View style={{ flexDirection: "row" }}>
                               <View
                                 style={{
@@ -1761,7 +1862,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player5 ? (
-                      <View style={ThreePic.ThreePicGamePin5}>
+                      <View style={arrayStylePin[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)]}>
                         {/* <TouchableOpacity onPress={() => closeOpenBetting()}> */}
                         <TouchableOpacity onPress={() => sitHandler(5)}>
                           <Image
@@ -1772,7 +1873,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                     ) : (
                       <View
                         style={[
-                          ThreePic.ThreePicGamePin5,
+                          arrayStylePin[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)],
                           ThreePic.SitTableBtm,
                         ]}
                       >
@@ -1782,7 +1883,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           :
                           <></>
                         }
-                        <View style={ThreePic.relative}>
+                        <View style={{...ThreePic.relative, backgroundColor: 'yellow'}}>
                           {banker == player5?.username ? (
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
@@ -1792,13 +1893,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             <></>
                           )}
                           <View
-                            style={{
-                              alignItems: "flex-end",
-                              zIndex: 5,
-                              height: 25.05,
-                              marginTop: banker == player5?.username ? -70.5 : -45.5,
-                              transform: [{ translateX: -14 }],
-                            }}
+                            style={arrayStyleCard[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)]}
                           >
                             <View style={{ flexDirection: "row" }}>
                               <View
@@ -1968,7 +2063,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player6 ? (
-                      <View style={ThreePic.ThreePicGamePin6}>
+                      <View style={arrayStylePin[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(6)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -1977,7 +2072,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[ThreePic.ThreePicGamePin6, ThreePic.SitTable]}
+                        style={[arrayStylePin[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)], ThreePic.SitTable]}
                       >
                         {
                           emojiPlayer6 != ""?
@@ -1985,7 +2080,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           :
                           <></>
                         }
-                        <View style={ThreePic.relative}>
+                        <View style={{...ThreePic.relative, backgroundColor: 'yellow'}}>
                           {banker == player6?.username ? (
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
@@ -1995,13 +2090,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             <></>
                           )}
                           <View
-                            style={{
-                              alignItems: "flex-end",
-                              zIndex: 5,
-                              height: 25.05,
-                              marginTop: -8,
-                              transform: [{ translateX: +50.1 + 14 }],
-                            }}
+                            style={arrayStyleCard[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)]}
                           >
                             <View style={{ flexDirection: "row" }}>
                               <View
@@ -2167,7 +2256,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player7 ? (
-                      <View style={ThreePic.ThreePicGamePin7}>
+                      <View style={arrayStylePin[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(7)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -2176,7 +2265,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[ThreePic.ThreePicGamePin7, ThreePic.SitTable]}
+                        style={[arrayStylePin[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)], ThreePic.SitTable]}
                       >
                         {
                           emojiPlayer7 != ""?
@@ -2184,7 +2273,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           :
                           <></>
                         }
-                        <View style={ThreePic.relative}>
+                        <View style={{...ThreePic.relative, backgroundColor: 'yellow'}}>
                           {banker == player7?.username ? (
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
@@ -2194,13 +2283,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             <></>
                           )}
                           <View
-                            style={{
-                              alignItems: "flex-end",
-                              zIndex: 5,
-                              height: 25.05,
-                              marginTop: 9,
-                              transform: [{ translateX: 50.1 + 14 }],
-                            }}
+                            style={arrayStyleCard[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)]}
                           >
                             <View style={{ flexDirection: "row" }}>
                               <View
@@ -2370,7 +2453,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player8 ? (
-                      <View style={ThreePic.ThreePicGamePin8}>
+                      <View style={arrayStylePin[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(8)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -2379,7 +2462,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[ThreePic.ThreePicGamePin8, ThreePic.SitTable]}
+                        style={[arrayStylePin[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)], ThreePic.SitTable]}
                       >
                         {
                           emojiPlayer8 != ""?
@@ -2387,7 +2470,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           :
                           <></>
                         }
-                        <View style={ThreePic.relative}>
+                        <View style={{...ThreePic.relative, backgroundColor: 'yellow'}}>
                           {banker == player8?.username ? (
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
@@ -2397,13 +2480,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             <></>
                           )}
                           <View
-                            style={{
-                              alignItems: "flex-end",
-                              zIndex: 5,
-                              height: 25.05,
-                              marginTop: 42,
-                              transform: [{ translateX: 50.1 + 14 }],
-                            }}
+                            style={arrayStyleCard[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)]}
                           >
                             <View style={{ flexDirection: "row" }}>
                               <View
