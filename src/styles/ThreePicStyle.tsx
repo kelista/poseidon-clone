@@ -123,7 +123,7 @@ export default StyleSheet.create({
     top: 18,
     left: -38
   },
-  amountResultPlayer8Banker: {
+  amountResultPlayer5Banker: {
     top: 18,
     left: -81
   },
@@ -630,52 +630,72 @@ export default StyleSheet.create({
     transform: [{ translateX: -38.5 }]
   },
   ThreePicCardGroup1: {
-    backgroundColor: 'red',
-    alignItems: "center", zIndex: 5, marginTop: 95, height: 25.05, transform: [{ translateX: -3 }]
+    width: '100%',
+    alignItems: "center", 
+    position: 'absolute',
+    top: 95,
+    left: -3,
+    zIndex: 5, 
+    height: 25.05, 
+    // transform: [{ translateX: -3 }]
   },
   ThreePicCardGroup2: {
-    alignItems: "flex-start",zIndex: 5, height: 25.05, marginTop: 42,transform: [{ translateX: -50.1 - 14 }]
+    width: '100%',
+    alignItems: "center", 
+    position: 'absolute',
+    left: -50.1 - 14,
+    top: 42,
+    zIndex: 5, 
+    height: 25.05, 
+    // transform: [{ translateX: -50.1 - 14 }]
   },
   ThreePicCardGroup3: {
-    alignItems: "flex-start",
+    width: '100%',
+    position: 'absolute',
+    top: 9,
+    left: -50.1 - 14,
+    alignItems: "center",
     zIndex: 5,
     height: 25.05,
     marginTop: 9,
-    transform: [{ translateX: -50.1 - 14 }],
+    // transform: [{ translateX: -50.1 - 14 }],
   },
   ThreePicCardGroup4: {
-    alignItems: "flex-end",
+    width: '100%',
+    position: 'absolute',
+    top: -22,
+    left: -50.1 - 36,
+    alignItems: "center",
     zIndex: 5,
     height: 25.05,
-    marginTop: -8,
-    transform: [{ translateX: -50.1 - 36}],
-  },
-  ThreePicCardGroup5: {
-    alignItems: "flex-end",
-    zIndex: 5,
-    height: 25.05,
-    transform: [{ translateX: -10 }]
   },
   ThreePicCardGroup6: {
-    alignItems: "flex-end",
+    alignItems: "center",
+    width: '100%', 
+    position: 'absolute',
+    top: -22,
+    left: 50.1 + 30,
     zIndex: 5,
     height: 25.05,
-    marginTop: -8,
-    transform: [{ translateX: +50.1 + 14 }],
-    backgroundColor: 'blue'
+    // marginTop: -8,
+    // transform: [{ translateX: +50.1 + 14 }],
   },
   ThreePicCardGroup7: {
-    alignItems: "flex-end",
+    alignItems: "center",
+    width: '100%',
+    position: 'absolute',
+    top: 9,
+    left: 50.1 + 14,
     zIndex: 5,
-    height: 25.05,
-    marginTop: 9,
-    transform: [{ translateX: 50.1 + 14 }],
+    height: 25.05
   },
   ThreePicCardGroup8: {
-    alignItems: "flex-end",
+    alignItems: "center",
+    width: '100%',
+    position: 'absolute',
+    top: 42,
+    left: 50.1 + 14,
     zIndex: 5,
     height: 25.05,
-    marginTop: 42,
-    transform: [{ translateX: 50.1 + 14 }],
   }
 });
