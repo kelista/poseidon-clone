@@ -165,11 +165,21 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [dataPrepare, setDataPrepare] = useState<any[]>([]);
 
   const [arrayStylePin, setArrayStylePin] = useState<any[]>([]);
+  const [arrayStyleEmoji, setArrayStyleEmoji] = useState<any[]>([]);
   const [arrayStyleCard, setArrayStyleCard] = useState<any[]>([]);
   const [arrayStyleResult, setArrayStyleResult] = useState<any[]>([]);
 
   const [jarakKursi, setJarakKursi] = useState(0)
   const [swapAnimation, setSwapAnimation] = useState(false)
+
+  const [player1Username, setPlayer1Username] = useState("")
+  const [player2Username, setPlayer2Username] = useState("")
+  const [player3Username, setPlayer3Username] = useState("")
+  const [player4Username, setPlayer4Username] = useState("")
+  const [player5Username, setPlayer5Username] = useState("")
+  const [player6Username, setPlayer6Username] = useState("")
+  const [player7Username, setPlayer7Username] = useState("")
+  const [player8Username, setPlayer8Username] = useState("")
 
   // Animated
   const card1 = new Animated.Value(0)
@@ -681,12 +691,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     if (!buyInStat) {
       if (balancePlayerGame == 0) {
         setSeatNumberNow(seatNumber);
-        jarakKursiChecker(seatNumber)
         setModalCheckIn(true);
-        setSwapAnimation(true)
-        setTimeout(() => {
-          setSwapAnimation(false)
-        }, 5000)
+        // setSwapAnimation(true)
+        // setTimeout(() => {
+        //   setSwapAnimation(false)
+        // }, 5000)
       } else {
         sendBuyIn(seatNumber);
       }
@@ -883,20 +892,50 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
     }
     return style;
   }, []);
+
+  const EmojiPlayer5: any = useMemo(() => {
+    let style = {
+      width: 120, 
+      height: 120, 
+      position: 'absolute', 
+      left: '50%', 
+      zIndex: 6,
+      transform: [{
+        translateX: -60
+      }],
+      top: -100
+    }
+    return style;
+  }, []);
+
+  const EmojiPlayer5Banker: any = useMemo(() => {
+    let style = {
+      width: 120, 
+      height: 120, 
+      position: 'absolute', 
+      left: '50%', 
+      zIndex: 6,
+      transform: [{
+        translateX: -60
+      }],
+      top: -130
+    }
+    return style;
+  }, []);
   
   // POV style
   useEffect(() => {
     setArrayStylePin([
-      ThreePic.ThreePicGamePin1, 
-      ThreePic.ThreePicGamePin2, 
-      ThreePic.ThreePicGamePin3,
-      ThreePic.ThreePicGamePin4,
-      ThreePic.ThreePicGamePin5,
-      ThreePic.ThreePicGamePin6,
-      ThreePic.ThreePicGamePin7,
-      ThreePic.ThreePicGamePin8
+      player1Username != "" ? [ThreePic.ThreePicGamePin1, ThreePic.SitTable] : ThreePic.ThreePicGamePin1, 
+      player2Username != "" ? [ThreePic.ThreePicGamePin2, ThreePic.SitTable] : ThreePic.ThreePicGamePin2, 
+      player3Username != "" ? [ThreePic.ThreePicGamePin3, ThreePic.SitTable] : ThreePic.ThreePicGamePin3, 
+      player4Username != "" ? [ThreePic.ThreePicGamePin4, ThreePic.SitTable] : ThreePic.ThreePicGamePin4, 
+      player5Username != "" ? [ThreePic.ThreePicGamePin5, ThreePic.SitTableBtm] : ThreePic.ThreePicGamePin5, 
+      player6Username != "" ? [ThreePic.ThreePicGamePin6, ThreePic.SitTable] : ThreePic.ThreePicGamePin6, 
+      player7Username != "" ? [ThreePic.ThreePicGamePin7, ThreePic.SitTable] : ThreePic.ThreePicGamePin7, 
+      player8Username != "" ? [ThreePic.ThreePicGamePin8, ThreePic.SitTable] : ThreePic.ThreePicGamePin8, 
     ])
-  }, [])
+  }, [player1Username, player2Username, player3Username, player4Username, player5Username, player6Username, player7Username, player8Username])
 
   useEffect(() => {
     setArrayStyleCard([
@@ -909,29 +948,40 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       ThreePic.ThreePicCardGroup7,
       ThreePic.ThreePicCardGroup8
     ])
+
+    setArrayStyleEmoji([
+      ThreePic.EmojiPlayer1, 
+      ThreePic.EmojiPlayer2, 
+      ThreePic.EmojiPlayer3, 
+      ThreePic.EmojiPlayer4, 
+      banker == username ? EmojiPlayer5Banker : EmojiPlayer5, 
+      ThreePic.EmojiPlayer6, 
+      ThreePic.EmojiPlayer7, 
+      ThreePic.EmojiPlayer8, 
+    ])
   }, [banker, username])
 
   useEffect(() => {
     setArrayStyleResult([
-      // [ThreePic.amountResultPlayer1, banker == player1?.username ? ThreePic.amountResultPlayer1Banker: {}], 
-      // [ThreePic.amountResult, banker == player2?.username ? ThreePic.amountResultBanker: {}], 
-      // [ThreePic.amountResult, banker == player3?.username ? ThreePic.amountResultBanker: {}], 
-      // [ThreePic.amountResult, banker == player4?.username ? ThreePic.amountResultBanker: {}], 
-      // [ThreePic.amountResultPlayer5, banker == player5?.username || banker == username ? ThreePic.amountResultPlayer5Banker: {}], 
-      // [ThreePic.amountResult, banker == player6?.username ? ThreePic.amountResultBanker: {}], 
-      // [ThreePic.amountResult, banker == player7?.username ? ThreePic.amountResultBanker: {}], 
-      // [ThreePic.amountResult, banker == player8?.username ? ThreePic.amountResultBanker: {}], 
+      [ThreePic.amountResultPlayer1, banker == player1Username ? ThreePic.amountResultPlayer1Banker: {}], 
+      [ThreePic.amountResult, banker == player2Username ? ThreePic.amountResultBanker: {}], 
+      [ThreePic.amountResult, banker == player3Username ? ThreePic.amountResultBanker: {}], 
+      [ThreePic.amountResult, banker == player4Username ? ThreePic.amountResultBanker: {}], 
+      [ThreePic.amountResultPlayer5, banker == player5Username ? ThreePic.amountResultPlayer5Banker: {}], 
+      [ThreePic.amountResult, banker == player6Username ? ThreePic.amountResultBanker: {}], 
+      [ThreePic.amountResult, banker == player7Username ? ThreePic.amountResultBanker: {}], 
+      [ThreePic.amountResult, banker == player8Username ? ThreePic.amountResultBanker: {}], 
 
-      [ThreePic.amountResultPlayer1], 
-      [ThreePic.amountResult], 
-      [ThreePic.amountResult], 
-      [ThreePic.amountResult], 
-      [ThreePic.amountResultPlayer5], 
-      [ThreePic.amountResult], 
-      [ThreePic.amountResult], 
-      [ThreePic.amountResult], 
+      // [ThreePic.amountResultPlayer1], 
+      // [ThreePic.amountResult], 
+      // [ThreePic.amountResult], 
+      // [ThreePic.amountResult], 
+      // [ThreePic.amountResultPlayer5], 
+      // [ThreePic.amountResult], 
+      // [ThreePic.amountResult], 
+      // [ThreePic.amountResult], 
     ])
-  }, [player1, player2, player3, player4, player5, player6, player7, player8, banker, username])
+  }, [player1Username, player2Username, player3Username, player4Username, player5Username, player6Username, player7Username, player8Username, banker, username])
 
   const jarakKursiChecker = useCallback((seatNumber:any) => {
     setTimeout(() => {
@@ -940,8 +990,227 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       } else {
         setJarakKursi(5 - seatNumber + 8)
       }
-    }, 2000);
+    }, 500);
   }, [])
+
+  const resetPlayerUsername = useCallback(() => {
+    setPlayer1Username("")
+    setPlayer2Username("")
+    setPlayer3Username("")
+    setPlayer4Username("")
+    setPlayer5Username("")
+    setPlayer6Username("")
+    setPlayer7Username("")
+    setPlayer8Username("")
+  }, [])
+
+  useEffect(() => {
+    resetPlayerUsername()
+    if(player1) {
+      let checker = 0
+      if((1+jarakKursi) < 8) {
+        checker = 1 + jarakKursi
+      } else {
+        checker = (1 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player1.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player1.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player1.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player1.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player1.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player1.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player1.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player1.username)
+      }
+    }  
+    if(player2) {
+      let checker = 0
+      if((2+jarakKursi) < 8) {
+        checker = 2 + jarakKursi
+      } else {
+        checker = (2 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player2.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player2.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player2.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player2.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player2.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player2.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player2.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player2.username)
+      }
+    }  
+    if(player3) {
+      let checker = 0
+      if((3+jarakKursi) < 8) {
+        checker = 3 + jarakKursi
+      } else {
+        checker = (3 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player3.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player3.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player3.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player3.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player3.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player3.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player3.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player3.username)
+      }
+    }  
+    if(player4) {
+      let checker = 0
+      if((4+jarakKursi) < 8) {
+        checker = 4 + jarakKursi
+      } else {
+        checker = (4 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player4.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player4.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player4.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player4.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player4.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player4.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player4.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player4.username)
+      }
+    }  
+    if(player5) {
+      let checker = 0
+      if((5+jarakKursi) < 8) {
+        checker = 5 + jarakKursi
+      } else {
+        checker = (5 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player5.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player5.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player5.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player5.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player5.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player5.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player5.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player5.username)
+      }
+    } 
+    if(player6) {
+      let checker = 0
+      if((6+jarakKursi) < 8) {
+        checker = 6 + jarakKursi
+      } else {
+        checker = (6 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player6.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player6.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player6.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player6.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player6.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player6.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player6.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player6.username)
+      }
+    } 
+    if(player7) {
+      let checker = 0
+      if((7+jarakKursi) < 8) {
+        checker = 7 + jarakKursi
+      } else {
+        checker = (7 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player7.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player7.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player7.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player7.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player7.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player7.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player7.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player7.username)
+      }
+    } 
+    if(player8) {
+      let checker = 0
+      if((8+jarakKursi) < 8) {
+        checker = 8 + jarakKursi
+      } else {
+        checker = (8 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player8.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player8.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player8.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player8.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player8.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player8.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player8.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player8.username)
+      }
+    }
+  }, [player1, player2, player3, player4, player5, player6, player7, player8, jarakKursi])
+
+  const rotateSeat = useCallback(() => {
+    jarakKursiChecker(seatNumberNow)
+  }, [seatNumberNow])
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
@@ -975,8 +1244,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
               <></>
             }
             <StatusBar hidden />
-            {/* disini bill */}
-            {/* oke kalem ya */}
             {modalRound ? <RoundDetail pageHistory={pageHistory} setPageHistory={setPageHistory}></RoundDetail> : <></>}
             {modalLive ? (
               <LiveScore result={result} info={info}></LiveScore>
@@ -994,6 +1261,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                 game={'threepic'}
                 // bankerPool={bankerPool}
                 bankerPool={bankerLimit}
+                rotateSeat={rotateSeat}
               />
             ) : (
               <></>
@@ -1170,10 +1438,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         </TouchableOpacity>
                       </View>
                     ) : (
-                      <View style={[arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)], ThreePic.SitTable]}>
+                      <View style={arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
                         {
                           emojiPlayer1 != ""?
-                          <Image source={images[emojiPlayer1]} style={ThreePic.EmojiPlayer1}/>
+                          <Image source={images[emojiPlayer1]} style={arrayStyleEmoji[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}/>
                           :
                           <></>
                         }
@@ -1346,10 +1614,10 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         </TouchableOpacity>
                       </View>
                     ) : (
-                      <View style={[arrayStylePin[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)], ThreePic.SitTable]}>
+                      <View style={arrayStylePin[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}>
                         {
                           emojiPlayer2 != ""?
-                          <Image source={images[emojiPlayer2]} style={ThreePic.EmojiPlayer2}/>
+                          <Image source={images[emojiPlayer2]} style={arrayStyleEmoji[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}/>
                           :
                           <></>
                         }
@@ -1502,11 +1770,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[arrayStylePin[(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)], ThreePic.SitTable]}
+                        style={arrayStylePin[(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer3 != ""?
-                          <Image source={images[emojiPlayer3]} style={ThreePic.EmojiPlayer3}/>
+                          <Image source={images[emojiPlayer3]} style={arrayStyleEmoji[(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)]}/>
                           :
                           <></>
                         }
@@ -1695,11 +1963,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[arrayStylePin[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)], ThreePic.SitTable]}
+                        style={arrayStylePin[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer4 != ""?
-                          <Image source={images[emojiPlayer4]} style={ThreePic.EmojiPlayer4}/>
+                          <Image source={images[emojiPlayer4]} style={arrayStyleEmoji[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)]}/>
                           :
                           <></>
                         }
@@ -1888,14 +2156,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[
-                          arrayStylePin[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)],
-                          ThreePic.SitTableBtm,
-                        ]}
+                        style={arrayStylePin[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer5 != ""?
-                          <Image source={images[emojiPlayer5]} style={{...ThreePic.EmojiPlayer5, top: banker == player5?.username ? -130 : -100 }}/>
+                          <Image source={images[emojiPlayer5]} style={arrayStyleEmoji[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)]}/>
                           :
                           <></>
                         }
@@ -2083,11 +2348,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[arrayStylePin[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)], ThreePic.SitTable]}
+                        style={arrayStylePin[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer6 != ""?
-                          <Image source={images[emojiPlayer6]} style={ThreePic.EmojiPlayer6}/>
+                          <Image source={images[emojiPlayer6]} style={arrayStyleEmoji[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)]}/>
                           :
                           <></>
                         }
@@ -2271,11 +2536,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[arrayStylePin[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)], ThreePic.SitTable]}
+                        style={arrayStylePin[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer7 != ""?
-                          <Image source={images[emojiPlayer7]} style={ThreePic.EmojiPlayer7}/>
+                          <Image source={images[emojiPlayer7]} style={arrayStyleEmoji[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)]}/>
                           :
                           <></>
                         }
@@ -2463,11 +2728,11 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[arrayStylePin[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)], ThreePic.SitTable]}
+                        style={arrayStylePin[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer8 != ""?
-                          <Image source={images[emojiPlayer8]} style={ThreePic.EmojiPlayer8}/>
+                          <Image source={images[emojiPlayer8]} style={arrayStyleEmoji[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)]}/>
                           :
                           <></>
                         }

@@ -168,6 +168,21 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
 
   const [dataPrepare, setDataPrepare] = useState<any[]>([]);
 
+  const [jarakKursi, setJarakKursi] = useState(0)
+  const [arrayStylePin, setArrayStylePin] = useState<any[]>([]);
+  const [arrayStyleEmoji, setArrayStyleEmoji] = useState<any[]>([]);
+  const [arrayStyleCard, setArrayStyleCard] = useState<any[]>([]);
+  const [arrayStyleResult, setArrayStyleResult] = useState<any[]>([]);
+
+  const [player1Username, setPlayer1Username] = useState("")
+  const [player2Username, setPlayer2Username] = useState("")
+  const [player3Username, setPlayer3Username] = useState("")
+  const [player4Username, setPlayer4Username] = useState("")
+  const [player5Username, setPlayer5Username] = useState("")
+  const [player6Username, setPlayer6Username] = useState("")
+  const [player7Username, setPlayer7Username] = useState("")
+  const [player8Username, setPlayer8Username] = useState("")
+
   // const [time, isCounting, startTimer] = useTimer();
 
   // Animated
@@ -231,6 +246,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
       setStandUpStat(true)
       wsClient?.sendMessage(unsignEvent, {});
     }
+    setJarakKursi(0)
   }, [phase])
 
   useEffect(() => {
@@ -877,6 +893,273 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
     return style;
   }, [insets]);
 
+   // POV style
+   useEffect(() => {
+    setArrayStylePin([
+      player1Username != "" ? [ThreePic.ThreePicGamePin1, ThreePic.SitTable] : ThreePic.ThreePicGamePin1, 
+      player2Username != "" ? [ThreePic.ThreePicGamePin2, ThreePic.SitTable] : ThreePic.ThreePicGamePin2, 
+      player3Username != "" ? [ThreePic.ThreePicGamePin3, ThreePic.SitTable] : ThreePic.ThreePicGamePin3, 
+      player4Username != "" ? [ThreePic.ThreePicGamePin4, ThreePic.SitTable] : ThreePic.ThreePicGamePin4, 
+      player5Username != "" ? [ThreePic.ThreePicGamePin5, ThreePic.SitTableBtm] : ThreePic.ThreePicGamePin5, 
+      player6Username != "" ? [ThreePic.ThreePicGamePin6, ThreePic.SitTable] : ThreePic.ThreePicGamePin6, 
+      player7Username != "" ? [ThreePic.ThreePicGamePin7, ThreePic.SitTable] : ThreePic.ThreePicGamePin7, 
+      player8Username != "" ? [ThreePic.ThreePicGamePin8, ThreePic.SitTable] : ThreePic.ThreePicGamePin8, 
+    ])
+  }, [player1Username, player2Username, player3Username, player4Username, player5Username, player6Username, player7Username, player8Username])
+
+  useEffect(() => {
+    setArrayStyleCard([
+      ThreePic.ThreePicCardGroup1, 
+      ThreePic.ThreePicCardGroup2, 
+      ThreePic.ThreePicCardGroup3,
+      ThreePic.ThreePicCardGroup4,
+      banker == username ? ThreePicCardGroup5Banker : ThreePicCardGroup5,
+      ThreePic.ThreePicCardGroup6,
+      ThreePic.ThreePicCardGroup7,
+      ThreePic.ThreePicCardGroup8
+    ])
+
+    setArrayStyleEmoji([
+      ThreePic.EmojiPlayer1, 
+      ThreePic.EmojiPlayer2, 
+      ThreePic.EmojiPlayer3, 
+      ThreePic.EmojiPlayer4, 
+      banker == username ? EmojiPlayer5Banker : EmojiPlayer5, 
+      ThreePic.EmojiPlayer6, 
+      ThreePic.EmojiPlayer7, 
+      ThreePic.EmojiPlayer8, 
+    ])
+  }, [banker, username])
+
+  const jarakKursiChecker = useCallback((seatNumber:any) => {
+    setTimeout(() => {
+      if(seatNumber <= 5) {
+        setJarakKursi(5 - seatNumber)
+      } else {
+        setJarakKursi(5 - seatNumber + 8)
+      }
+    }, 500);
+  }, [])
+
+  const resetPlayerUsername = useCallback(() => {
+    setPlayer1Username("")
+    setPlayer2Username("")
+    setPlayer3Username("")
+    setPlayer4Username("")
+    setPlayer5Username("")
+    setPlayer6Username("")
+    setPlayer7Username("")
+    setPlayer8Username("")
+  }, [])
+
+  const rotateSeat = useCallback(() => {
+    jarakKursiChecker(seatNumberNow)
+  }, [seatNumberNow])
+
+  useEffect(() => {
+    resetPlayerUsername()
+    if(player1) {
+      let checker = 0
+      if((1+jarakKursi) < 8) {
+        checker = 1 + jarakKursi
+      } else {
+        checker = (1 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player1.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player1.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player1.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player1.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player1.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player1.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player1.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player1.username)
+      }
+    }  
+    if(player2) {
+      let checker = 0
+      if((2+jarakKursi) < 8) {
+        checker = 2 + jarakKursi
+      } else {
+        checker = (2 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player2.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player2.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player2.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player2.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player2.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player2.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player2.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player2.username)
+      }
+    }  
+    if(player3) {
+      let checker = 0
+      if((3+jarakKursi) < 8) {
+        checker = 3 + jarakKursi
+      } else {
+        checker = (3 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player3.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player3.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player3.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player3.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player3.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player3.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player3.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player3.username)
+      }
+    }  
+    if(player4) {
+      let checker = 0
+      if((4+jarakKursi) < 8) {
+        checker = 4 + jarakKursi
+      } else {
+        checker = (4 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player4.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player4.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player4.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player4.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player4.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player4.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player4.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player4.username)
+      }
+    }  
+    if(player5) {
+      let checker = 0
+      if((5+jarakKursi) < 8) {
+        checker = 5 + jarakKursi
+      } else {
+        checker = (5 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player5.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player5.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player5.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player5.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player5.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player5.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player5.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player5.username)
+      }
+    } 
+    if(player6) {
+      let checker = 0
+      if((6+jarakKursi) < 8) {
+        checker = 6 + jarakKursi
+      } else {
+        checker = (6 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player6.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player6.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player6.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player6.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player6.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player6.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player6.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player6.username)
+      }
+    } 
+    if(player7) {
+      let checker = 0
+      if((7+jarakKursi) < 8) {
+        checker = 7 + jarakKursi
+      } else {
+        checker = (7 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player7.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player7.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player7.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player7.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player7.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player7.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player7.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player7.username)
+      }
+    } 
+    if(player8) {
+      let checker = 0
+      if((8+jarakKursi) < 8) {
+        checker = 8 + jarakKursi
+      } else {
+        checker = (8 + jarakKursi) - 8
+      }
+      if(checker == 1) {
+        setPlayer1Username(player8.username)
+      } else if(checker == 2) {
+        setPlayer2Username(player8.username)
+      } else if(checker == 3) {
+        setPlayer3Username(player8.username)
+      } else if(checker == 4) {
+        setPlayer4Username(player8.username)
+      } else if(checker == 5) {
+        setPlayer5Username(player8.username)
+      } else if(checker == 6) {
+        setPlayer6Username(player8.username)
+      } else if(checker == 7) {
+        setPlayer7Username(player8.username)
+      } else if(checker == 8) {
+        setPlayer8Username(player8.username)
+      }
+    }
+  }, [player1, player2, player3, player4, player5, player6, player7, player8, jarakKursi])
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "black" }}>
       <StatusBar barStyle="light-content" />
@@ -928,6 +1211,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                 game={'skp'}
                 // bankerPool={bankerPool}
                 bankerPool={bankerLimit}
+                rotateSeat={rotateSeat}
               />
             ) : (
               <></>
@@ -1102,8 +1386,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                   />
                   <View style={{ ...ThreePicGamePinWrapper }}>
                     {!player1 ? (
-                      <View style={ThreePic.ThreePicGamePin1}>
-
+                      <View style={arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(1)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -1111,7 +1394,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                         </TouchableOpacity>
                       </View>
                     ) : (
-                      <View style={[ThreePic.ThreePicGamePin1, ThreePic.SitTable]}>
+                      <View style={arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
                         <View style={ThreePic.relative}>
                           {
                             emojiPlayer1 != ""?
@@ -1125,7 +1408,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          <View style={{ alignItems: "center", zIndex: 5, marginTop: 95, height: 25.05,}}>
+                          <View style={arrayStyleCard[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
                             <View style={{ flexDirection: "row" }}>
                               <View style={{ flexDirection: "column" }}>
                                 <View style={{ width: 17, height: 21, marginTop: 2.2, transform: [{ rotate: "-15deg" }]}}>
@@ -1280,7 +1563,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player2 ? (
-                      <View style={ThreePic.ThreePicGamePin2}>
+                      <View style={arrayStylePin[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(2)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -1288,7 +1571,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                         </TouchableOpacity>
                       </View>
                     ) : (
-                      <View style={[ThreePic.ThreePicGamePin2, ThreePic.SitTable]}>
+                      <View style={arrayStylePin[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}>
                         {
                           emojiPlayer2 != ""?
                           <Image source={images[emojiPlayer2]} style={ThreePic.EmojiPlayer2}/>
@@ -1473,7 +1756,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player3 ? (
-                      <View style={ThreePic.ThreePicGamePin3}>
+                      <View style={arrayStylePin[(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(3)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -1482,7 +1765,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[ThreePic.ThreePicGamePin3, ThreePic.SitTable]}
+                        style={arrayStylePin[(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer3 != ""?
@@ -1671,7 +1954,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player4 ? (
-                      <View style={ThreePic.ThreePicGamePin4}>
+                      <View style={arrayStylePin[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)]}>
                         {/* <TouchableOpacity onPress={() => closeOpenCheckIn()}> */}
                         <TouchableOpacity onPress={() => sitHandler(4)}>
                           <Image
@@ -1681,7 +1964,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[ThreePic.ThreePicGamePin4, ThreePic.SitTable]}
+                        style={arrayStylePin[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer4 != ""?
@@ -1870,7 +2153,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player5 ? (
-                      <View style={ThreePic.ThreePicGamePin5}>
+                      <View style={arrayStylePin[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)]}>
                         {/* <TouchableOpacity onPress={() => closeOpenBetting()}> */}
                         <TouchableOpacity onPress={() => sitHandler(5)}>
                           <Image
@@ -1880,10 +2163,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[
-                          ThreePic.ThreePicGamePin5,
-                          ThreePic.SitTableBtm,
-                        ]}
+                        style={arrayStylePin[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer5 != ""?
@@ -2073,7 +2353,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player6 ? (
-                      <View style={ThreePic.ThreePicGamePin6}>
+                      <View style={arrayStylePin[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(6)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -2082,7 +2362,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[ThreePic.ThreePicGamePin6, ThreePic.SitTable]}
+                        style={arrayStylePin[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer6 != ""?
@@ -2279,7 +2559,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player7 ? (
-                      <View style={ThreePic.ThreePicGamePin7}>
+                      <View style={arrayStylePin[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)]}>
                         <TouchableOpacity onPress={() => sitHandler(7)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
@@ -2288,7 +2568,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[ThreePic.ThreePicGamePin7, ThreePic.SitTable]}
+                        style={arrayStylePin[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer7 != ""?
@@ -2485,7 +2765,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player8 ? (
-                      <View style={ThreePic.ThreePicGamePin8}>
+                      <View style={arrayStylePin[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)]}>
 
                         <TouchableOpacity onPress={() => sitHandler(8)}>
                           <Image
@@ -2495,7 +2775,7 @@ export const PoseidonSkpGame: NavigationScreenComponent<any, any> = (
                       </View>
                     ) : (
                       <View
-                        style={[ThreePic.ThreePicGamePin8, ThreePic.SitTable]}
+                        style={arrayStylePin[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)]}
                       >
                         {
                           emojiPlayer8 != ""?

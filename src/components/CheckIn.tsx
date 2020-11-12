@@ -21,7 +21,8 @@ export const CheckInWindow = (props: any) => {
     bankerPool,
     minBet,
     maxBet,
-    game
+    game,
+    rotateSeat
 	} = props; 
 	const [sliderValue, setsliderValue] = useState(0);
 	
@@ -31,7 +32,8 @@ export const CheckInWindow = (props: any) => {
 
 	const buyIn = () => {
 		setBalancePlayerGame(sliderValue);
-		setModalCheckIn(false)
+    setModalCheckIn(false)
+    rotateSeat()
 	}
 	
 	const separatorBalance = (chip: number) => {

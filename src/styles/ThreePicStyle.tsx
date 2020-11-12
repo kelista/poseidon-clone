@@ -501,16 +501,6 @@ export default StyleSheet.create({
     left: -95, 
     zIndex: 6
   },
-  EmojiPlayer5: {
-    width: 120, 
-    height: 120, 
-    position: 'absolute', 
-    left: '50%', 
-    zIndex: 6,
-    transform: [{
-      translateX: -60
-    }],
-  },
   EmojiPlayer6: {
     width: 120, 
     height: 120, 
@@ -556,7 +546,7 @@ export default StyleSheet.create({
     transform: [{ translateX: -38.5 }],
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 0,
+    marginTop: 0
   },
   ThreePicGamePin8: {
     position: 'absolute', 
@@ -564,8 +554,8 @@ export default StyleSheet.create({
     height: 89,
     top: '12%',
     left: '0%', 
-    marginTop: 0,
     alignItems: 'center',
+    marginTop: 0,
     justifyContent: 'center',
   },
   ThreePicGamePin2: {
@@ -584,8 +574,8 @@ export default StyleSheet.create({
     height: 89,
     top: '37%',
     left: '0%',
-    marginTop: 0,
     alignItems: 'center',
+    marginTop: 0,
     justifyContent: 'center',  
   },
   ThreePicGamePin3: {
@@ -626,6 +616,7 @@ export default StyleSheet.create({
     marginBottom: 0,
     alignItems: 'center',
     justifyContent: 'center', 
+    marginTop: 0,
     left: '50%', 
     transform: [{ translateX: -38.5 }]
   },
@@ -657,13 +648,12 @@ export default StyleSheet.create({
     alignItems: "center",
     zIndex: 5,
     height: 25.05,
-    marginTop: 9,
     // transform: [{ translateX: -50.1 - 14 }],
   },
   ThreePicCardGroup4: {
     width: '100%',
     position: 'absolute',
-    top: -22,
+    top: -34,
     left: -50.1 - 36,
     alignItems: "center",
     zIndex: 5,
@@ -673,7 +663,7 @@ export default StyleSheet.create({
     alignItems: "center",
     width: '100%', 
     position: 'absolute',
-    top: -22,
+    top: -34,
     left: 50.1 + 30,
     zIndex: 5,
     height: 25.05,
