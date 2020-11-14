@@ -191,9 +191,17 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const card7 = new Animated.Value(0)
   const card8 = new Animated.Value(0)
 
-  const swapProfile = new Animated.Value(0)
+  const swapSeat = new Animated.Value(0)
 
   const onLoadCard = useCallback((data: any) => {
+    Animated.timing(data, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }, [])
+
+  const onLoadSwap = useCallback((data: any) => {
     Animated.timing(data, {
       toValue: 1,
       duration: 250,
@@ -209,14 +217,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   //     useNativeDriver: true,
   //   }).start();
   // }, [])
-  
-  const onSwapSeat = useCallback(() => {
-    Animated.timing(swapProfile, {
-      toValue: 1,
-      duration: 250,
-      useNativeDriver: true,
-    }).start();
-  }, [])
 
   const animationCard = useCallback((card: any) => {
     playCardSound()
@@ -261,6 +261,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const standUp = useCallback(() => {
     if(phase === 'result') {
       setStandUpStat(true)
+      setSwapAnimation(false)
       wsClient?.sendMessage(unsignEvent, {});
       setJarakKursi(0)
     }
@@ -1209,6 +1210,12 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   }, [player1, player2, player3, player4, player5, player6, player7, player8, jarakKursi])
 
   const rotateSeat = useCallback(() => {
+    setTimeout(() => {
+      setSwapAnimation(true)
+      setTimeout(() => {
+        setSwapAnimation(false)
+      }, 400)
+    }, 500)
     jarakKursiChecker(seatNumberNow)
   }, [seatNumberNow])
 
@@ -1431,7 +1438,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                   <View style={{ ...ThreePicGamePinWrapper }}>
                     {!player1 ? (
                       <View style={arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
-                        <TouchableOpacity onPress={() => sitHandler(1)}>
+                        <TouchableOpacity onPress={() => sitHandler(1)}>                          
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
                           />
@@ -1447,7 +1454,23 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         }
                         <View style={{...ThreePic.relative}}>
                           {banker == player1?.username ? (
-                            <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/banker.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.banker
+                              ]}
+                            />
+                            :
+                            <Image
+                              source={require("../../../../assets/images/others/banker.png")}
+                              style={ThreePic.banker}
+                            />
+                            // <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
                           ) : (
                             <></>
                           )}
@@ -1562,22 +1585,13 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           {
                             swapAnimation ?
                             <Animated.Image
-                              onLoad={() => onSwapSeat()}
+                              onLoad={() => onLoadSwap(swapSeat)}
                               source={require("../../../../assets/images/others/player1.png")}
                               style={[
                                 {
-                                  opacity: swapProfile,
-                                  transform: [
-                                    {
-                                      scale: swapProfile.interpolate({
-                                        inputRange: [0, 1],
-                                        outputRange: [0.4, 1],
-                                      })
-                                    },
-                                  ],
+                                  opacity: swapSeat,
                                 },
                                 ThreePic.player1
-                                // this.props.style,
                               ]}
                             />
                             :
@@ -1623,7 +1637,23 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         }
                         <View style={ThreePic.relative}>
                           {banker == player2?.username ? (
-                            <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/banker.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.banker
+                              ]}
+                            />
+                            :
+                            <Image
+                              source={require("../../../../assets/images/others/banker.png")}
+                              style={ThreePic.banker}
+                            />
+                            // <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
                           ) : (
                             <></>
                           )}
@@ -1741,10 +1771,28 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          <Image
+                          {
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.player1
+                              ]}
+                            />
+                            :
+                            <Image
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={ThreePic.player1}
+                            />
+                          }
+                          {/* <Image
                             source={require("../../../../assets/images/others/player1.png")}
                             style={ThreePic.player1}
-                          />
+                          /> */}
                           <View style={ThreePic.ProfileTable}>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.username}>
@@ -1780,10 +1828,23 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         }
                         <View style={ThreePic.relative}>
                           {banker == player3?.username ? (
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/banker.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.banker
+                              ]}
+                            />
+                            :
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
                               style={ThreePic.banker}
                             />
+                            // <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
                           ) : (
                             <></>
                           )}
@@ -1933,10 +1994,28 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          <Image
+                          {
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.player1
+                              ]}
+                            />
+                            :
+                            <Image
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={ThreePic.player1}
+                            />
+                          }
+                          {/* <Image
                             source={require("../../../../assets/images/others/player1.png")}
                             style={ThreePic.player1}
-                          />
+                          /> */}
                           <View style={ThreePic.ProfileTable}>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.username}>
@@ -1973,10 +2052,23 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         }
                         <View style={ThreePic.relative}>
                           {banker == player4?.username ? (
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/banker.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.banker
+                              ]}
+                            />
+                            :
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
                               style={ThreePic.banker}
                             />
+                            // <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
                           ) : (
                             <></>
                           )}
@@ -2126,10 +2218,28 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          <Image
+                          {
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.player1
+                              ]}
+                            />
+                            :
+                            <Image
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={ThreePic.player1}
+                            />
+                          }
+                          {/* <Image
                             source={require("../../../../assets/images/others/player1.png")}
                             style={ThreePic.player1}
-                          />
+                          /> */}
                           <View style={ThreePic.ProfileTable}>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.username}>
@@ -2166,10 +2276,23 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         }
                         <View style={ThreePic.relative}>
                           {banker == player5?.username ? (
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/banker.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.banker
+                              ]}
+                            />
+                            :
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
                               style={ThreePic.banker}
                             />
+                            // <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
                           ) : (
                             <></>
                           )}
@@ -2319,10 +2442,28 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          <Image
+                          {
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.player1
+                              ]}
+                            />
+                            :
+                            <Image
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={ThreePic.player1}
+                            />
+                          }
+                          {/* <Image
                             source={require("../../../../assets/images/others/player1.png")}
                             style={ThreePic.player1}
-                          />
+                          /> */}
                           <View style={ThreePic.ProfileTable}>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.username}>
@@ -2358,10 +2499,23 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         }
                         <View style={ThreePic.relative}>
                           {banker == player6?.username ? (
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/banker.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.banker
+                              ]}
+                            />
+                            :
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
                               style={ThreePic.banker}
                             />
+                            // <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
                           ) : (
                             <></>
                           )}
@@ -2507,10 +2661,28 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          <Image
+                          {
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.player1
+                              ]}
+                            />
+                            :
+                            <Image
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={ThreePic.player1}
+                            />
+                          }
+                          {/* <Image
                             source={require("../../../../assets/images/others/player1.png")}
                             style={ThreePic.player1}
-                          />
+                          /> */}
                           <View style={ThreePic.ProfileTable}>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.username}>
@@ -2546,10 +2718,23 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         }
                         <View style={ThreePic.relative}>
                           {banker == player7?.username ? (
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/banker.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.banker
+                              ]}
+                            />
+                            :
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
                               style={ThreePic.banker}
                             />
+                            // <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
                           ) : (
                             <></>
                           )}
@@ -2699,10 +2884,28 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          <Image
+                          {
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.player1
+                              ]}
+                            />
+                            :
+                            <Image
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={ThreePic.player1}
+                            />
+                          }
+                          {/* <Image
                             source={require("../../../../assets/images/others/player1.png")}
                             style={ThreePic.player1}
-                          />
+                          /> */}
                           <View style={ThreePic.ProfileTable}>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.username}>
@@ -2738,10 +2941,23 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                         }
                         <View style={ThreePic.relative}>
                           {banker == player8?.username ? (
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/banker.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.banker
+                              ]}
+                            />
+                            :
                             <Image
                               source={require("../../../../assets/images/others/banker.png")}
                               style={ThreePic.banker}
                             />
+                            // <Image source={require("../../../../assets/images/others/banker.png")} style={ThreePic.banker}/>
                           ) : (
                             <></>
                           )}
@@ -2891,10 +3107,28 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                           ) : (
                             <></>
                           )}
-                          <Image
+                          {
+                            swapAnimation ?
+                            <Animated.Image
+                              onLoad={() => onLoadSwap(swapSeat)}
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={[
+                                {
+                                  opacity: swapSeat,
+                                },
+                                ThreePic.player1
+                              ]}
+                            />
+                            :
+                            <Image
+                              source={require("../../../../assets/images/others/player1.png")}
+                              style={ThreePic.player1}
+                            />
+                          }
+                          {/* <Image
                             source={require("../../../../assets/images/others/player1.png")}
                             style={ThreePic.player1}
-                          />
+                          /> */}
                           <View style={ThreePic.ProfileTable}>
                             <View style={ThreePic.row}>
                               <Text style={ThreePic.username}>
