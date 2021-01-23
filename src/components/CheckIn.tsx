@@ -33,7 +33,9 @@ export const CheckInWindow = (props: any) => {
 	const buyIn = () => {
 		setBalancePlayerGame(sliderValue);
     setModalCheckIn(false)
-    rotateSeat()
+    if(sliderValue > 0) {
+      rotateSeat()
+    }
 	}
 	
 	const separatorBalance = (chip: number) => {

@@ -27,7 +27,7 @@ import {
 
 export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
   const { navigate } = props.navigation;
-  const host = "http://35.197.156.255:5000";
+  const host = "http://34.101.158.255:5000";
   const path = host + "/login";
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -48,8 +48,9 @@ export const PoseidonLogin: NavigationScreenComponent<any, any> = (props) => {
           }
         );
       })
-      .catch(() => {
+      .catch((error) => {
         alert("Username / Password wrong");
+        console.log(error)
       });
   };
 

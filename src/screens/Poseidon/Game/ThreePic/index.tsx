@@ -181,6 +181,39 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const [player7Username, setPlayer7Username] = useState("")
   const [player8Username, setPlayer8Username] = useState("")
 
+  const [playerPos, setPlayerPos] = useState([
+    {x: 166, y: -20},
+    {x: 255, y: 68},
+    {x: 255, y: 217},
+    {x: 255, y: 387},
+    {x: 166, y: 485},
+    {x: 0, y: 387},
+    {x: 0, y: 217},
+    {x: 0, y: 68}
+  ])
+
+  const [player1Pos, setPlayer1Pos] = useState(new Animated.ValueXY({x: playerPos[0].x, y: playerPos[0].y}));
+  const [player2Pos, setPlayer2Pos] = useState(new Animated.ValueXY({x: playerPos[1].x, y: playerPos[1].y}));
+  const [player3Pos, setPlayer3Pos] = useState(new Animated.ValueXY({x: playerPos[2].x, y: playerPos[2].y}));
+  const [player4Pos, setPlayer4Pos] = useState(new Animated.ValueXY({x: playerPos[3].x, y: playerPos[3].y}));
+  const [player5Pos, setPlayer5Pos] = useState(new Animated.ValueXY({x: playerPos[4].x, y: playerPos[4].y}));
+  const [player6Pos, setPlayer6Pos] = useState(new Animated.ValueXY({x: playerPos[5].x, y: playerPos[5].y}));
+  const [player7Pos, setPlayer7Pos] = useState(new Animated.ValueXY({x: playerPos[6].x, y: playerPos[6].y}));
+  const [player8Pos, setPlayer8Pos] = useState(new Animated.ValueXY({x: playerPos[7].x, y: playerPos[7].y}));
+
+  const movePosition = useCallback((position: any, seatNumber: number) => {
+    let index = seatNumber - 1
+    if((index + jarakKursi) >= 8) {
+      index = index + jarakKursi - 8
+    } else {
+      index = index + jarakKursi
+    }
+
+    Animated.spring(position, {
+      toValue: {x: playerPos[index].x, y: playerPos[index].y}
+    }).start();
+  },[jarakKursi]);
+
   // Animated
   const card1 = new Animated.Value(0)
   const card2 = new Animated.Value(0)
@@ -190,6 +223,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   const card6 = new Animated.Value(0)
   const card7 = new Animated.Value(0)
   const card8 = new Animated.Value(0)
+
 
   const swapSeat = new Animated.Value(0)
 
@@ -991,6 +1025,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       } else {
         setJarakKursi(5 - seatNumber + 8)
       }
+      movePosition(player1Pos, 1)
+      movePosition(player2Pos, 2)
+      movePosition(player3Pos, 3)
+      movePosition(player4Pos, 4)
+      movePosition(player5Pos, 5)
+      movePosition(player6Pos, 6)
+      movePosition(player7Pos, 7)
+      movePosition(player8Pos, 8)
     }, 500);
   }, [])
 
@@ -1437,15 +1479,18 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                   />
                   <View style={{ ...ThreePicGamePinWrapper }}>
                     {!player1 ? (
-                      <View style={arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
+                      // <View style={arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
+                      <Animated.View style={[arrayStylePin[0], player1Pos.getLayout()]}>
                         <TouchableOpacity onPress={() => sitHandler(1)}>                          
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
                           />
                         </TouchableOpacity>
-                      </View>
+                      </Animated.View>
+                      // </View>
                     ) : (
-                      <View style={arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
+                      // <View style={arrayStylePin[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}>
+                      <Animated.View style={[arrayStylePin[0], player1Pos.getLayout()]}>
                         {
                           emojiPlayer1 != ""?
                           <Image source={images[emojiPlayer1]} style={arrayStyleEmoji[(0 + jarakKursi) < 8 ? 0 + jarakKursi : ((0 + jarakKursi) - 8)]}/>
@@ -1617,18 +1662,21 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                           </View>
                         </View>
-                      </View>
+                      </Animated.View>
+                      // </View>
                     )}
                     {!player2 ? (
-                      <View style={arrayStylePin[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}>
+                      // <View style={arrayStylePin[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}>
+                      <Animated.View style={[arrayStylePin[1], player2Pos.getLayout()]}>
                         <TouchableOpacity onPress={() => sitHandler(2)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
                           />
                         </TouchableOpacity>
-                      </View>
+                      </Animated.View>
+                      // </View>
                     ) : (
-                      <View style={arrayStylePin[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}>
+                      <Animated.View style={arrayStylePin[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}>
                         {
                           emojiPlayer2 != ""?
                           <Image source={images[emojiPlayer2]} style={arrayStyleEmoji[(1 + jarakKursi) < 8 ? 1 + jarakKursi : ((1 + jarakKursi) - 8)]}/>
@@ -1806,16 +1854,18 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                             </View>
                           </View>
                         </View>
-                      </View>
+                      </Animated.View>
                     )}
                     {!player3 ? (
-                      <View style={arrayStylePin[(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)]}>
+                      // <View style={arrayStylePin(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)}>
+                      <Animated.View style={[arrayStylePin[2], player3Pos.getLayout()]}>
                         <TouchableOpacity onPress={() => sitHandler(3)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
                           />
                         </TouchableOpacity>
-                      </View>
+                      </Animated.View>
+                      // </View>
                     ) : (
                       <View
                         style={arrayStylePin[(2 + jarakKursi) < 8 ? 2 + jarakKursi : ((2 + jarakKursi) - 8)]}
@@ -2032,14 +2082,16 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player4 ? (
-                      <View style={arrayStylePin[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)]}>
+                      // <View style={arrayStylePin[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)]}>
+                      <Animated.View style={[arrayStylePin[3], player4Pos.getLayout()]}>
                         {/* <TouchableOpacity onPress={() => closeOpenCheckIn()}> */}
                         <TouchableOpacity onPress={() => sitHandler(4)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
                           />
                         </TouchableOpacity>
-                      </View>
+                      </Animated.View>
+                      // </View>
                     ) : (
                       <View
                         style={arrayStylePin[(3 + jarakKursi) < 8 ? 3 + jarakKursi : ((3 + jarakKursi) - 8)]}
@@ -2256,14 +2308,16 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player5 ? (
-                      <View style={arrayStylePin[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)]}>
+                      // <View style={arrayStylePin[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)}>
+                      <Animated.View style={[arrayStylePin[4], player5Pos.getLayout()]}>
                         {/* <TouchableOpacity onPress={() => closeOpenBetting()}> */}
                         <TouchableOpacity onPress={() => sitHandler(5)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
                           />
                         </TouchableOpacity>
-                      </View>
+                      </Animated.View>
+                      // </View>
                     ) : (
                       <View
                         style={arrayStylePin[(4 + jarakKursi) < 8 ? 4 + jarakKursi : ((4 + jarakKursi) - 8)]}
@@ -2480,13 +2534,15 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player6 ? (
-                      <View style={arrayStylePin[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)]}>
+                      // <View style={arrayStylePin[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)]}>
+                      <Animated.View style={[arrayStylePin[5], player6Pos.getLayout()]}>
                         <TouchableOpacity onPress={() => sitHandler(6)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
                           />
                         </TouchableOpacity>
-                      </View>
+                      </Animated.View>
+                      // </View>
                     ) : (
                       <View
                         style={arrayStylePin[(5 + jarakKursi) < 8 ? 5 + jarakKursi : ((5 + jarakKursi) - 8)]}
@@ -2699,13 +2755,15 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player7 ? (
-                      <View style={arrayStylePin[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)]}>
+                      // <View style={arrayStylePin[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)]}>
+                      <Animated.View style={[arrayStylePin[6], player7Pos.getLayout()]}>
                         <TouchableOpacity onPress={() => sitHandler(7)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
                           />
                         </TouchableOpacity>
-                      </View>
+                      </Animated.View>
+                      // </View>
                     ) : (
                       <View
                         style={arrayStylePin[(6 + jarakKursi) < 8 ? 6 + jarakKursi : ((6 + jarakKursi) - 8)]}
@@ -2922,13 +2980,15 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                       </View>
                     )}
                     {!player8 ? (
-                      <View style={arrayStylePin[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)]}>
+                      // <View style={arrayStylePin[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)]}>
+                      <Animated.View style={[arrayStylePin[7], player8Pos.getLayout()]}>
                         <TouchableOpacity onPress={() => sitHandler(8)}>
                           <Image
                             source={require("../../../../assets/images/others/button-sit.png")}
                           />
                         </TouchableOpacity>
-                      </View>
+                      </Animated.View>
+                      // </View>
                     ) : (
                       <View
                         style={arrayStylePin[(7 + jarakKursi) < 8 ? 7 + jarakKursi : ((7 + jarakKursi) - 8)]}

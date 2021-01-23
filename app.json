@@ -6,7 +6,7 @@
     "slug": "poseidon", 
     "orientation": "portrait",
     "icon": "./src/assets/images/logo.png",
-    "version": "1.1.6",    
+    "version": "1.1.7",    
     "ios": {
       "bundleIdentifier": "com.node8.poseidon"
     },

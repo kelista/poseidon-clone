@@ -24,7 +24,7 @@ export const PoseidonChangePass: NavigationScreenComponent<any, any> = (props) =
   const [confirmPass, setconfirmPass] = useState("");
   const [token, setToken] = useState("");
 
-  const host = "http://35.197.156.255:5000";
+  const host = "http://34.101.158.255:5000";
   const path = host + "/settings/password";
 
   useEffect(() => {
