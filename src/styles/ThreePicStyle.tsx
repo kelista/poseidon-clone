@@ -564,8 +564,8 @@ export default StyleSheet.create({
     height: 89, 
     top: '12%',
     right: '0%',
-    marginTop: 0,
     alignItems: 'center',
+    marginTop: 0,
     justifyContent: 'center', 
   },
   ThreePicGamePin7: {
@@ -640,6 +640,15 @@ export default StyleSheet.create({
     height: 25.05, 
     // transform: [{ translateX: -50.1 - 14 }]
   },
+  ThreePicCardGroup8: {
+    width: '100%',
+    alignItems: "center",
+    position: 'absolute',
+    left: 50.1 + 14,
+    top: 42,
+    zIndex: 5,
+    height: 25.05,
+  },
   ThreePicCardGroup3: {
     width: '100%',
     position: 'absolute',
@@ -699,13 +708,4 @@ export default StyleSheet.create({
     zIndex: 5,
     height: 25.05
   },
-  ThreePicCardGroup8: {
-    alignItems: "center",
-    width: '100%',
-    position: 'absolute',
-    top: 42,
-    left: 50.1 + 14,
-    zIndex: 5,
-    height: 25.05,
-  }
 });
