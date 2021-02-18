@@ -545,7 +545,6 @@ export default StyleSheet.create({
     left: '50%', 
     transform: [{ translateX: -38.5 }],
     alignItems: 'center',
-    justifyContent: 'center',
     marginTop: 0
   },
   ThreePicGamePin8: {
@@ -556,7 +555,6 @@ export default StyleSheet.create({
     left: '0%', 
     alignItems: 'center',
     marginTop: 0,
-    justifyContent: 'center',
   },
   ThreePicGamePin2: {
     position: 'absolute', 
@@ -566,7 +564,6 @@ export default StyleSheet.create({
     right: '0%',
     alignItems: 'center',
     marginTop: 0,
-    justifyContent: 'center', 
   },
   ThreePicGamePin7: {
     position: 'absolute', 
@@ -576,7 +573,6 @@ export default StyleSheet.create({
     left: '0%',
     alignItems: 'center',
     marginTop: 0,
-    justifyContent: 'center',  
   },
   ThreePicGamePin3: {
     position: 'absolute', 
@@ -586,7 +582,6 @@ export default StyleSheet.create({
     right: '0%',
     marginTop: 0,
     alignItems: 'center',
-    justifyContent: 'center', 
   },
   ThreePicGamePin6: {
     position: 'absolute', 
@@ -596,7 +591,6 @@ export default StyleSheet.create({
     left: '0%', 
     marginTop: 0,
     alignItems: 'center',
-    justifyContent: 'center', 
   },
   ThreePicGamePin4: {
     position: 'absolute', 
@@ -606,7 +600,6 @@ export default StyleSheet.create({
     right: '0%', 
     marginTop: 0,
     alignItems: 'center',
-    justifyContent: 'center', 
   },
   ThreePicGamePin5: {
     position: 'absolute', 

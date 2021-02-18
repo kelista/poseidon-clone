@@ -843,13 +843,13 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
       position: 'absolute',
       zIndex: 1,
       bottom: 65 + insets.top + insets.bottom,
-      right: phase == 'result' ? 30 + 34 + 10 : 30,
+      right: buyInStat && phase == 'result' ? 30 + 34 + 10 : 30,
       width: 34,
       height: 34,
       alignItems: 'center',
       justifyContent: 'center'
     };
-  }, [insets, phase]);
+  }, [insets, phase, buyInStat]);
 
   const constAutoBet: any = useMemo(() => {
     return {
@@ -968,14 +968,14 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
   // POV style
   useEffect(() => {
     setArrayStylePin([
-      player1Username != "" ? [ThreePic.ThreePicGamePin1, ThreePic.SitTable] : ThreePic.ThreePicGamePin1, 
-      player2Username != "" ? [ThreePic.ThreePicGamePin2, ThreePic.SitTable] : ThreePic.ThreePicGamePin2, 
-      player3Username != "" ? [ThreePic.ThreePicGamePin3, ThreePic.SitTable] : ThreePic.ThreePicGamePin3, 
-      player4Username != "" ? [ThreePic.ThreePicGamePin4, ThreePic.SitTable] : ThreePic.ThreePicGamePin4, 
+      player1Username != "" ? [ThreePic.ThreePicGamePin1, ThreePic.SitTable] : [ThreePic.ThreePicGamePin1, ThreePic.SitTable], 
+      player2Username != "" ? [ThreePic.ThreePicGamePin2, ThreePic.SitTable] : [ThreePic.ThreePicGamePin2, ThreePic.SitTable], 
+      player3Username != "" ? [ThreePic.ThreePicGamePin3, ThreePic.SitTable] : [ThreePic.ThreePicGamePin3, ThreePic.SitTable], 
+      player4Username != "" ? [ThreePic.ThreePicGamePin4, ThreePic.SitTable] : [ThreePic.ThreePicGamePin4, ThreePic.SitTable], 
       player5Username != "" ? [ThreePic.ThreePicGamePin5, ThreePic.SitTableBtm] : ThreePic.ThreePicGamePin5, 
-      player6Username != "" ? [ThreePic.ThreePicGamePin6, ThreePic.SitTable] : ThreePic.ThreePicGamePin6, 
-      player7Username != "" ? [ThreePic.ThreePicGamePin7, ThreePic.SitTable] : ThreePic.ThreePicGamePin7, 
-      player8Username != "" ? [ThreePic.ThreePicGamePin8, ThreePic.SitTable] : ThreePic.ThreePicGamePin8, 
+      player6Username != "" ? [ThreePic.ThreePicGamePin6, ThreePic.SitTable] : [ThreePic.ThreePicGamePin6, ThreePic.SitTable], 
+      player7Username != "" ? [ThreePic.ThreePicGamePin7, ThreePic.SitTable] : [ThreePic.ThreePicGamePin7, ThreePic.SitTable], 
+      player8Username != "" ? [ThreePic.ThreePicGamePin8, ThreePic.SitTable] : [ThreePic.ThreePicGamePin8, ThreePic.SitTable], 
     ])
   }, [player1Username, player2Username, player3Username, player4Username, player5Username, player6Username, player7Username, player8Username])
 
@@ -3103,10 +3103,6 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
                                       // this.props.style,
                                     ]}
                                   />
-                                  // <Image
-                                  //   source={images[player8C?.cards[1]]}
-                                  //   style={ThreePic.cardImage}
-                                  // />
                                   :
                                   <></>
                                 }
@@ -3228,7 +3224,7 @@ export const PoseidonThreePicGame: NavigationScreenComponent<any, any> = (
               <View style={ThreePic.relative}>
                 <View style={{flexDirection: 'row'}}>
                   {
-                    phase == 'result' ?
+                    buyInStat && phase == 'result' ?
                     <TouchableOpacity style={{}} onPress={() => standUp()}>
                       <Image
                         source={require("../../../../assets/images/others/standup.png")}
